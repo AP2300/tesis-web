@@ -5,7 +5,7 @@ import Login from './Login';
 
 function App() {
   return (
-    <div >
+    <div className="App">
       <Switch>
         <Route exact path="/" render={()=> <Login/>}/>
         <Route exact path="/dashboard" render={()=> <Home/>}/>
