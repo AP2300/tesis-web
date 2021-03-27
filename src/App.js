@@ -6,7 +6,7 @@ import Profile from './Profile'
 
 function App() {
   return (
-    <div >
+    <div className="App">
       <Switch>
         <Route exact path="/" render={()=> <Login/>}/>
         <Route exact path="/dashboard" render={()=> <Home/>}/>
