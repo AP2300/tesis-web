@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
     ListItem:{
         width: "80%",
         padding: "1rem 1rem",
-        margin: "1.3rem 1rem",
+        margin: "1rem 1rem",
         display: "flex",
         flexDirection: "row",
         justifyItems: "center",
