@@ -7,9 +7,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     marginTop: "10px",
+    minWidth: "330px",
     '& > *': {
-      margin: "1.5%",
-      width: "28%",
+      margin: "2%",
+      width: "25%",
       height: theme.spacing(16),
       boxShadow: "3px 3px 4px 1px #00000052"
     },
@@ -27,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
   GraphBox: {
       margin: theme.spacing(2),
-      width: "90%",
+      width: "82%",
       height: "50vh",
+      
   }
 }));
 
