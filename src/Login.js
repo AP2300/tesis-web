@@ -18,13 +18,12 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: "2px 2px 5px 1px rgba(0,0,0,0.45)",
         [sizes.Wdown("sm")]: {
             width: "80vw",
-            height: "61.5vh",
         },
         [sizes.Hdown("lg")]: {
             height: "61.5vh",
         },
         [sizes.Hdown("sm")]: {
-            height: "71.5vh",
+            height: "81.5vh",
         },
     },
 
@@ -50,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
             top: "12.55vh",
         },
         [sizes.Hdown("sm")]: {
-            top: "6.55vh",
+            top: "1.55vh",
         },
     },
     cardContent: {
