@@ -1,6 +1,6 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 let useStyles="";
-const drawerWidth = 340;
+const drawerWidth = '27vw';
 
 export default useStyles = makeStyles((theme) => ({
     listItemText:{
@@ -24,7 +24,7 @@ export default useStyles = makeStyles((theme) => ({
       display: "inline-grid",
     },
     appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${drawerWidth})`,
       marginLeft: drawerWidth,
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
@@ -64,7 +64,7 @@ export default useStyles = makeStyles((theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: -drawerWidth,
+      marginLeft: '-'+drawerWidth,
       height: "100vh",
     },
     contentShift: {
@@ -75,7 +75,7 @@ export default useStyles = makeStyles((theme) => ({
       marginLeft: 0,
     },
     userWelcome: {
-        fontSize: "5.5vmin",
+        fontSize: "5vmin",
         color: "#000000a6"
     },
     userBadge: {
@@ -98,6 +98,7 @@ export default useStyles = makeStyles((theme) => ({
       typography: {
         fontWeight: 600,
         marginLeft: "1rem",
+        fontSize:'2vmin',
       },
       List:{
           display:"flex",
@@ -120,10 +121,12 @@ export default useStyles = makeStyles((theme) => ({
           padding: "1rem 1rem",
           display: "flex",
           flexDirection: "row",
-          justifyItems: "center",
           borderRadius: "1rem",
       },
       icon:{
           fontSize: "2rem"
+      },
+      ".MuiTypography-body1":{
+        fontSize:'3vmin',
       }
   }));
