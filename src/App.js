@@ -1,11 +1,15 @@
 import './App.css';
-import Login from './Login';
+import {Redirect, Route, Switch} from "react-router-dom"
 import Home from './Home';
+import Login from './Login';
 
 function App() {
   return (
     <div className="App">
-      <Home/>
+      <Switch>
+        <Route exact path="/" render={()=> <Login/>}/>
+        <Route exact path="/dashboard" render={()=> <Home/>}/>
+      </Switch>
     </div>
   );
 }
