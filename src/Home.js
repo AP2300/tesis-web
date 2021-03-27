@@ -73,7 +73,7 @@ export default function Home() {
             <Typography className={classes.typography}>Usuario</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
-           <ChevronLeftIcon className={classes.userWelcome}/>
+           <ChevronLeftIcon className={classes.icon}/>
           </IconButton>
         </div>
         <Divider variant="middle"/>

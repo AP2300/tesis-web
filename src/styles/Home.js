@@ -95,7 +95,7 @@ export default useStyles = makeStyles((theme) => ({
       },
       typography: {
         fontWeight: 600,
-        marginLeft: "1rem"
+        marginLeft: "1rem",
       },
       List:{
           display:"flex",
@@ -111,5 +111,8 @@ export default useStyles = makeStyles((theme) => ({
           flexDirection: "row",
           justifyItems: "center",
           borderRadius: "1rem",
+      },
+      icon:{
+          fontSize: "2rem"
       }
   }));
