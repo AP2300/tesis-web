@@ -22,7 +22,7 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import useStyles from "./Styles/Home"
+import useStyles from "./styles/Home"
 
 const items = [{text:'Panel Personal',icon:<AccountBoxTwoToneIcon/>}, {text:'Historial',icon:<HistoryIcon/>}, {text:'Seguridad', icon:<LockTwoToneIcon/>},{text:'aiuda',icon:<InboxIcon/>}];
 
