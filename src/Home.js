@@ -86,7 +86,7 @@ export default function Home() {
           ))}
         </List>
         <Divider variant="middle"/>
-        <List className={classes.List}>
+        <List className={classes.List1}>
             <ListItem button className={classes.ListItem}>
               <ListItemIcon><ExitToAppIcon /></ListItemIcon>
               <ListItemText primary={"Cerrar Sesion"}  classes={{primary:classes.listItemText}}/>

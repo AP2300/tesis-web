@@ -40,10 +40,13 @@ export default useStyles = makeStyles((theme) => ({
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
+      height: "100vh"
     },
     drawerPaper: {
       width: drawerWidth,
       backgroundColor: "whitesmoke",
+      height: "100vh",
+      
     },
     drawerHeader: {
       display: 'flex',
@@ -52,6 +55,7 @@ export default useStyles = makeStyles((theme) => ({
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: 'center',
+      height: "12.6vh"
     },
     content: {
       flexGrow: 1,
@@ -71,7 +75,7 @@ export default useStyles = makeStyles((theme) => ({
       marginLeft: 0,
     },
     userWelcome: {
-        fontSize: "6vmin",
+        fontSize: "5.5vmin",
         color: "#000000a6"
     },
     userBadge: {
@@ -79,7 +83,7 @@ export default useStyles = makeStyles((theme) => ({
       flexWrap: 'wrap',
       alignItems: "center",
       color: "#000000a6",
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
       width: theme.spacing(26),
       height: theme.spacing(8),
       backgroundColor: "whitesmoke",
@@ -98,10 +102,19 @@ export default useStyles = makeStyles((theme) => ({
       List:{
           display:"flex",
           flexDirection: "column",
-          justifyContent:"space-evenly",
           alignItems: "center",
           color: "#000000a6",
+          height: "82.3vh",
+          justifyContent: "space-evenly"
       },
+      List1:{
+        display:"flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "17.7vh",
+        color: "#000000a6",
+        justifyContent: "center"
+    },
       ListItem:{
           width: "80%",
           padding: "1rem 1rem",
