@@ -1,6 +1,6 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 let useStyles="";
-const drawerWidth = 320;
+const drawerWidth = 340;
 
 export default useStyles = makeStyles((theme) => ({
     listItemText:{
@@ -62,8 +62,6 @@ export default useStyles = makeStyles((theme) => ({
       }),
       marginLeft: -drawerWidth,
       height: "100vh",
-  
-      
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -100,13 +98,13 @@ export default useStyles = makeStyles((theme) => ({
       List:{
           display:"flex",
           flexDirection: "column",
+          justifyContent:"space-evenly",
           alignItems: "center",
           color: "#000000a6",
       },
       ListItem:{
           width: "80%",
           padding: "1rem 1rem",
-          margin: "1rem 1rem",
           display: "flex",
           flexDirection: "row",
           justifyItems: "center",
