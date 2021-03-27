@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-
+import sizes from "./styles/sizes";
+import './Login.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,6 +16,16 @@ const useStyles = makeStyles((theme) => ({
         height: "81.5vh",
         borderRadius: "10px",
         boxShadow: "2px 2px 5px 1px rgba(0,0,0,0.45)",
+        [sizes.Wdown("sm")]: {
+            width: "80vw",
+            height: "61.5vh",
+        },
+        [sizes.Hdown("lg")]: {
+            height: "61.5vh",
+        },
+        [sizes.Hdown("sm")]: {
+            height: "71.5vh",
+        },
     },
 
     avatar: {
@@ -22,14 +33,31 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         top: "1.55vh",
         left: "50%",
-        marginLeft: "-6.5rem",
+        marginLeft: "-6rem",
         height: "12rem",
         width: "12rem",
         overflow: "visible",
-        boxShadow: "2px 2px 3px rgba(0,0,0,0.45)"
+        boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
+        [sizes.Wdown("lg")]: {
+            width: "10rem",
+            height: "10rem",
+            marginLeft: "-5rem",
+        },
+        [sizes.Hdown("lg")]: {
+            top: "14.55vh",
+        },
+        [sizes.Hdown("md")]: {
+            top: "12.55vh",
+        },
+        [sizes.Hdown("sm")]: {
+            top: "6.55vh",
+        },
     },
     cardContent: {
-        marginTop: "8.8rem"
+        marginTop: "8.8rem",
+        [sizes.Wdown("lg")]: {
+            marginTop: "7rem"
+        },
     },
     divider: {
         width: "83%",
@@ -60,10 +88,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "1rem",
     },
     textFields: {
-        [`&& typography`]: {
-            marginTop: "1rem",
-            
-        },
         [`& fieldset`]: {
             borderRadius: "40px",
             height: "3rem",
@@ -82,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
 function Login() {
     const classes = useStyles();
     return (
-        <div>
+        <div className="Login">
         <Card className={classes.root}>
             <Avatar className={classes.avatar} alt="" src="" />
             <CardContent className={classes.cardContent}>
