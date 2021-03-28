@@ -127,7 +127,7 @@ export default useStyles = makeStyles((theme) => ({
           fontSize: "5vh"
       },
       ListIcons: {
-        fontSize: `calc([14px] + ([6] - [4]) * ((100vw - [320px]) / ([34] - [27])))`
+        fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`
       },
       Avatar:{
           width:"60",
@@ -135,7 +135,7 @@ export default useStyles = makeStyles((theme) => ({
       },
       listItemText:{
         fontWeight: "600",
-        fontSize: `calc([9px] + ([4] - [1]) * ((100vw - [320px]) / ([34] - [27])))`
+        fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`
       },
       
   }));
