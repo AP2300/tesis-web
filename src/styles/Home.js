@@ -1,11 +1,9 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 let useStyles="";
-const drawerWidth = '27vw';
+const drawerWidth = '320px';
 
 export default useStyles = makeStyles((theme) => ({
-    listItemText:{
-      fontWeight: "600"
-    },
+
     root: {
       display: 'flex',
       width: "100vw",
@@ -38,12 +36,12 @@ export default useStyles = makeStyles((theme) => ({
       display: 'none',
     },
     drawer: {
-      width: drawerWidth,
+      minWidth: drawerWidth,
       flexShrink: 0,
       height: "100vh"
     },
     drawerPaper: {
-      width: drawerWidth,
+      minWidth: drawerWidth,
       backgroundColor: "whitesmoke",
       height: "100vh",
       
@@ -83,14 +81,13 @@ export default useStyles = makeStyles((theme) => ({
       flexWrap: 'wrap',
       alignItems: "center",
       color: "#000000a6",
-      margin: theme.spacing(3),
-      width: theme.spacing(26),
-      height: theme.spacing(8),
+      width:" 100%",
+      minHeight: "10vh",
       backgroundColor: "whitesmoke",
           "&&:hover":{
               backgroundColor: "#e2e2e2",
           },
-      paddingLeft: "1rem",
+      paddingLeft: "1.8rem",
       paddingRight: "1rem",
       cursor: "pointer",
       transition: "100ms "
@@ -98,7 +95,7 @@ export default useStyles = makeStyles((theme) => ({
       typography: {
         fontWeight: 600,
         marginLeft: "1rem",
-        fontSize:'2vmin',
+        fontSize:'3vh',
       },
       List:{
           display:"flex",
@@ -106,7 +103,8 @@ export default useStyles = makeStyles((theme) => ({
           alignItems: "center",
           color: "#000000a6",
           height: "82.3vh",
-          justifyContent: "space-evenly"
+          justifyContent: "space-evenly",
+          paddingRight: "1em"
       },
       List1:{
         display:"flex",
@@ -114,7 +112,8 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         height: "17.7vh",
         color: "#000000a6",
-        justifyContent: "center"
+        justifyContent: "center",
+        paddingRight: "1em"
     },
       ListItem:{
           width: "80%",
@@ -122,11 +121,21 @@ export default useStyles = makeStyles((theme) => ({
           display: "flex",
           flexDirection: "row",
           borderRadius: "1rem",
+          fontSize: "2.2vmin"
       },
       icon:{
-          fontSize: "2rem"
+          fontSize: "5vh"
       },
-      ".MuiTypography-body1":{
-        fontSize:'3vmin',
-      }
+      ListIcons: {
+        fontSize: `calc([14px] + ([6] - [4]) * ((100vw - [320px]) / ([34] - [27])))`
+      },
+      Avatar:{
+          width:"60",
+          height: "60"
+      },
+      listItemText:{
+        fontWeight: "600",
+        fontSize: `calc([9px] + ([4] - [1]) * ((100vw - [320px]) / ([34] - [27])))`
+      },
+      
   }));

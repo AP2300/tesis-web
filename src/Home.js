@@ -24,12 +24,17 @@ import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import useStyles from "./styles/Home"
 
-const items = [{text:'Panel Personal',icon:<AccountBoxTwoToneIcon/>}, {text:'Historial',icon:<HistoryIcon/>}, {text:'Seguridad', icon:<LockTwoToneIcon/>},{text:'aiuda',icon:<InboxIcon/>}];
-
 export default function Home() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  const items = [
+    {text:'Panel Personal',icon:<AccountBoxTwoToneIcon className={classes.ListIcons}/>}, 
+    {text:'Historial',icon:<HistoryIcon className={classes.ListIcons}/>}, 
+    {text:'Seguridad', icon:<LockTwoToneIcon className={classes.ListIcons}/>},
+    {text:'aiuda',icon:<InboxIcon className={classes.ListIcons}/>}
+  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -69,7 +74,7 @@ export default function Home() {
       >
         <div className={classes.drawerHeader}>  
           <Paper elevation={0} className={classes.userBadge} >
-            <Avatar src="/broken-image.jpg"/>
+            <Avatar src="/broken-image.jpg" className={classes.Avatar}/>
             <Typography className={classes.typography}>Usuario</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
@@ -80,7 +85,7 @@ export default function Home() {
         <List className={classes.List} >
           {items.map((text, index) => (
             <ListItem button className={classes.ListItem} key={index}>
-              <ListItemIcon>{text.icon}</ListItemIcon>
+              <ListItemIcon fontSize="inherit">{text.icon}</ListItemIcon>
               <ListItemText primary={text.text}  classes={{primary:classes.listItemText}}/>
             </ListItem>
           ))}
@@ -88,7 +93,7 @@ export default function Home() {
         <Divider variant="middle"/>
         <List className={classes.List1}>
             <ListItem button className={classes.ListItem}>
-              <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+              <ListItemIcon fontSize="inherit"><ExitToAppIcon className={classes.ListIcons}/></ListItemIcon>
               <ListItemText primary={"Cerrar Sesion"}  classes={{primary:classes.listItemText}}/>
             </ListItem>
         </List>
