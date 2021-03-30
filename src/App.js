@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route exact path="/" render={()=> <Login/>}/>
+        <Route exact path="/" render={()=> <Login />}/>
         <Route exact path="/dashboard" render={()=> <Home/>}/>
         <Route exact path="/profile" render={()=> <Profile/>}/>
       </Switch>
