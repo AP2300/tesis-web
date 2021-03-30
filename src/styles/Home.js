@@ -8,7 +8,7 @@ export default useStyles = makeStyles((theme) => ({
       display: 'flex',
       width: "100vw",
       height: "100vh",
-      overflow: "hidden"
+      overflow: "scroll"
     },
     appBar: {
       transition: theme.transitions.create(['margin', 'width'], {
@@ -19,6 +19,7 @@ export default useStyles = makeStyles((theme) => ({
       backgroundColor: "white",
       boxShadow: "1px 2px 5px 0px #0000002e",
       height: "11vh",
+      minHeight: "50px",
       display: "inline-grid",
     },
     appBarShift: {
