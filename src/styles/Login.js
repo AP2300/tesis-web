@@ -19,6 +19,12 @@ export default useStyles = makeStyles((theme) => ({
             height: "81.5vh",
         },
     },
+    login: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+    },
     avatar: {
         margin: "auto",
         position: "absolute",
@@ -55,10 +61,20 @@ export default useStyles = makeStyles((theme) => ({
         margin: "auto",
         marginBottom: "1rem"
     },
+    alert: {
+        position: "fixed",
+        top: 0,
+        zIndex: 50,
+        width: "25rem",
+        left: "50%",
+        marginLeft: "-12.5rem" 
+    },
     textField: {
         width: "80%",
-        borderRadius: "2rem",
-        backgroundColor:"#bdbdbd6e",
+        "& .MuiOutlinedInput-root": {
+            borderRadius: "2rem",
+            backgroundColor:"#bdbdbd6e",
+        },        
 
         marginBottom: "1em",
         ["& input"]:{
@@ -85,11 +101,11 @@ export default useStyles = makeStyles((theme) => ({
             paddingBottom: "0.25rem",
             paddingTop: "0.2rem",
         },
-    button: {
+    btn: {
         textTransform: "none",
         borderRadius: "40px",
-        marginBottom: "20rem",
+        marginTop: "80rem",
         padding: "0.55rem 1.5rem",
-    },
+    }
     }
 }));

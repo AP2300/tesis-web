@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Card from '@material-ui/core/Card';
+import Alert from '@material-ui/lab/Alert';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -9,62 +11,118 @@ import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import useStyles from "./styles/Login";
 import axios from 'axios';
-import './Login.css';
 
 function Login() {
     const classes = useStyles();
     let history = useHistory();
-    const [email, setEmail] = useState();
-    const [pass, setPass] = useState();
+    const [email, setEmail] = useState("");
+    const [pass, setPass] = useState("");
+    const [open, setOpen] = useState(false);
+    const [msg, setMsg] = useState("");
+    const btn = {
+        textTransform: "none",
+        borderRadius: "40px",
+        marginTop: "0.5rem",
+        padding: "0.55rem 1.5rem",
+    }
+
+    useEffect(() => {
+        if(open) {
+            setTimeout(() => {setOpen(false)}, 5000);
+        }
+    }, [open])
 
     function handleLogin(e) {
-        let params = {
-            email,
-            pass
-        }
-
-        axios.post('http://localhost:3001/login', params, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        })
-        .then(res => {
-            console.log(res)
-            if(res.data.success) {
-                history.push("/dashboard");
+        if(!email) {
+            setMsg("El campo E-mail está vacío");
+            setOpen(true);
+        } else if(!pass) {
+            setMsg("El campo Contraseña está vacío");
+            setOpen(true);
+        } else {
+            let params = {
+                email,
+                pass
             }
-        })
-        .catch(err => {
-            console.error(err); 
-        })
+    
+            axios.post('http://localhost:3001/login', params, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            })
+            .then(res => {
+                console.log(res)
+                if(res.data.success) {
+                    history.push("/dashboard");
+                } else {
+                    setMsg("Los datos ingresados son inválidos, intente nuevamente");
+                    console.log(msg);
+                    setOpen(true);
+                }
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        }
     };
 
     return (
-        <div className="Login">
-        <Card className={classes.root}>
-            <Avatar className={classes.avatar} alt="" src="" />
-            <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">
-                Inicia Sesion
-                </Typography>
-                <Divider className={classes.divider} variant="middle" />
-                <form noValidate autoComplete="off" className={classes.textFields}>
-                    <Typography gutterBottom variant="body1" component="h2">
-                        E-mail
-                    </Typography>
-                    <TextField className={classes.textField} label="E-mail" id="outlined-basic" variant="outlined" InputProps={classes.inputText} onChange={(e) => {setEmail(e.target.value)}}/>
-                    <Typography gutterBottom variant="body1" component="h2">
-                        Contraseña
-                    </Typography>
-                    <TextField className={classes.textField} id="outlined-basic" variant="outlined" type="password" label="Contraseña" onChange={(e) => {setPass(e.target.value)}}/>
-                </form>
-            </CardContent>
-            <Button variant="contained" className={classes.button} onClick={handleLogin}>
-                Iniciar Sesion
-            </Button>
-        </Card>
+        <div>
+            {open && (
+                <Alert className={classes.alert} severity="error" onClose={() => {setOpen(false)}}>{msg}</Alert>)}
+            <div className={classes.login}>
+                <Card className={classes.root}>
+                    <Avatar className={classes.avatar} alt="" src="" />
+                    <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                        Inicia Sesion
+                        </Typography>
+                        <Divider className={classes.divider} variant="middle" />
+                        <ValidatorForm
+                            onSubmit={handleLogin}
+                            className={classes.textFields}
+                            onError={errors => console.log(errors)}
+                            instantValidate={true}
+                        >
+                            <Typography gutterBottom variant="body1" component="h2">
+                                E-mail
+                            </Typography>
+                            <TextValidator
+                                id="outlined-email"
+                                label="E-mail"
+                                onChange={(e) => {setEmail(e.target.value)}}
+                                name="email"
+                                value={email}
+                                variant="outlined"
+                                className={classes.textField}
+                                validators={['required', 'isEmail']}
+                                errorMessages={['El campo no puede estar vacío', 'Correo inválido']}
+                            />
+                            <Typography gutterBottom variant="body1" component="h2">
+                                Contraseña
+                            </Typography>
+                            <TextValidator
+                                id="outlined-pass"
+                                label="Contraseña"
+                                type="password" 
+                                onChange={(e) => {setPass(e.target.value)}}
+                                name="pass"
+                                value={pass}
+                                variant="outlined"
+                                className={classes.textField}
+                                validators={['required']}
+                                errorMessages={['El campo no puede estar vacío']}
+                            />
+                            <Button type="submit" variant="contained" style={btn}>
+                                Iniciar Sesion
+                            </Button>
+                        </ValidatorForm>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
+        
     );
 }
 
