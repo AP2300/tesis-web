@@ -22,7 +22,23 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import useStyles from "./styles/Home"
+import useStyles from "./styles/Home";
+import axios from "axios";
+
+function GetUserInfo(){
+  axios.get("http://localhost:3001/Home", {
+    headers: {
+        'Content-Type': 'application/json',    
+    },
+    withCredentials: true
+})
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => {
+    console.error(err); 
+  })
+}
 
 export default function Home() {
   const classes = useStyles();
@@ -45,7 +61,7 @@ export default function Home() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onLoad={GetUserInfo()}>
       <CssBaseline />
       <AppBar
         position="fixed"
