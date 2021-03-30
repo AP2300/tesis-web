@@ -19,7 +19,6 @@ export default useStyles = makeStyles((theme) => ({
             height: "81.5vh",
         },
     },
-
     avatar: {
         margin: "auto",
         position: "absolute",
