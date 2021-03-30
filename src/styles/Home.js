@@ -1,6 +1,6 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 let useStyles="";
-const drawerWidth = '320px';
+const drawerWidth = '340px';
 
 export default useStyles = makeStyles((theme) => ({
 
@@ -85,18 +85,16 @@ export default useStyles = makeStyles((theme) => ({
       width:" 100%",
       minHeight: "10vh",
       backgroundColor: "whitesmoke",
-          "&&:hover":{
-              backgroundColor: "#e2e2e2",
-          },
       paddingLeft: "1.8rem",
       paddingRight: "1rem",
       cursor: "pointer",
-      transition: "100ms "
+      transition: "100ms ",
       },
       typography: {
         fontWeight: 600,
         marginLeft: "1rem",
-        fontSize:'3vh',
+        fontSize: "calc(18px + (24 - 18) * ((20vw - 303px) / (1600 - 300)))",
+
       },
       List:{
           display:"flex",

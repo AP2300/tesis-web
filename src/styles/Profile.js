@@ -9,11 +9,14 @@ export default useStyles = makeStyles((theme) => ({
       flexWrap: 'wrap',
       marginTop: "10px",
       '& > *': {
+        margin: "2%",
+        width: "25%",
+        height: theme.spacing(16),
         boxShadow: "3px 3px 4px 1px #00000052"
       },
           "& GraphBox" :{
           },
-      justifyContent: "center"
+      justifyContent: "center",
     },
     avatar: {
         position: "absolute",

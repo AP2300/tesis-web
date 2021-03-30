@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import Profile from "./Profile"
 import DashBoard from "./DashBoard"
 import {useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -25,36 +26,67 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import useStyles from "./styles/Home";
 import axios from "axios";
 
-function GetUserInfo(){
-  axios.get("http://localhost:3001/Home", {
-    headers: {
-        'Content-Type': 'application/json',    
-    },
-    withCredentials: true
-})
-  .then(res => {
-    console.log(res)
-  })
-  .catch(err => {
-    console.error(err); 
-  })
-}
 
-export default function Home() {
+export default function Home(props) {
+  const {location, history} = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [isPromiseReady, setisPromiseReady] = useState(false)
+
+  function GetUserInfo(){
+    axios.get("http://localhost:3001/Home", {
+      headers: {
+          'Content-Type': 'application/json',    
+      },
+      withCredentials: true
+  })
+    .then(res => {
+      setisPromiseReady(res.data.data)
+    })
+    .catch(err => {
+      console.error(err); 
+    })
+  }
 
   const items = [
+    {text:'Panel Principal',icon:<InboxIcon className={classes.ListIcons}/>},
     {text:'Panel Personal',icon:<AccountBoxTwoToneIcon className={classes.ListIcons}/>}, 
     {text:'Historial',icon:<HistoryIcon className={classes.ListIcons}/>}, 
     {text:'Seguridad', icon:<LockTwoToneIcon className={classes.ListIcons}/>},
-    {text:'aiuda',icon:<InboxIcon className={classes.ListIcons}/>}
   ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
+  function ChangePage(e){
+    console.log(e);
+    switch(e.target.outerText){
+      case "Panel Principal":
+        history.push("/dashboard")
+      break;
+      case "Panel Personal":
+        history.push("/profile")
+      break;
+    }
+  }
+
+  function PageSelector(){
+    switch(location.pathname){
+      case "/dashboard":
+        return <DashBoard/>;
+      break;
+  
+      case "/profile":
+        return <Profile/>;
+      break;
+  
+      default: 
+        return <DashBoard/>;
+      break;
+    };
+  }
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -79,7 +111,7 @@ export default function Home() {
             <MenuIcon className={classes.userWelcome}/>
           </IconButton >
           <Typography  noWrap className={classes.userWelcome}>
-            Usuario, bla bla bla
+            {`Bienvenido, ${isPromiseReady.FullName}`}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -91,7 +123,7 @@ export default function Home() {
         <div className={classes.drawerHeader}>  
           <Paper elevation={0} className={classes.userBadge} >
             <Avatar src="/broken-image.jpg" className={classes.Avatar}/>
-            <Typography className={classes.typography}>Usuario</Typography>
+            <Typography className={classes.typography}>{isPromiseReady.FullName}</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
            <ChevronLeftIcon className={classes.icon}/>
@@ -100,7 +132,7 @@ export default function Home() {
         <Divider variant="middle"/>
         <List className={classes.List} >
           {items.map((text, index) => (
-            <ListItem button className={classes.ListItem} key={index}>
+            <ListItem button className={classes.ListItem} key={index} onClick={ChangePage}>
               <ListItemIcon fontSize="inherit">{text.icon}</ListItemIcon>
               <ListItemText primary={text.text}  classes={{primary:classes.listItemText}}/>
             </ListItem>
@@ -120,7 +152,7 @@ export default function Home() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <DashBoard/>
+          {PageSelector()}
       </main>
     </div>
   );
