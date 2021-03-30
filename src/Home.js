@@ -30,9 +30,11 @@ import axios from "axios";
 export default function Home(props) {
   const {location, history} = props;
   const classes = useStyles();
-  const theme = useTheme();
+  let active = "";
   const [open, setOpen] = useState(false);
-  const [isPromiseReady, setisPromiseReady] = useState(false)
+  const [isPromiseReady, setisPromiseReady] = useState(false);
+  const [Data, setData] = useState("")
+  const [activeWindow, setActiveWindow] = useState("")
 
   function GetUserInfo(){
     axios.get("http://localhost:3001/Home", {
@@ -42,7 +44,8 @@ export default function Home(props) {
       withCredentials: true
   })
     .then(res => {
-      setisPromiseReady(res.data.data)
+      setisPromiseReady(true)
+      setData(res.data.data)
     })
     .catch(err => {
       console.error(err); 
@@ -61,12 +64,15 @@ export default function Home(props) {
   };
 
   function ChangePage(e){
-    console.log(e);
     switch(e.target.outerText){
       case "Panel Principal":
+        setActiveWindow(e.target.outerText)
+        setOpen(false)
         history.push("/dashboard")
       break;
       case "Panel Personal":
+        setActiveWindow(e.target.outerText)
+        setOpen(false)
         history.push("/profile")
       break;
     }
@@ -76,15 +82,12 @@ export default function Home(props) {
     switch(location.pathname){
       case "/dashboard":
         return <DashBoard/>;
-      break;
-  
       case "/profile":
         return <Profile Data={isPromiseReady}/>;
       break;
   
       default: 
         return <DashBoard/>;
-      break;
     };
   }
 
@@ -110,8 +113,10 @@ export default function Home(props) {
           >
             <MenuIcon className={classes.userWelcome}/>
           </IconButton >
-          <Typography  noWrap className={classes.userWelcome}>
-            {`Bienvenido, ${isPromiseReady.FullName}`}
+          <Typography  noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
+            { activeWindow !== "Panel Personal" ?
+           ( isPromiseReady ? `Bienvenido, ${Data.FullName }`: "f" ): activeWindow
+            }
           </Typography>
         </Toolbar>
       </AppBar>
@@ -123,7 +128,7 @@ export default function Home(props) {
         <div className={classes.drawerHeader}>  
           <Paper elevation={0} className={classes.userBadge} >
             <Avatar src="/broken-image.jpg" className={classes.Avatar}/>
-            <Typography className={classes.typography}>{isPromiseReady.FullName}</Typography>
+            <Typography className={clsx(classes.typography, !isPromiseReady && classes.loading)}>{isPromiseReady ? Data.FullName: "f"}</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
            <ChevronLeftIcon className={classes.icon}/>
@@ -132,7 +137,7 @@ export default function Home(props) {
         <Divider variant="middle"/>
         <List className={classes.List} >
           {items.map((text, index) => (
-            <ListItem button className={classes.ListItem} key={index} onClick={ChangePage}>
+            <ListItem button className={clsx(classes.ListItem, activeWindow == text.text ? classes.active : text.text)} key={index} onClick={ChangePage} >
               <ListItemIcon fontSize="inherit">{text.icon}</ListItemIcon>
               <ListItemText primary={text.text}  classes={{primary:classes.listItemText}}/>
             </ListItem>

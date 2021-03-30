@@ -3,7 +3,14 @@ let useStyles="";
 const drawerWidth = '340px';
 
 export default useStyles = makeStyles((theme) => ({
-
+    "@keyframes loading ":{
+      // from: {background: "#fff"},
+      // to:  { background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)"},
+      // "100%":{transform:" Translate(100%)" }
+    " 0%": {backgroundPosition:"0% 50%"},
+      "50%": {backgroundPosition:"100% 50%"},
+      "100%": {backgroundPosition: "0% 50%"}
+    },
     root: {
       display: 'flex',
       width: "100vw",
@@ -63,7 +70,7 @@ export default useStyles = makeStyles((theme) => ({
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: '-'+drawerWidth,
-      height: "100vh",
+
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -99,7 +106,6 @@ export default useStyles = makeStyles((theme) => ({
           display:"flex",
           flexDirection: "column",
           alignItems: "center",
-          color: "#000000a6",
           height: "82.3vh",
           justifyContent: "space-evenly",
           paddingRight: "1em"
@@ -109,13 +115,13 @@ export default useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         height: "17.7vh",
-        color: "#000000a6",
         justifyContent: "center",
         paddingRight: "1em"
     },
       ListItem:{
           width: "80%",
           padding: "1rem 1rem",
+          color: "#000000a6",
           display: "flex",
           flexDirection: "row",
           borderRadius: "1rem",
@@ -135,5 +141,16 @@ export default useStyles = makeStyles((theme) => ({
         fontWeight: "600",
         fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`
       },
-      
+      loading: {
+        animationName: '$loading',
+        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
+        backgroundSize: "400% 400%",
+        animationDuration: '1s',
+        animationIterationCount:'infinite',
+        color: "transparent",
+        width: "9em"
+      }, 
+      active: {
+        backgroundColor: "#0000001a"
+      }
   }));

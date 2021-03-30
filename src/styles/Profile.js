@@ -34,18 +34,12 @@ export default useStyles = makeStyles((theme) => ({
         boxShadow: "3px 3px 4px 1px #00000052"
     },
     GraphBox: {
-        // position: "relative",
         width: "95vmax",
         height: "75vh",
         alignSelf: "center",
-        // left: "-3vw",
-        // top: "-30vh",
         [sizes.Wdown("sm")]:{
             width: "90vmax",
         },
-        // [sizes.Wdown("xs")]:{
-        //     width: "75vmax",
-        // },
 
     },
     container:{
