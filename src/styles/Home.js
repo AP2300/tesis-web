@@ -8,7 +8,6 @@ export default useStyles = makeStyles((theme) => ({
       display: 'flex',
       width: "100vw",
       height: "100vh",
-      overflow: "scroll"
     },
     appBar: {
       transition: theme.transitions.create(['margin', 'width'], {

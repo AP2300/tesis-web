@@ -79,7 +79,7 @@ export default function Home(props) {
       break;
   
       case "/profile":
-        return <Profile/>;
+        return <Profile Data={isPromiseReady}/>;
       break;
   
       default: 
