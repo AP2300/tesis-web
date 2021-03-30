@@ -19,7 +19,7 @@ export default useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
     avatar: {
-        position: "absolute",
+        position: "relative",
         height: "15vmax",
         width: "15vmax",
         overflow: "visible",
@@ -27,7 +27,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     username: {
         display: 'flex',
-        position: "absolute",
+        position: "relative",
         top: "13vmax",
         width: "15vmax",
         height: "3vmax",
@@ -37,7 +37,7 @@ export default useStyles = makeStyles((theme) => ({
         boxShadow: "3px 3px 4px 1px #00000052"
     },
     GraphBox: {
-        position: "absolute",
+        position: "relative",
         width: "75vmax",
         height: "75vh",
         top: "5vmax",
@@ -60,7 +60,7 @@ export default useStyles = makeStyles((theme) => ({
         margin: theme.spacing(2),
         width: "15vmax",
         height: "15vmax",
-        position: "absolute", 
+        position: "relative", 
         top: "55vmin",
         left: "1vw",
         zIndex: "0",
@@ -68,7 +68,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     button_Edit: {
         background: "white",
-        position: "absolute",
+        position: "relative",
         left: "1vw",
         width: "15vmax",
         height: "3vmax",
@@ -78,7 +78,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     button_idk: {
         background: "white",
-        position: "absolute",
+        position: "relative",
         top: "15vmin",
         left: "1vw",
         width: "15vmax",
