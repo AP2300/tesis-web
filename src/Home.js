@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import Profile from "./Profile"
-import DashBoard from "./DashBoard"
-import {useTheme } from '@material-ui/core/styles';
+import Profile from "./Profile";
+import DashBoard from "./DashBoard";
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -36,7 +35,7 @@ export default function Home(props) {
   const [Data, setData] = useState("")
   const [activeWindow, setActiveWindow] = useState("")
 
-  function GetUserInfo(){
+  useEffect(()=>{
     axios.get("http://localhost:3001/Home", {
       headers: {
           'Content-Type': 'application/json',    
@@ -50,7 +49,7 @@ export default function Home(props) {
     .catch(err => {
       console.error(err); 
     })
-  }
+  }, [Data])
 
   const items = [
     {text:'Panel Principal',icon:<InboxIcon className={classes.ListIcons}/>},
@@ -81,7 +80,7 @@ export default function Home(props) {
   function PageSelector(){
     switch(location.pathname){
       case "/dashboard":
-        return <DashBoard/>;
+        return <DashBoard isOpen={open}/>;
       case "/profile":
         return <Profile/>;
   
@@ -95,7 +94,7 @@ export default function Home(props) {
   };
 
   return (
-    <div className={classes.root} onLoad={GetUserInfo()}>
+    <div className={classes.root} >
       <CssBaseline />
       <AppBar
         position="fixed"

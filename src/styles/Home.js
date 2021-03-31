@@ -4,9 +4,6 @@ const drawerWidth = '340px';
 
 export default useStyles = makeStyles((theme) => ({
     "@keyframes loading ":{
-      // from: {background: "#fff"},
-      // to:  { background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)"},
-      // "100%":{transform:" Translate(100%)" }
     " 0%": {backgroundPosition:"0% 50%"},
       "50%": {backgroundPosition:"100% 50%"},
       "100%": {backgroundPosition: "0% 50%"}
@@ -21,7 +18,6 @@ export default useStyles = makeStyles((theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: "100vw",
       backgroundColor: "white",
       boxShadow: "1px 2px 5px 0px #0000002e",
       height: "11vh",

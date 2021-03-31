@@ -1,66 +1,101 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
+import {Bar, Line} from "react-chartjs-2";
+import useStyles from "./styles/DashBoard";
+import axios from "axios";
+import clsx from 'clsx';
+var _ = require('lodash');
+var moment = require('moment'); // require
+moment().format(); 
 
-const useStyles = makeStyles((theme) => ({
-  "@keyframes loading ":{
-    // from: {background: "#fff"},
-    // to:  { background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)"},
-    // "100%":{transform:" Translate(100%)" },
-   " 0%": {backgroundPosition:"0% 50%"},
-    "50%": {backgroundPosition:"100% 50%"},
-    "100%": {backgroundPosition: "0% 50%"}
-},
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    minWidth: "330px",
-    '& > *': {
-      margin: "2%",
-      width: "25%",
-      height: theme.spacing(16),
-      boxShadow: "3px 3px 4px 1px #00000052",
-      animationName: '$loading',
-      background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
-      backgroundSize: "400% 400%",
-      animationDuration: '1s',
-      animationIterationCount:'infinite'
-    },
-        "& GraphBox" :{
-        },
-    justifyContent: "center"
-  },
-  borderBoxL: {
-      borderTopLeftRadius: "1rem",
-      borderBottomLeftRadius: "1rem",
-  },
-  borderBoxR: {
-    borderTopRightRadius: "1rem",
-    borderBottomRightRadius: "1rem",
-  },
-  GraphBox: {
-      margin: theme.spacing(2),
-      width: "82%",
-      height: "50vh",
 
-      animationName: '$loading',
-      background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
-      backgroundSize: "400% 400%",
-      animationDuration: '1s',
-      animationIterationCount:'infinite'
-  }
-}));
 
-export default function DashBoard() {
+export default function DashBoard(props) {
   const classes = useStyles();
+  let isStillOpen = true;
+  const [graphData, setgraphData] = useState("")
+  const [isPromiseReady, setIsPromiseReady] = useState(false)
+
+  // useEffect(access=>{
+  //   setgraphData(access)
+  // },[graphData])
+
+  useEffect(()=>{ 
+    axios.get("http://localhost:3001/access_data",{
+      headers: {
+          'Content-Type': 'application/json',    
+      },
+      withCredentials: true
+  })
+    .then(res => {
+      let data = res.data.data[1]
+      let accessData = _.groupBy(data, (data) => moment(data.RegDate).startOf('day'))
+      let access = Object.entries(accessData)
+      setIsPromiseReady(true)
+      setgraphData(access)
+    })
+    .catch(err => {
+      console.error(err); 
+    })
+  },[graphData])
+
+  function Putabida (){
+    let graph = [];
+    if(!graphData) graph = []
+    else {
+      graphData.forEach(e => {
+        if(e[1].length === 0){
+          graph.push(0)
+        }else{
+          graph.push(e[1].length)
+        }
+      });
+    }
+    return graph
+  }
+
+  function redraw() {
+    isStillOpen = true;
+    setTimeout(()=>{
+      isStillOpen = false;
+    },50)
+  }
 
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className={classes.borderBoxL}/>
-      <Paper elevation={0} />
-      <Paper elevation={0} className={classes.borderBoxR} />
+      <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}/>
+      <Paper elevation={0} className={clsx(!isPromiseReady && classes.loading)}/>
+      <Paper elevation={0} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading)} />
+    
+      <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)}>
+      {isPromiseReady ? <Line 
+          data={
+            {
+              labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
+            datasets: [{
+                label: "accesos",
+                data: Putabida(),
+                backgroundColor: "#f5deb382",
+                borderColor: "wheat"
+              },]
+            }
+          }
+          redraw={props.isOpen ? false : isStillOpen}
+          options={{ maintainAspectRatio: false,
+          // responsive: true,
 
-      <Paper elevation={0} className={classes.GraphBox}/>
+          scales:{
+            yAxes:[{
+              tricks:{
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+        }
+        /> : ""}
+      </Paper>
+
     </div>
   );
 }
