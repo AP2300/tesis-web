@@ -82,7 +82,8 @@ export default function Home(props) {
       case "/dashboard":
         return <DashBoard isOpen={open}/>;
       case "/profile":
-        return <Profile/>;
+        return <Profile Data={isPromiseReady}/>;
+      break;
   
       default: 
         return <DashBoard/>;
