@@ -36,7 +36,8 @@ export default function Home(props) {
   const [activeWindow, setActiveWindow] = useState("")
 
   useEffect(()=>{
-    axios.get("http://localhost:3001/Home", {
+    if(Data===""){
+      axios.get("http://localhost:3001/Home", {
       headers: {
           'Content-Type': 'application/json',    
       },
@@ -49,6 +50,8 @@ export default function Home(props) {
     .catch(err => {
       console.error(err); 
     })
+  
+    }  
   }, [Data])
 
   const items = [
@@ -63,7 +66,9 @@ export default function Home(props) {
   };
 
   function ChangePage(e){
+    console.log(e.target.outerText);
     switch(e.target.outerText){
+      
       case "Panel Principal":
         setActiveWindow(e.target.outerText)
         setOpen(false)
@@ -82,12 +87,26 @@ export default function Home(props) {
       case "/dashboard":
         return <DashBoard isOpen={open}/>;
       case "/profile":
-        return <Profile Data={isPromiseReady}/>;
-      break;
-  
+        return <Profile Data={isPromiseReady} />;
       default: 
         return <DashBoard/>;
     };
+  }
+
+  function EndSession(){
+    
+    axios.get("http://localhost:3001/logOut",{
+      headers: {
+          'Content-Type': 'application/json',    
+      },
+      withCredentials: true
+  })
+    .then(res => {
+      history.push("/")
+    })
+    .catch(err => {
+      console.error(err); 
+    })
   }
 
   const handleDrawerClose = () => {
@@ -144,8 +163,8 @@ export default function Home(props) {
         </List>
         <Divider variant="middle"/>
         <List className={classes.List1}>
-            <ListItem button className={classes.ListItem}>
-              <ListItemIcon fontSize="inherit"><ExitToAppIcon className={classes.ListIcons}/></ListItemIcon>
+            <ListItem button className={classes.LogOut} onClick={EndSession}>
+              <ListItemIcon fontSize="inherit" ><ExitToAppIcon className={classes.LogOuIcon}/></ListItemIcon>
               <ListItemText primary={"Cerrar Sesion"}  classes={{primary:classes.listItemText}}/>
             </ListItem>
         </List>

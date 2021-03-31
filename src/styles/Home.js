@@ -53,7 +53,6 @@ export default useStyles = makeStyles((theme) => ({
       display: 'flex',
       alignItems: 'center',
       padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: 'center',
       height: "12.6vh"
@@ -112,7 +111,7 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         height: "17.7vh",
         justifyContent: "center",
-        paddingRight: "1em"
+        paddingRight: "1em",
     },
       ListItem:{
           width: "80%",
@@ -123,11 +122,24 @@ export default useStyles = makeStyles((theme) => ({
           borderRadius: "1rem",
           fontSize: "2.2vmin"
       },
+      LogOut:{
+        width: "80%",
+        padding: "1rem 1rem",
+        color: "#ff4d4d",
+        display: "flex",
+        flexDirection: "row",
+        borderRadius: "1rem",
+        fontSize: "2.2vmin"
+    },
       icon:{
           fontSize: "5vh"
       },
       ListIcons: {
-        fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`
+        fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`,
+      },
+      LogOuIcon: {
+        fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`,
+        color: "#ff4d4d"
       },
       Avatar:{
           width:"60",

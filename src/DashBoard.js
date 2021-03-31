@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
-import {Bar, Line} from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 import useStyles from "./styles/DashBoard";
 import axios from "axios";
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 var _ = require('lodash');
-var moment = require('moment'); // require
+var moment = require('moment');
 moment().format(); 
 
 
 
-export default function DashBoard(props) {
+export default function DashBoard() {
   const classes = useStyles();
-  let isStillOpen = true;
+  let history = useHistory()
   const [graphData, setgraphData] = useState("")
   const [isPromiseReady, setIsPromiseReady] = useState(false)
 
-  // useEffect(access=>{
-  //   setgraphData(access)
-  // },[graphData])
 
   useEffect(()=>{ 
     axios.get("http://localhost:3001/access_data",{
@@ -33,13 +31,21 @@ export default function DashBoard(props) {
       let access = Object.entries(accessData)
       setIsPromiseReady(true)
       setgraphData(access)
+
+      window.addEventListener("beforeprint", beforePrintHandler())
     })
     .catch(err => {
-      console.error(err); 
+      if(err) history.push("/")
     })
   },[graphData])
 
-  function Putabida (){
+  function beforePrintHandler () {
+    for (var id in Chart.instances) {
+        Chart.instances[id].resize();
+    }
+}
+
+  function Putabida (){ 
     let graph = [];
     if(!graphData) graph = []
     else {
@@ -54,12 +60,6 @@ export default function DashBoard(props) {
     return graph
   }
 
-  function redraw() {
-    isStillOpen = true;
-    setTimeout(()=>{
-      isStillOpen = false;
-    },50)
-  }
 
   return (
     <div className={classes.root}>
@@ -80,10 +80,9 @@ export default function DashBoard(props) {
               },]
             }
           }
-          redraw={props.isOpen ? false : isStillOpen}
+          
           options={{ maintainAspectRatio: false,
-          // responsive: true,
-
+          responsiveAnimationDuration: 250,
           scales:{
             yAxes:[{
               tricks:{
@@ -95,7 +94,6 @@ export default function DashBoard(props) {
         }
         /> : ""}
       </Paper>
-
     </div>
   );
 }
