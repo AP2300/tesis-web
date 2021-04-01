@@ -6,11 +6,10 @@ import Alert from '@material-ui/lab/Alert';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-import useStyles from "./styles/Login";
-import axios from 'axios';
+import useStyles from "../../styles/Login";
+import {LogIn} from '../../api/session';
 
 function Login() {
     const classes = useStyles();
@@ -32,7 +31,7 @@ function Login() {
         }
     }, [open])
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         if(!email) {
             setMsg("El campo E-mail está vacío");
             setOpen(true);
@@ -44,28 +43,21 @@ function Login() {
                 email,
                 pass
             }
-    
-            axios.post('http://localhost:3001/login', params, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                withCredentials: true
-            })
-            .then(res => {
-                console.log(res)
-                if(res.data.success) {
-                    history.push("/dashboard");
-                } else {
-                    setMsg("Los datos ingresados son inválidos, intente nuevamente");
-                    console.log(msg);
-                    setOpen(true);
-                }
-            })
-            .catch(err => {
-                console.error(err); 
-            })
+            goLogIn(params);
         }
     };
+
+    const goLogIn = async (params) =>{
+        const response = await LogIn(params);
+        console.log(response);
+        if(response.data.success) {
+            history.push("/dashboard");
+        } else {
+            setMsg("Los datos ingresados son inválidos, intente nuevamente");
+            console.log(msg);
+            setOpen(true);
+        }
+    }
 
     return (
         <div>

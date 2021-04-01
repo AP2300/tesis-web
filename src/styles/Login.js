@@ -5,6 +5,7 @@ let useStyles = "";
 
 export default useStyles = makeStyles((theme) => ({
     root: {
+        textAlign: "center",
         width: "40vw",
         height: "81.5vh",
         borderRadius: "10px",

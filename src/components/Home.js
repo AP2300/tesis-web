@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import Profile from "./Profile";
-import DashBoard from "./DashBoard";
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -22,12 +20,13 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import useStyles from "./styles/Home";
-import axios from "axios";
-
+import useStyles from "../styles/Home";
+import { GetUserData } from "../api/user"
+import { PageSelector, otherPage } from "../helpers/Home"
+import { EndSession } from "../api/session"
 
 export default function Home(props) {
-  const {location, history} = props;
+  const { location, history } = props;
   const classes = useStyles();
   let active = "";
   const [open, setOpen] = useState(false);
@@ -35,78 +34,42 @@ export default function Home(props) {
   const [Data, setData] = useState("")
   const [activeWindow, setActiveWindow] = useState("")
 
-  useEffect(()=>{
-    if(Data===""){
-      axios.get("http://localhost:3001/Home", {
-      headers: {
-          'Content-Type': 'application/json',    
-      },
-      withCredentials: true
-  })
-    .then(res => {
-      setisPromiseReady(true)
-      setData(res.data.data)
-    })
-    .catch(err => {
-      console.error(err); 
-    })
-  
-    }  
+  useEffect(() => {
+    if(Data === "") getData() 
   }, [Data])
 
+  const getData = async () => {
+    const req = await GetUserData()
+    if (req) {
+      setData(req)
+      setisPromiseReady(true)
+    }
+  }
+
   const items = [
-    {text:'Panel Principal',icon:<InboxIcon className={classes.ListIcons}/>},
-    {text:'Panel Personal',icon:<AccountBoxTwoToneIcon className={classes.ListIcons}/>}, 
-    {text:'Historial',icon:<HistoryIcon className={classes.ListIcons}/>}, 
-    {text:'Seguridad', icon:<LockTwoToneIcon className={classes.ListIcons}/>},
+    { text: 'Panel Principal', icon: <InboxIcon className={classes.ListIcons} /> },
+    { text: 'Panel Personal', icon: <AccountBoxTwoToneIcon className={classes.ListIcons} /> },
+    { text: 'Historial', icon: <HistoryIcon className={classes.ListIcons} /> },
+    { text: 'Seguridad', icon: <LockTwoToneIcon className={classes.ListIcons} /> },
   ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
-  function ChangePage(e){
-    console.log(e.target.outerText);
-    switch(e.target.outerText){
-      
-      case "Panel Principal":
-        setActiveWindow(e.target.outerText)
-        setOpen(false)
-        history.push("/dashboard")
-      break;
-      case "Panel Personal":
-        setActiveWindow(e.target.outerText)
-        setOpen(false)
-        history.push("/profile")
-      break;
+  function ChangePage(e) {
+    let path = otherPage(e);
+    if(path){
+        setActiveWindow(e.target.outerText);
+        setOpen(false);
+        history.push(path);
     }
   }
 
-  function PageSelector(){
-    switch(location.pathname){
-      case "/dashboard":
-        return <DashBoard isOpen={open}/>;
-      case "/profile":
-        return <Profile Data={isPromiseReady} />;
-      default: 
-        return <DashBoard/>;
-    };
-  }
-
-  function EndSession(){
-    
-    axios.get("http://localhost:3001/logOut",{
-      headers: {
-          'Content-Type': 'application/json',    
-      },
-      withCredentials: true
-  })
-    .then(res => {
+  function CloseSession() {
+    if (EndSession()) {
       history.push("/")
-    })
-    .catch(err => {
-      console.error(err); 
-    })
+    }
   }
 
   const handleDrawerClose = () => {
@@ -129,11 +92,11 @@ export default function Home(props) {
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
           >
-            <MenuIcon className={classes.userWelcome}/>
+            <MenuIcon className={classes.userWelcome} />
           </IconButton >
-          <Typography  noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
-            { activeWindow !== "Panel Personal" ?
-           ( isPromiseReady ? `Bienvenido, ${Data.FullName }`: "f" ): activeWindow
+          <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
+            {activeWindow !== "Panel Personal" ?
+              (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
             }
           </Typography>
         </Toolbar>
@@ -143,30 +106,30 @@ export default function Home(props) {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>  
+        <div className={classes.drawerHeader}>
           <Paper elevation={0} className={classes.userBadge} >
-            <Avatar src="/broken-image.jpg" className={classes.Avatar}/>
-            <Typography className={clsx(classes.typography, !isPromiseReady && classes.loading)}>{isPromiseReady ? Data.FullName: "f"}</Typography>
+            <Avatar src="/broken-image.jpg" className={classes.Avatar} />
+            <Typography className={clsx(classes.typography, !isPromiseReady && classes.loading)}>{isPromiseReady ? Data.FullName : "f"}</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
-           <ChevronLeftIcon className={classes.icon}/>
+            <ChevronLeftIcon className={classes.icon} />
           </IconButton>
         </div>
-        <Divider variant="middle"/>
+        <Divider variant="middle" />
         <List className={classes.List} >
           {items.map((text, index) => (
             <ListItem button className={clsx(classes.ListItem, activeWindow == text.text ? classes.active : text.text)} key={index} onClick={ChangePage} >
               <ListItemIcon fontSize="inherit">{text.icon}</ListItemIcon>
-              <ListItemText primary={text.text}  classes={{primary:classes.listItemText}}/>
+              <ListItemText primary={text.text} classes={{ primary: classes.listItemText }} />
             </ListItem>
           ))}
         </List>
-        <Divider variant="middle"/>
+        <Divider variant="middle" />
         <List className={classes.List1}>
-            <ListItem button className={classes.LogOut} onClick={EndSession}>
-              <ListItemIcon fontSize="inherit" ><ExitToAppIcon className={classes.LogOuIcon}/></ListItemIcon>
-              <ListItemText primary={"Cerrar Sesion"}  classes={{primary:classes.listItemText}}/>
-            </ListItem>
+          <ListItem button className={classes.LogOut} onClick={CloseSession} >
+            <ListItemIcon fontSize="inherit" ><ExitToAppIcon className={classes.LogOuIcon} /></ListItemIcon>
+            <ListItemText primary={"Cerrar Sesion"} classes={{ primary: classes.listItemText }} />
+          </ListItem>
         </List>
       </Drawer>
       <main
@@ -175,7 +138,7 @@ export default function Home(props) {
         })}
       >
         <div className={classes.drawerHeader} />
-          {PageSelector()}
+        {PageSelector(Data)}
       </main>
     </div>
   );

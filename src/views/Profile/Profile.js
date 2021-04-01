@@ -3,8 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import useStyles from "./styles/Profile";
-
+import useStyles from "../../styles/Profile";
 
 export default function Profile(props) {
     const {Data}= props;

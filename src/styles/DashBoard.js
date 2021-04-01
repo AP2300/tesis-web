@@ -35,7 +35,16 @@ export default makeStyles((theme) => ({
         width: "82%",
         height: "50vh",
         padding: "2em",
-
+        textAlign: "center",
+    },
+    message:{
+      display: "flex",
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+        "&& > *":{
+          fontSize: "3em"
+        }
     },
     loading: {
         animationName: '$loading',

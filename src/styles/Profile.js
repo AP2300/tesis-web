@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import sizes from "./sizes";
 
 let useStyles = "";
@@ -15,19 +15,19 @@ export default useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
     avatar: {
-        height: "7.5vmax",
+        height: "100%",
         minWidth: "5vmax",
         minHeight: "5vmax",
-        width: "7.5vmax",
+        width: "100%",
         overflow: "visible",
         boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
     },
     username: {
         display: 'flex',
         position: "relative",
-        top: "-2vmax",
-        width: "7.5vmax",
-        height: "30%",
+        top: "-1vmax",
+        width: "100%",
+        height: "4vmin",
         borderRadius: "40px",
         alignItems: "center",
         justifyContent: "center",
@@ -35,12 +35,11 @@ export default useStyles = makeStyles((theme) => ({
     },
     GraphBox: {
         width: "95vmax",
-        height: "75vh",
+        height: "60vh",
         alignSelf: "center",
         [sizes.Wdown("sm")]:{
             width: "90vmax",
         },
-
     },
     container:{
         display: "flex",
@@ -49,10 +48,10 @@ export default useStyles = makeStyles((theme) => ({
         top: "-3vh",
         boxShadow: "none",
         textAlign: "-webkit-center",
-
+        margin: theme.spacing(2),
     },
     container_avatar:{
-        width: "10vw", 
+        width: "20vmin", 
         margin: "0",
         boxShadow: "none",
     },
