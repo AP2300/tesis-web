@@ -7,6 +7,7 @@ import axios from "axios";
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
+import { GetGraphData } from '../../api/user';
 var _ = require('lodash');
 var moment = require('moment');
 moment().format(); 
@@ -15,20 +16,18 @@ moment().format();
 
 export default function DashBoard() {
   const classes = useStyles();
-  let history = useHistory()
+  let history = useHistory();
   const [graphData, setgraphData] = useState("")
   const [isPromiseReady, setIsPromiseReady] = useState(false)
 
 
   useEffect(()=>{ 
-    axios.get("http://localhost:3001/access_data",{
-      headers: {
-          'Content-Type': 'application/json',    
-      },
-      withCredentials: true
-  })
-    .then(res => {
-      let data = res.data.data;
+    if(graphData === "") getData()
+  },[graphData])
+
+  const getData = async () =>{
+    const data = await GetGraphData();
+      console.log(data);
       if(data){
         let accessData = _.groupBy(data, (data) => moment(data.RegDate).startOf('day'))
         let access = Object.entries(accessData)
@@ -38,14 +37,8 @@ export default function DashBoard() {
         setgraphData([])    
         setIsPromiseReady(true)
       }
-      
-      window.addEventListener("beforeprint", beforePrintHandler())
-    })
-    .catch(err => {
-      console.error(err.stack)
-      if(err) history.push("/")
-    })
-  },[graphData])
+    window.addEventListener("beforeprint", beforePrintHandler());
+  }
 
   function beforePrintHandler () {
     for (var id in Chart.instances) {

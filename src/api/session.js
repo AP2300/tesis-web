@@ -1,6 +1,7 @@
 import axios from "axios";
+import * as Cons from "./constants";
 
-export function EndSession() {
+export async function EndSession() {
 
     axios.get("http://localhost:3001/logOut", {
         headers: {
@@ -9,19 +10,20 @@ export function EndSession() {
         withCredentials: true
     })
         .then(res => {
-
-            return true;
+            console.log("hola");
+            return res;
         })
         .catch(err => {
             console.error(err);
-            return false;
+            console.log("hola que paso")
+            // return false;
         })
 }
 
 export async function LogIn(params){
   
     try{
-      const res = axios.post('http://localhost:3001/login', params, {
+      const res = axios.post(Cons.LogIn, params, {
         headers: {
             'Content-Type': 'application/json'
         },

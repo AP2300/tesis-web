@@ -21,28 +21,27 @@ import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import useStyles from "../styles/Home";
-import { GetUserData } from "../api/user"
-import { PageSelector, otherPage } from "../helpers/Home"
-import { EndSession } from "../api/session"
+import { GetUserData } from "../api/user";
+import { EndSession } from "../api/session";
+import { PageSelector, otherPage } from "../helpers/Home";
 
 export default function Home(props) {
-  const { location, history } = props;
+  const { history } = props;
   const classes = useStyles();
-  let active = "";
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("")
   const [activeWindow, setActiveWindow] = useState("")
 
   useEffect(() => {
-    if(Data === "") getData() 
+    if(Data === "") getData(); 
   }, [Data])
 
   const getData = async () => {
-    const req = await GetUserData()
+    const req = await GetUserData();
     if (req) {
-      setData(req)
-      setisPromiseReady(true)
+      setData(req);
+      setisPromiseReady(true);
     }
   }
 
@@ -66,10 +65,9 @@ export default function Home(props) {
     }
   }
 
-  function CloseSession() {
-    if (EndSession()) {
-      history.push("/")
-    }
+  const CloseSession = async () => {
+    const funct = await EndSession();
+    setTimeout(() => {history.push("/")}, 100)
   }
 
   const handleDrawerClose = () => {
@@ -118,7 +116,7 @@ export default function Home(props) {
         <Divider variant="middle" />
         <List className={classes.List} >
           {items.map((text, index) => (
-            <ListItem button className={clsx(classes.ListItem, activeWindow == text.text ? classes.active : text.text)} key={index} onClick={ChangePage} >
+            <ListItem button className={clsx(classes.ListItem, activeWindow === text.text ? classes.active : text.text)} key={index} onClick={ChangePage} >
               <ListItemIcon fontSize="inherit">{text.icon}</ListItemIcon>
               <ListItemText primary={text.text} classes={{ primary: classes.listItemText }} />
             </ListItem>

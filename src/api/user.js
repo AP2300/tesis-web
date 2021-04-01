@@ -1,9 +1,9 @@
 import axios from "axios";
+import * as Cons from "./constants";
 
 export async function GetUserData(){
-  
   try{
-    const request = await axios.get("http://localhost:3001/Home",  {
+    const request = await axios.get(Cons.Home,  {
       headers: {
           'Content-Type': 'application/json',    
       },
@@ -15,20 +15,20 @@ export async function GetUserData(){
   }
 }
 
-// export function GetUserData(){
-//       axios.get("http://localhost:3001/Home", {
-//       headers: {
-//           'Content-Type': 'application/json',    
-//       },
-//       withCredentials: true
-//   })
-//     .then(res => {
-//       console.log(res.data.data);
-//       return res.data.data
-//     })
-//     .catch(err => {
-//       console.error(err); 
-//     })
-
-// }
+export async function GetGraphData(){
+  axios.get(Cons.Graph,{
+      headers: {
+          'Content-Type': 'application/json',    
+      },
+      withCredentials: true
+  })
+    .then(res => {
+      console.log(res)
+      return res.data.data;
+    })
+    .catch(err => {
+      console.error(err.stack)
+      return "Error";
+    })
+}
 

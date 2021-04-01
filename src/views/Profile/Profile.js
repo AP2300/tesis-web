@@ -16,7 +16,7 @@ export default function Profile(props) {
                 <div className={classes.container_avatar}>
                     <Avatar className={classes.avatar} alt="" src="" />
                     <Paper elevation={0} className={classes.username}>
-                        <Typography className={classes.typography}>{props.Data.FullName}</Typography>
+                        <Typography className={classes.typography}>{Data.FullName}</Typography>
                     </Paper>
                 </div>
                 

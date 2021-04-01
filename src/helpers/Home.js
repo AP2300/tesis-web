@@ -15,14 +15,9 @@ import { useLocation } from "react-router";
   }
 
   export function otherPage(e){
-    console.log(e.target.outerText);
-    switch (e.target.outerText) {
-
-      case "Panel Principal":
-        return ("/dashboard")
-        break;
-      case "Panel Personal":
-        return("/profile")
-        break;
+    switch(e.target.outerText) {
+      case "Panel Principal": return("/dashboard");
+      case "Panel Personal": return("/profile");
+      default : return("/dashboard");
     }
   }
