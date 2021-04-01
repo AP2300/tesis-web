@@ -1,6 +1,7 @@
 import React from 'react';
 import useStyles from '../../styles/LoginLoading';
 import Typography from '@material-ui/core/Typography';
+import { Ellipsis } from 'react-css-spinners'
 
 export default function LoginLoading(props) {
     const classes = useStyles();
@@ -11,12 +12,7 @@ export default function LoginLoading(props) {
                 <Typography className={classes.text} gutterBottom variant="h5" component="h2">
                     Iniciando Sesion...
                 </Typography>
-                <div className={classes.root}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
+                <Ellipsis size={120} color={"black"}/>
             </div>
         ) : (
             props.children

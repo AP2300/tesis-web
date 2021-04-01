@@ -4,7 +4,6 @@ import { Line } from "react-chartjs-2";
 import { Chart } from "chart.js"
 import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
-import { useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
 var _ = require('lodash');
@@ -15,7 +14,6 @@ moment().format();
 
 export default function DashBoard() {
   const classes = useStyles();
-  let history = useHistory();
   const [graphData, setgraphData] = useState("")
   const [isPromiseReady, setIsPromiseReady] = useState(false)
 
@@ -52,7 +50,6 @@ export default function DashBoard() {
       for (let i = 0; i < days.length; i++) {
         if (graphData[i]) {
           if (days[i] === graphData[i - j][0].split(" ")[0]) {
-            console.log(graphData[i - j][0]);
             graph.push(graphData[i - j][1].length)
           } else {
             graph.push(0)
@@ -63,7 +60,6 @@ export default function DashBoard() {
         }
       }
     }
-    console.log(graph);
     return graph
   }
 
