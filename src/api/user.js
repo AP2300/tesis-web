@@ -1,34 +1,33 @@
 import axios from "axios";
 import * as Cons from "./constants";
 
-export async function GetUserData(){
-  try{
-    const request = await axios.get(Cons.Home,  {
+export async function GetUserData() {
+  try {
+    const res = await axios.get(Cons.Home, {
       headers: {
-          'Content-Type': 'application/json',    
+        'Content-Type': 'application/json',
       },
       withCredentials: true
-  })
-  return request.data.data
-  }catch(e){
+    })
+    return { res: res.data.data, success: true }
+  } catch (e) {
     console.error(e)
+    return { success: false }
   }
 }
 
-export async function GetGraphData(){
-  axios.get(Cons.Graph,{
+export async function GetGraphData() {
+  try {
+    const res = axios.get(Cons.Graph, {
       headers: {
-          'Content-Type': 'application/json',    
+        'Content-Type': 'application/json',
       },
       withCredentials: true
-  })
-    .then(res => {
-      console.log(res)
-      return res.data.data;
     })
-    .catch(err => {
-      console.error(err.stack)
-      return "Error";
-    })
+    return (await res).data.data
+  } catch (e) {
+    console.error(e)
+  }
+
 }
 

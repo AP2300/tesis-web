@@ -24,9 +24,10 @@ import useStyles from "../styles/Home";
 import { GetUserData } from "../api/user";
 import { EndSession } from "../api/session";
 import { PageSelector, otherPage } from "../helpers/Home";
+import { useHistory } from 'react-router';
 
-export default function Home(props) {
-  const { history } = props;
+export default function Home() {
+  const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
@@ -34,14 +35,16 @@ export default function Home(props) {
   const [activeWindow, setActiveWindow] = useState("")
 
   useEffect(() => {
-    if(Data === "") getData(); 
+    if (Data === "") getData();
   }, [Data])
 
   const getData = async () => {
     const req = await GetUserData();
-    if (req) {
-      setData(req);
+    if (req.success === true) {
+      setData(req.res);
       setisPromiseReady(true);
+    } else {
+      history.push("/")
     }
   }
 
@@ -58,16 +61,18 @@ export default function Home(props) {
 
   function ChangePage(e) {
     let path = otherPage(e);
-    if(path){
-        setActiveWindow(e.target.outerText);
-        setOpen(false);
-        history.push(path);
+    if (path) {
+      setActiveWindow(e.target.outerText);
+      setOpen(false);
+      history.push(path);
     }
   }
 
   const CloseSession = async () => {
-    const funct = await EndSession();
-    setTimeout(() => {history.push("/")}, 100)
+    console.log("puto");
+    const res = await EndSession();
+    console.log(res);
+    if (res.data.success === true) history.push("/");
   }
 
   const handleDrawerClose = () => {

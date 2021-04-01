@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import useStyles from "../../styles/Login";
-import {LogIn} from '../../api/session';
+import { LogIn } from '../../api/session';
 
 function Login() {
     const classes = useStyles();
@@ -26,16 +26,16 @@ function Login() {
     }
 
     useEffect(() => {
-        if(open) {
-            setTimeout(() => {setOpen(false)}, 5000);
+        if (open) {
+            setTimeout(() => { setOpen(false) }, 5000);
         }
     }, [open])
 
     async function handleLogin(e) {
-        if(!email) {
+        if (!email) {
             setMsg("El campo E-mail está vacío");
             setOpen(true);
-        } else if(!pass) {
+        } else if (!pass) {
             setMsg("El campo Contraseña está vacío");
             setOpen(true);
         } else {
@@ -47,10 +47,10 @@ function Login() {
         }
     };
 
-    const goLogIn = async (params) =>{
+    const goLogIn = async (params) => {
         const response = await LogIn(params);
         console.log(response);
-        if(response.data.success) {
+        if (response.data.success) {
             history.push("/dashboard");
         } else {
             setMsg("Los datos ingresados son inválidos, intente nuevamente");
@@ -62,13 +62,13 @@ function Login() {
     return (
         <div>
             {open && (
-                <Alert className={classes.alert} severity="error" onClose={() => {setOpen(false)}}>{msg}</Alert>)}
+                <Alert className={classes.alert} severity="error" onClose={() => { setOpen(false) }}>{msg}</Alert>)}
             <div className={classes.login}>
                 <Card className={classes.root}>
                     <Avatar className={classes.avatar} alt="" src="" />
                     <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="h5" component="h2">
-                        Inicia Sesion
+                            Inicia Sesion
                         </Typography>
                         <Divider className={classes.divider} variant="middle" />
                         <ValidatorForm
@@ -83,7 +83,7 @@ function Login() {
                             <TextValidator
                                 id="outlined-email"
                                 label="E-mail"
-                                onChange={(e) => {setEmail(e.target.value)}}
+                                onChange={(e) => { setEmail(e.target.value) }}
                                 name="email"
                                 value={email}
                                 variant="outlined"
@@ -97,8 +97,8 @@ function Login() {
                             <TextValidator
                                 id="outlined-pass"
                                 label="Contraseña"
-                                type="password" 
-                                onChange={(e) => {setPass(e.target.value)}}
+                                type="password"
+                                onChange={(e) => { setPass(e.target.value) }}
                                 name="pass"
                                 value={pass}
                                 variant="outlined"
@@ -114,7 +114,7 @@ function Login() {
                 </Card>
             </div>
         </div>
-        
+
     );
 }
 

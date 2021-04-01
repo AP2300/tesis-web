@@ -6,10 +6,10 @@ import Button from '@material-ui/core/Button';
 import useStyles from "../../styles/Profile";
 
 export default function Profile(props) {
-    const {Data}= props;
+    const { Data } = props;
     const classes = useStyles();
 
-    return(
+    return (
         <div className={classes.root}>
 
             <div className={classes.container}>
@@ -19,7 +19,7 @@ export default function Profile(props) {
                         <Typography className={classes.typography}>{Data.FullName}</Typography>
                     </Paper>
                 </div>
-                
+
                 <div className={classes.container_buttons}>
                     <Button variant="contained" className={classes.button_Edit}>
                         <Typography className={classes.typography}>Editar Perfil</Typography>
@@ -31,7 +31,7 @@ export default function Profile(props) {
                 </div>
             </div>
 
-            <Paper elevation={0} className={classes.GraphBox}/>
+            <Paper elevation={0} className={classes.GraphBox} />
 
 
         </div>
