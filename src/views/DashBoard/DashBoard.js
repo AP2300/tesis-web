@@ -7,7 +7,6 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
-import { isUndefined } from 'lodash';
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
