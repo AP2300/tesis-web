@@ -1,5 +1,5 @@
 import React from 'react';
-import useStyles from './styles/LoginLoading';
+import useStyles from '../../styles/LoginLoading';
 import Typography from '@material-ui/core/Typography';
 
 export default function LoginLoading(props) {

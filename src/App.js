@@ -1,8 +1,7 @@
-import './App.css';
-import {Redirect, Route, Switch} from "react-router-dom"
-import Home from './Home';
-import Login from './Login';
-import Profile from './Profile'
+import {Route, Switch} from "react-router-dom"
+import Home from './components/Home';
+import Login from './views/Login/Login';
+// import Profile from './views/Profile'
 
 function App() {
   return (

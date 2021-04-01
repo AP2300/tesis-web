@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStyles from './styles/Security';
+import useStyles from '../../styles/Security';
 
 function Security(props) {
     const classes = useStyles();

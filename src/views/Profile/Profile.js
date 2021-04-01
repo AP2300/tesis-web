@@ -3,8 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import useStyles from "./styles/Profile";
-
+import useStyles from "../../styles/Profile";
 
 export default function Profile(props) {
     const {Data}= props;
@@ -17,7 +16,7 @@ export default function Profile(props) {
                 <div className={classes.container_avatar}>
                     <Avatar className={classes.avatar} alt="" src="" />
                     <Paper elevation={0} className={classes.username}>
-                        <Typography className={classes.typography}>{props.Data.FullName}</Typography>
+                        <Typography className={classes.typography}>{Data.FullName}</Typography>
                     </Paper>
                 </div>
                 
