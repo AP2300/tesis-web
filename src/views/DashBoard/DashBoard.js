@@ -10,8 +10,6 @@ var _ = require('lodash');
 var moment = require('moment');
 moment().format();
 
-
-
 export default function DashBoard() {
   const classes = useStyles();
   const [graphData, setgraphData] = useState("")
@@ -19,8 +17,9 @@ export default function DashBoard() {
 
 
   useEffect(() => {
-    if (graphData === "") getData()
-  }, [graphData])
+    getData()
+  }, [])
+
 
   const getData = async () => {
     const data = await GetGraphData();
@@ -33,13 +32,16 @@ export default function DashBoard() {
       setgraphData([])
       setIsPromiseReady(true)
     }
-    window.addEventListener("beforeprint", beforePrintHandler());
   }
 
+  window.addEventListener("click", beforePrintHandler);
+
   function beforePrintHandler() {
-    for (var id in Chart.instances) {
-      Chart.instances[id].resize();
-    }
+    setTimeout(() => {
+      for (var id in Chart.instances) {
+        Chart.instances[id].resize();
+      }
+    }, 200)
   }
 
   function generateGraphData() {
@@ -56,21 +58,37 @@ export default function DashBoard() {
             j++
           }
         } else {
-          graph.push(graphData[i - j][1].length)
+          if (graphData[i - j]) {
+            graph.push(graphData[i - j][1].length)
+          } else {
+            graph.push(0)
+          }
         }
       }
     }
     return graph
   }
 
+  function getWeekAccess() {
+    let calc = 0;
+    generateGraphData().forEach(e => {
+      calc += e;
+    })
+    return calc
+  }
+
 
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)} />
+      <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
+        <Typography > Esta semana</Typography>
+        <Typography className={classes.number}>{getWeekAccess()}</Typography>
+        <Typography >Accesos</Typography>
+      </Paper>
       <Paper elevation={0} className={clsx(!isPromiseReady && classes.loading)} />
       <Paper elevation={0} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading)} />
 
-      <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)}>
+      <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
         {graphData !== [] ? isPromiseReady ? <Line
           data={
             {
@@ -83,10 +101,10 @@ export default function DashBoard() {
               },]
             }
           }
-
+          redraw={true}
           options={{
             maintainAspectRatio: false,
-            responsiveAnimationDuration: 250,
+            responsiveAnimationDuration: 100,
             scales: {
               yAxes: [{
                 ticks: {
