@@ -69,7 +69,6 @@ export default function Home() {
   }
 
   const CloseSession = async () => {
-    console.log("puto");
     const res = await EndSession();
     console.log(res);
     if (res.data.success === true) history.push("/");

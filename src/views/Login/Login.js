@@ -56,7 +56,7 @@ function Login() {
         const response = await LogIn(params);
         console.log(response);
         if (response.data.success) {
-            history.push("/dashboard");
+            history.push("/home");
         } else {
             setMsg("Los datos ingresados son inválidos, intente nuevamente");
             console.log(msg);

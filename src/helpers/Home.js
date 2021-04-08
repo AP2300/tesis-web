@@ -1,18 +1,22 @@
 import Profile from "../views/Profile/Profile";
 import DashBoard from "../views/DashBoard/DashBoard";
+import History from "../views/History/History"
 import { useLocation } from "react-router";
 
  export function PageSelector(userData){
     const location = useLocation();
+    console.log(location.pathname);
     switch(location.pathname){
       case "/dashboard":
         return <DashBoard />;
-      case "/profile":
+      case "/home/profile":
         return <Profile Data={userData}/>;
       case "/profile/info":
         return <Profile Data={userData}/>;
       case "/profile/admin":
         return <Profile Data={userData}/>;
+      case "/home/history":
+        return <History/>
       default: 
         return <DashBoard/>;
     };
@@ -20,8 +24,9 @@ import { useLocation } from "react-router";
 
   export function otherPage(e){
     switch(e.target.outerText) {
-      case "Panel Principal": return("/dashboard");
-      case "Panel Personal": return("/profile");
-      default : return("/dashboard");
+      case "Panel Principal": return("/home");
+      case "Panel Personal": return("/home/profile");
+      case "Historial": return("/home/history");
+      default : return("/home");
     }
   }
