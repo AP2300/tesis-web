@@ -4,10 +4,20 @@ import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import useStyles from "../../styles/Profile";
+import { ChangeOption, otherPage } from "../../helpers/Profile"
+import { useHistory } from 'react-router';
 
 export default function Profile(props) {
-    const { Data } = props;
+    const history = useHistory();
     const classes = useStyles();
+    const { Data } = props;
+
+    function ChangePage(e) {
+        let path = otherPage(e);
+        if (path) {
+          history.push(path);
+        }
+    }
 
     return (
         <div className={classes.root}>
@@ -21,17 +31,19 @@ export default function Profile(props) {
                 </div>
 
                 <div className={classes.container_buttons}>
-                    <Button variant="contained" className={classes.button_Edit}>
-                        <Typography className={classes.typography}>Editar Perfil</Typography>
+                    <Button variant="contained" className={classes.btn_info} onClick={ChangePage}>
+                        <Typography className={classes.typography}>Visualizar Datos</Typography>
                     </Button>
 
-                    <Button variant="contained" className={classes.button_idk}>
-                        <Typography className={classes.typography}>IDK</Typography>
+                    <Button variant="contained" className={classes.btn_edit} onClick={ChangePage}>
+                        <Typography className={classes.typography}>Editar Perfil</Typography>
                     </Button>
                 </div>
             </div>
 
-            <Paper elevation={0} className={classes.GraphBox} />
+            <Paper elevation={0} className={classes.GraphBox} >
+                {ChangeOption()}
+            </Paper>
 
 
         </div>
