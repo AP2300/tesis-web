@@ -2,6 +2,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 let useStyles = "";
 export default useStyles = makeStyles((theme) => ({
+    "@keyframes loading ": {
+        " 0%": { backgroundPosition: "0% 50%" },
+        "50%": { backgroundPosition: "100% 50%" },
+        "100%": { backgroundPosition: "0% 50%" }
+      },
     FormSize: {
         width: '100%',
     },
@@ -65,11 +70,12 @@ export default useStyles = makeStyles((theme) => ({
     },
     column1: {
         width: "63vw",
-        height: "100%"
+        height: "100%",
+        
     },
     column: {
-        width: '10vw',
-        height: "100%"
+        width: '27vw',
+        height: "100%",
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
@@ -82,4 +88,12 @@ export default useStyles = makeStyles((theme) => ({
             textDecoration: 'underline',
         },
     },
+    loading: {
+        animationName: '$loading',
+        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
+        backgroundSize: "400% 400%",
+        animationDuration: '1s',
+        animationIterationCount: 'infinite',
+        color: "transparent",
+      },
 }));

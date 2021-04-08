@@ -21,7 +21,7 @@ import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import useStyles from "../styles/Home";
-import { GetUserData } from "../api/user";
+import { GetUserData, GetHistoryData } from "../api/user";
 import { EndSession } from "../api/session";
 import { PageSelector, otherPage } from "../helpers/Home";
 import { useHistory } from 'react-router';
@@ -33,9 +33,11 @@ export default function Home() {
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("")
   const [activeWindow, setActiveWindow] = useState("")
+  const [SearchData, setSearchData] = useState("")
 
   useEffect(() => {
     if (Data === "") getData();
+
   }, [Data])
 
   const getData = async () => {
@@ -47,6 +49,7 @@ export default function Home() {
       history.push("/")
     }
   }
+
 
   const items = [
     { text: 'Panel Principal', icon: <InboxIcon className={classes.ListIcons} /> },
@@ -140,7 +143,7 @@ export default function Home() {
         })}
       >
         <div className={classes.drawerHeader} />
-        {PageSelector(Data)}
+        {PageSelector(Data, SearchData)}
       </main>
     </div>
   );

@@ -28,6 +28,19 @@ export async function GetGraphData() {
   } catch (e) {
     console.error(e)
   }
+}
 
+export async function GetHistoryData(){
+  try{
+    const res = axios.get(Cons.Search,{
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    return res
+  }catch(e){
+    console.error(e)
+  }
 }
 

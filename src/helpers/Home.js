@@ -3,7 +3,7 @@ import DashBoard from "../views/DashBoard/DashBoard";
 import History from "../views/History/History"
 import { useLocation } from "react-router";
 
- export function PageSelector(userData){
+ export function PageSelector(userData, SearchData){
     const location = useLocation();
     console.log(location.pathname);
     switch(location.pathname){
