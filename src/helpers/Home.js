@@ -5,15 +5,12 @@ import { useLocation } from "react-router";
 
  export function PageSelector(userData, SearchData){
     const location = useLocation();
-    console.log(location.pathname);
     switch(location.pathname){
       case "/dashboard":
         return <DashBoard />;
-      case "/home/profile":
+      case "/home/profile/info":
         return <Profile Data={userData}/>;
-      case "/profile/info":
-        return <Profile Data={userData}/>;
-      case "/profile/admin":
+      case "/home/profile/admin":
         return <Profile Data={userData}/>;
       case "/home/history":
         return <History/>
@@ -25,7 +22,7 @@ import { useLocation } from "react-router";
   export function otherPage(e){
     switch(e.target.outerText) {
       case "Panel Principal": return("/home");
-      case "Panel Personal": return("/home/profile");
+      case "Panel Personal": return("/home/profile/info");
       case "Historial": return("/home/history");
       default : return("/home");
     }

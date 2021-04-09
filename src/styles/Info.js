@@ -4,11 +4,10 @@ let useStyles = "";
 
 export default useStyles = makeStyles((theme) => ({
     root: {
-        width: "100%",
-        height: "100%",
         display: 'flex',
         flexDirection: 'column',
         alignItems: "center",
+        margin: "2vmin",
     },
     profileDate: {
         position: "relative",
@@ -17,39 +16,17 @@ export default useStyles = makeStyles((theme) => ({
         fontWeight: 600,
         fontSize: "calc(15px + (24 - 15) * ((20vw - 303px) / (1600 - 300)))",
     },
-    btn_changePass: {
-        margin: "1%",
-        background: "white",
-        width: "45vmin",
-        height: "2vmax",
-        position: "relative",
-        borderRadius: "40px",
-        boxShadow: "3px 3px 4px 1px #00000052"
-    },
-    btn_update: {
-        background: "white",
-        width: "30vmin",
-        height: "2vmax",
-        position: "relative",
-        placeSelf: "flex-end",
-        borderRadius: "40px",
-        boxShadow: "3px 3px 4px 1px #00000052"
-    },
     typography: {
         position: "relative",
         fontWeight: 600,
         fontSize: "calc(15px + (24 - 16) * ((20vw - 303px) / (1600 - 300)))",
         left: "1.5vmax"
     },
-    typographybtn: {
-        fontWeight: 600,
-        fontSize: "calc(14px + (24 - 16) * ((20vw - 303px) / (1600 - 300)))",
-    },
     typographyState: {
         position: "relative",
         fontWeight: 600,
         fontSize: "calc(15px + (24 - 16) * ((20vw - 303px) / (1600 - 300)))",
-        left: "3vmin"
+        left: "-25vmax"
     },
     textFields:{
         width: "90%"
@@ -64,7 +41,7 @@ export default useStyles = makeStyles((theme) => ({
 
         marginBottom: "1vmax",
         ["& input"]:{
-            height: "0.2vmax",
+            height: "0.5vmax",
         },
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent"
@@ -77,17 +54,4 @@ export default useStyles = makeStyles((theme) => ({
           },
 
     }, 
-    switch: {
-        color: "green",
-        position: "relative",
-        top: "-10%",
-        left: "1.5vmax"
-    },
-    bottom: {
-        marginTop: "2%",
-        width: "90%",
-        display: 'flex',
-        flexDirection: "row",
-        placeContent: "space-between"
-    },
 }));

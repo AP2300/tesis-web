@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
+import { Typography, Button, Switch,  } from '@material-ui/core';
 import useStyles from "../../styles/Admin";
+var moment = require('moment');
+moment().format();
 
-export default function Admin(){
+export default function Admin(props){
     const classes = useStyles();
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
+    const { Data } = props;
+    const Date = `${moment(Data.RegDate).date()}` + `-${moment(Data.RegDate).month()+1}` + `-${moment(Data.RegDate).year()}`;
+    const [fullName, setFullName] = useState(Data.FullName);
+    const [email, setEmail] = useState(Data.Email);
     const [newPass, setNewPass] = useState("");
-    const [isActive, setIsActive] = useState(true);
+    const [isActive, setIsActive] = useState(Boolean(Data.IsActive) );
+    const [Pass, setPass] = useState(true);
+
 
     function handleUpdate(){
         console.log("HI")
@@ -24,7 +26,7 @@ export default function Admin(){
 
     return(
         <div className={classes.root}>
-            <Typography className={classes.profileDate}>Perfil Creado: </Typography>
+            <Typography className={classes.profileDate}>Perfil Creado: {Date}</Typography>
             <ValidatorForm
             onSubmit={handleUpdate}
             className={classes.textFields}
@@ -56,7 +58,7 @@ export default function Admin(){
                 />
             </ValidatorForm>
 
-            <Button variant="contained" className={classes.btn_changePass}>
+            <Button variant="contained" className={classes.btn_changePass} onClick={() => setPass(!Pass)}>
                 <Typography className={classes.typographybtn}>Cambiar Clave</Typography>
             </Button>
             
@@ -72,6 +74,7 @@ export default function Admin(){
                 onChange={(e) => { setNewPass(e.target.value) }}
                 name="newPass"
                 value={newPass}
+                disabled={Pass}
                 variant="outlined"
                 className={classes.textField}
                 validators={['required']}
@@ -79,16 +82,18 @@ export default function Admin(){
                 />
             </ValidatorForm> 
 
-            <div>
-                <Typography className={classes.typographyState}>Estado</Typography>
+            <div className={classes.bottom}>
+                <div>
+                    <Typography className={classes.typographyState}>Estado</Typography>
 
-                <Switch
-                className={classes.switch}
-                checked={isActive}
-                onChange={() => {setIsActive(!isActive)}}
-                name="isActive"
-                color="primary"
-                />
+                    <Switch
+                    className={classes.switch}
+                    checked={isActive}
+                    onChange={() => {setIsActive(!isActive)}}
+                    name="isActive"
+                    color="primary"
+                    />
+                </div>
                 <Button variant="contained" className={classes.btn_update}>
                     <Typography className={classes.typographybtn}>Actualizar</Typography>
                 </Button>

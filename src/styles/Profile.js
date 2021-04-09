@@ -5,6 +5,7 @@ let useStyles = "";
 
 export default useStyles = makeStyles((theme) => ({
     root: {
+      width: "100%",
       display: 'flex',
       flexDirection: 'column',
       '& > *': {
@@ -35,23 +36,21 @@ export default useStyles = makeStyles((theme) => ({
         boxShadow: "3px 3px 4px 1px #00000052"
     },
     GraphBox: {
-        width: "95vmax",
+        width: "82%",
         height: "60vh",
         alignSelf: "center",
-        [sizes.Wdown("sm")]:{
-            width: "90vmax",
-        },
     },
     container:{
         display: "flex",
-        position: "relative", 
+        position: "relative",
+        width: "100%", 
         height: "15vmin",
         top: "-2vh",
         justifyContent: "center",
         alignItems: "center",
         boxShadow: "none",
         textAlign: "-webkit-center",
-        margin: theme.spacing(3),
+        margin: "3vmin",
     },
     container_avatar:{
         width: "22vmin", 
@@ -62,14 +61,14 @@ export default useStyles = makeStyles((theme) => ({
     container_buttons:{
         margin: theme.spacing(2),
         position: "relative",
-        width: "60vmin",
+        width: "50%",
         top: "2.5vh",
         left: "5vmin",
         boxShadow: "none",
     },
     btn_info: {
         background: "white",
-        width: "52vmin",
+        width: "70%",
         height: "5vmin",
         position: "relative",
         top: "-3vmin",
@@ -78,7 +77,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     btn_edit: {
         background: "white",
-        width: "52vmin",
+        width: "70%",
         height: "5vmin",
         position: "relative",
         left: "vw",

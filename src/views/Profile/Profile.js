@@ -32,17 +32,17 @@ export default function Profile(props) {
 
                 <div className={classes.container_buttons}>
                     <Button variant="contained" className={classes.btn_info} onClick={ChangePage}>
-                        <Typography className={classes.typography}>Visualizar Datos</Typography>
+                        <Typography className={classes.typography}>Visualizar</Typography>
                     </Button>
 
                     <Button variant="contained" className={classes.btn_edit} onClick={ChangePage}>
-                        <Typography className={classes.typography}>Editar Perfil</Typography>
+                        <Typography className={classes.typography}>Editar</Typography>
                     </Button>
                 </div>
             </div>
 
             <Paper elevation={0} className={classes.GraphBox} >
-                {ChangeOption()}
+                {ChangeOption(Data)}
             </Paper>
 
 
