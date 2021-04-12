@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Accordion, AccordionSummary, AccordionDetails,
-    FormControlLabel, Typography, TextField, IconButton,
-    Paper, Divider, AccordionActions, Button
+    Accordion, AccordionSummary, AccordionDetails, FormHelperText,
+    FormControlLabel, Typography, TextField, MenuItem, FormControl,
+    Paper, Divider, AccordionActions, Button, InputLabel, Select
 } from "@material-ui/core";
-import { ExpandMore, Search } from "@material-ui/icons";
+import { ExpandMore, FilterList } from "@material-ui/icons";
 import useStyles from "../../styles/History";
-import { GetHistoryData } from "../../api/user"
+import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
 import Chart from "chart.js";
 import { Line } from "react-chartjs-2";
-
-
-
+import { useHistory } from 'react-router';
+import TitleContainer from '../../components/TitleContainer';
+const _ = require('lodash');
+const moment = require('moment');
+moment().format();
 
 export default function History() {
     const classes = useStyles();
+    const history = useHistory()
     const [isPromiseReady, setIsPromiseReady] = useState(false)
     const [isUserPromiseReady, setIsUserPromiseReady] = useState(false)
     const [SearchData, setSearchData] = useState("")
     const [UserData, setUserData] = useState("")
     const [Textfield, setTextfield] = useState("")
     const [Users, setUsers] = useState("")
+    const [TimeStamp, setTimeStamp] = useState('D');
+    const [Type, setType] = useState("U")
+    const [expanded, setExpanded] = useState(false);
+
+
 
     useEffect(() => {
         if (Users === "") GetHistory()
@@ -40,6 +48,27 @@ export default function History() {
         }
     }
 
+    const GetData = async (id) => {
+        const res = await GetHistoryUserData(id)
+        if (res) {
+            setUserData(res.data.data)
+            setIsUserPromiseReady(true)
+            FilterSearch()
+        } else {
+            history.push("/")
+        }
+    }
+
+    const handleChange = (event) => {
+        if (event.target.name === "timestamp") setTimeStamp(event.target.value);
+        else if (event.target.name === "mail") setType(event.target.value)
+    };
+
+    const handleAcordion = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+        setIsUserPromiseReady(false)
+    };
+
     function FuzzySearch() {
         Textfield.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&");
         let reg = new RegExp(`\\b${Textfield}`, 'i');
@@ -48,10 +77,8 @@ export default function History() {
             if (reg.test(e.FullName) && Textfield !== ""
                 || reg.test(e.Email) && Textfield !== ""
                 || reg.test(e.IDUser) && Textfield !== "") {
-                console.log("gola", Textfield);
                 newSearchArr.push(e)
             } else if (Textfield === "") {
-                console.log("hola", Textfield);
                 setSearchData(Users)
             } else {
                 setSearchData(newSearchArr)
@@ -59,9 +86,21 @@ export default function History() {
         });
     }
 
+    async function FilterSearch() {
+        if (SearchData) {
+            switch (TimeStamp) {
+                case "D":
+                    let groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('isoWeek'))
+                    let result = Object.entries(groupedResults)
+                    console.log(groupedResults);
+                    break;
+            }
+        }
+    }
+
     return (
         <div >
-            <Accordion className={classes.Acordion}>
+            <Accordion className={classes.Acordion}  >
                 <AccordionSummary className={classes.margins}
                     expandIcon={<ExpandMore />}
                     aria-label="Expand"
@@ -72,7 +111,7 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<TextField id="adminSearch" label="Busca un usuario"
+                        control={<TextField id="adminSearch" label="Busca un usuario" autoComplete="false"
                             variant="outlined" className={classes.TextInput}
                             onChange={(e) => { setTextfield(e.target.value) }} value={Textfield} />}
 
@@ -81,28 +120,70 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<IconButton><Search /></IconButton>}
+                        control={<FilterList />}
 
                     />
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography color="textSecondary">
-                        The click event of the nested action will propagate up and expand the accordion unless
-                        you explicitly stop it.
-          </Typography>
+                    <Paper elevation={0} className={classes.FilterContainer}>
+                        <Typography>Filtros</Typography>
+                        <Divider />
+                        <div className={classes.OuterContainer}>
+                            <div className={classes.innerContainer}>
+                                <TitleContainer title={"Mostrar accesos en:"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-outlined"
+                                            value={TimeStamp}
+                                            displayEmpty
+                                            onChange={handleChange}
+                                            name="timestamp"
+                                        >
+                                            <MenuItem value="D" >
+                                                <em>Diario</em>
+                                            </MenuItem>
+                                            <MenuItem value="S">Semanal</MenuItem>
+                                            <MenuItem value="M">Mensual</MenuItem>
+                                            <MenuItem value="A">Anual</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TitleContainer>
+                            </div>
+                            <div className={classes.innerContainer}>
+                                <TitleContainer title={"Tipo de usuario"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-outlined"
+                                            value={Type}
+                                            displayEmpty
+                                            onChange={handleChange}
+                                            name="mail"
+                                        >
+                                            <MenuItem value="U" >
+                                                <em>Usuario</em>
+                                            </MenuItem>
+                                            <MenuItem value="A">Administrador</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TitleContainer>
+                            </div>
+                        </div>
+                    </Paper>
                 </AccordionDetails>
             </Accordion>
 
             <Paper elevation={0} className={classes.resultBox}>
                 {
                     isPromiseReady ?
-                        SearchData.map(el => {
+                        SearchData.map((el, index) => {
                             return (
-                                <Accordion >
+                                <Accordion onClick={() => GetData(el.IDUser)} key={index}
+                                    expanded={expanded === `panel${index}`} onChange={handleAcordion(`panel${index}`)}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
                                         aria-controls="panel1c-content"
-                                        id="panel1c-header"
                                     >
                                         <div className={classes.column}>
                                             <Typography className={classes.heading}>{el.FullName}</Typography>

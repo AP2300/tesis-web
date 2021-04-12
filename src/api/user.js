@@ -24,23 +24,49 @@ export async function GetGraphData() {
       },
       withCredentials: true
     })
-    return (await res).data.data
+    if ((await res).status === 200) {
+      return (await res).data.data
+    } else {
+      return false
+    }
   } catch (e) {
     console.error(e)
   }
 }
 
-export async function GetHistoryData(){
-  try{
-    const res = axios.get(Cons.Search,{
-      headers:{
+export async function GetHistoryData() {
+  try {
+    const res = axios.get(Cons.Search, {
+      headers: {
         'Content-Type': 'application/json',
       },
       withCredentials: true
     })
-    return res
-  }catch(e){
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
     console.error(e)
   }
 }
 
+export async function GetHistoryUserData(id) {
+    try {
+    const res = axios.get(Cons.SearchData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      params: { id: id }
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}

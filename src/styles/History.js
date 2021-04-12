@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { MaximizeTwoTone } from '@material-ui/icons';
 
 let useStyles = "";
 export default useStyles = makeStyles((theme) => ({
@@ -6,7 +7,7 @@ export default useStyles = makeStyles((theme) => ({
         " 0%": { backgroundPosition: "0% 50%" },
         "50%": { backgroundPosition: "100% 50%" },
         "100%": { backgroundPosition: "0% 50%" }
-      },
+    },
     FormSize: {
         width: '100%',
     },
@@ -71,7 +72,7 @@ export default useStyles = makeStyles((theme) => ({
     column1: {
         width: "63vw",
         height: "100%",
-        
+
     },
     column: {
         width: '27vw',
@@ -95,5 +96,30 @@ export default useStyles = makeStyles((theme) => ({
         animationDuration: '1s',
         animationIterationCount: 'infinite',
         color: "transparent",
-      },
+    },
+    FilterContainer: {
+        width: "100vw",
+        height: "30vh",
+        display: "flex",
+        flexDirection: "column",
+        textAlign: "center",
+        padding: "2%"
+    },
+    innerContainer: {
+        margin: theme.spacing(1),
+        display: "flex",
+        flexDirection: "row",
+        width: "50%",
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
+    OuterContainer: {
+        display: "flex",
+        flexDirection: "row",
+        height: "100%"
+    },
+    formControl: {
+        width: "100%",
+    }
 }));
