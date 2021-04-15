@@ -58,8 +58,8 @@ export async function GetHistoryUserData(id) {
       headers: {
         'Content-Type': 'application/json',
       },
+      params: { id: id },
       withCredentials: true,
-      params: { id: id }
     })
     if ((await res).status === 200) {
       return res
