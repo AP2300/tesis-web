@@ -46,7 +46,7 @@ export default function DashBoard() {
 
   function generateGraphData() {
     let graph = [];
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     let j = 0;
     if (graphData) {
       for (let i = 0; i < days.length; i++) {

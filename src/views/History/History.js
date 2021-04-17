@@ -18,18 +18,17 @@ moment().format();
 
 export default function History() {
     const classes = useStyles();
-    const history = useHistory()
-    const [isPromiseReady, setIsPromiseReady] = useState(false)
-    const [isUserPromiseReady, setIsUserPromiseReady] = useState(false)
-    const [SearchData, setSearchData] = useState("")
-    const [UserData, setUserData] = useState("")
-    const [Textfield, setTextfield] = useState("")
-    const [Users, setUsers] = useState("")
-    const [TimeStamp, setTimeStamp] = useState('D');
-    const [Type, setType] = useState("U")
+    const history = useHistory();
+    const [isPromiseReady, setIsPromiseReady] = useState(false);
+    const [isUserPromiseReady, setIsUserPromiseReady] = useState(false);
+    const [SearchData, setSearchData] = useState("");
+    const [UserData, setUserData] = useState("");
+    const [Textfield, setTextfield] = useState("");
+    const [Users, setUsers] = useState("");
+    const [TimeStamp, setTimeStamp] = useState('S');
+    const [Type, setType] = useState("U");
     const [expanded, setExpanded] = useState(false);
-
-
+    const [graph, setgraph] = useState("")
 
     useEffect(() => {
         if (Users === "") GetHistory()
@@ -39,34 +38,39 @@ export default function History() {
         if (Users != "") FuzzySearch()
     }, [Textfield])
 
+    useEffect(() => {
+        if (UserData != "") FilterSearch()
+    }, [UserData])
+
+
     const GetHistory = async () => {
-        const res = await GetHistoryData()
+        const res = await GetHistoryData();
         if (res) {
-            setSearchData(res.data.data)
-            setUsers(res.data.data)
-            setIsPromiseReady(true)
+            setSearchData(res.data.data);
+            setUsers(res.data.data);
+            setIsPromiseReady(true);
         }
     }
 
     const GetData = async (id) => {
-        const res = await GetHistoryUserData(id)
+        const res = await GetHistoryUserData(id);
         if (res) {
-            setUserData(res.data.data)
-            setIsUserPromiseReady(true)
-            FilterSearch()
+            setUserData(res.data.data);
+            setIsUserPromiseReady(true);
+            // FilterSearch();
         } else {
-            history.push("/")
+            history.push("/");
         }
     }
 
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setTimeStamp(event.target.value);
-        else if (event.target.name === "mail") setType(event.target.value)
+        else if (event.target.name === "mail") setType(event.target.value);
     };
 
     const handleAcordion = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
-        setIsUserPromiseReady(false)
+        setIsUserPromiseReady(false);
     };
 
     function FuzzySearch() {
@@ -79,24 +83,72 @@ export default function History() {
                 || reg.test(e.IDUser) && Textfield !== "") {
                 newSearchArr.push(e)
             } else if (Textfield === "") {
-                setSearchData(Users)
+                setSearchData(Users);
             } else {
-                setSearchData(newSearchArr)
+                setSearchData(newSearchArr);
             }
         });
     }
 
     async function FilterSearch() {
-        if (SearchData) {
+            let graphData = "";
+            let groupedResults = "";
+            let result = "";
             switch (TimeStamp) {
-                case "D":
-                    let groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('isoWeek'))
-                    let result = Object.entries(groupedResults)
+                case "S":
+                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('isoWeek'));
+                    result = Object.entries(groupedResults);
+                    result.forEach((e) => {
+                        if(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]){
+                            graphData = e;
+                        }
+                    });
+                    ChangeGraph(graphData);
+                break;
+                case "M":
+                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
+                    result = Object.entries(groupedResults);
                     console.log(groupedResults);
-                    break;
+                break;
+                case "A":
+                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
+                    result = Object.entries(groupedResults);
+                    console.log(groupedResults);
+                break;
             }
-        }
     }
+
+    async function ChangeGraph(graphData){
+        let groupedResults = "";
+        let result = "";
+        let grap = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
+        switch (TimeStamp) {
+            case "S":
+                const days = [1, 2, 3, 4, 5, 6, 0];
+                if (graphData) {
+                    graphData[1].forEach(date => {
+                        days.forEach((day,d) => {
+                            if(day === moment(date.RegDate).day()){
+                                grap[d] += 1;                                 
+                            }
+                        });
+                    });
+                }
+                setgraph(grap)
+            break;
+            case "M":
+                groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
+                result = Object.entries(groupedResults);
+                console.log(result);
+                    const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
+            break;
+            case "A":
+                groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
+                result = Object.entries(groupedResults);
+                console.log(result);
+            break;
+        }
+    } 
 
     return (
         <div >
@@ -140,9 +192,6 @@ export default function History() {
                                             onChange={handleChange}
                                             name="timestamp"
                                         >
-                                            <MenuItem value="D" >
-                                                <em>Diario</em>
-                                            </MenuItem>
                                             <MenuItem value="S">Semanal</MenuItem>
                                             <MenuItem value="M">Mensual</MenuItem>
                                             <MenuItem value="A">Anual</MenuItem>
@@ -204,7 +253,7 @@ export default function History() {
                                                             labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
                                                             datasets: [{
                                                                 label: "accesos",
-                                                                data: [3, 2, 6, 8, 0, 5, 2],
+                                                                data: graph,
                                                                 backgroundColor: "#f5deb382",
                                                                 borderColor: "wheat"
                                                             },]
@@ -242,8 +291,6 @@ export default function History() {
 
                             )
                         }) : ""
-
-
                 }
             </Paper>
 
