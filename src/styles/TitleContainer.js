@@ -7,21 +7,21 @@ export default useStyles = makeStyles((theme) => ({
         borderRadius: "0.5em",
         height: "100%",
         width: "100%",
-        padding: "3% 3% 3% 3%"
     },
     TitleContainer:{
         backgroundColor: "#F3F3F3",
         borderRadius: "0.5em",
-        height: "40%",
+        color: "#000000a6",
+        height: "60px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "calc(15px + (50 - 15) * ((55vw - 303px) / (1600 - 300)))",
-        padding: "4.5%",
-        marginBottom: "3%",
-        marginLeft: "-3%",
-        marginRight: "-3%",
-        marginTop: "-3%"
-
+        fontSize: "calc(13px + (40 - 13) * ((45vw - 303px) / (1600 - 300)))",
+        fontWeight: "600",
+    },
+    content: {
+        padding: "3%",
+        display: "flex",
+        justifyContent: "space-evenly"
     }
 }))

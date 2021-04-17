@@ -14,7 +14,9 @@ export default function TitleContainer(props) {
             <Paper className={classes.TitleContainer} elevation={0}>
                 {props.title}
             </Paper>
-            {props.loading ? "" : props.children}
+            <div className={classes.content}>
+                {props.loading ? "" : props.children}
+            </div>
         </Paper>
     );
 
