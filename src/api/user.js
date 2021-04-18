@@ -53,7 +53,7 @@ export async function GetHistoryData() {
 }
 
 export async function GetHistoryUserData(id) {
-    try {
+  try {
     const res = axios.get(Cons.SearchData, {
       headers: {
         'Content-Type': 'application/json',
@@ -66,7 +66,44 @@ export async function GetHistoryUserData(id) {
     } else {
       return false
     }
-  } catch (error) {
-    console.error(error)
+  } catch (e) {
+    console.error(e)
   }
+}
+
+export async function GetFullUserData() {
+  try {
+    const res = axios.get(Cons.profile, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function UpdateBasicData(params) {
+  try {
+    const res = axios.post(Cons.changeData, params, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+
 }

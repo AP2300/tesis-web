@@ -1,101 +1,22 @@
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import sizes from "./sizes";
 
 let useStyles = "";
 
-// export default useStyles = makeStyles((theme) => ({
-//     root: {
-//       width: "100%",
-//       display: 'flex',
-//       flexDirection: 'column',
-//       '& > *': {
-//         boxShadow: "3px 3px 4px 1px #00000052"
-//       },
-//           "& GraphBox" :{
-//           },
-//       justifyContent: "center",
-//     },
-//     avatar: {
-//         height: "100%",
-//         minWidth: "5vmax",
-//         minHeight: "5vmax",
-//         width: "100%",
-//         overflow: "visible",
-//         boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
-//     },
-//     username: {
-//         display: 'flex',
-//         position: "relative",
-//         top: "-1vmax",
-//         left:"-40%",
-//         width: "180%",
-//         height: "4vmin",
-//         borderRadius: "40px",
-//         alignItems: "center",
-//         justifyContent: "center",
-//         boxShadow: "3px 3px 4px 1px #00000052"
-//     },
-//     GraphBox: {
-//         width: "82%",
-//         height: "60vh",
-//         alignSelf: "center",
-//     },
-//     container:{
-//         display: "flex",
-//         position: "relative",
-//         width: "100%", 
-//         height: "15vmin",
-//         top: "-2vh",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         boxShadow: "none",
-//         textAlign: "-webkit-center",
-//         margin: "3vmin",
-//     },
-//     container_avatar:{
-//         width: "22vmin", 
-//         position: "relative",
-//         margin: "0",
-//         boxShadow: "none",
-//     },
-//     container_buttons:{
-//         margin: theme.spacing(2),
-//         position: "relative",
-//         width: "50%",
-//         top: "2.5vh",
-//         left: "5vmin",
-//         boxShadow: "none",
-//     },
-//     btn_info: {
-//         background: "white",
-//         width: "70%",
-//         height: "5vmin",
-//         position: "relative",
-//         top: "-3vmin",
-//         borderRadius: "40px",
-//         boxShadow: "3px 3px 4px 1px #00000052"
-//     },
-//     btn_edit: {
-//         background: "white",
-//         width: "70%",
-//         height: "5vmin",
-//         position: "relative",
-//         left: "vw",
-//         borderRadius: "40px",
-//         boxShadow: "3px 3px 4px 1px #00000052"
-//     },
-//     typography: {
-//         fontWeight: 600,
-//         fontSize: "calc(15px + (24 - 15) * ((20vw - 303px) / (1600 - 300)))",
-//     },
-//   }));
-
 export default useStyles = makeStyles((theme) => ({
+    "@keyframes loading ": {
+        " 0%": { backgroundPosition: "0% 50%" },
+        "50%": { backgroundPosition: "100% 50%" },
+        "100%": { backgroundPosition: "0% 50%" }
+      },
     root: {
         display: 'flex',
         flexWrap: 'wrap',
         marginLeft: "5%",
         marginRight: "5%",
+        "& > *":{
+            color: "#5f5f5f"
+        }
     },
     mainContainer: {
         width: "100vw",
@@ -131,7 +52,7 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-         flexGrow: "1"
+        flexGrow: "1"
     },
     space: {
         marginTop: "5%"
@@ -151,7 +72,7 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         "& .name": {
             textAlign: "center",
-            fontSize: "calc(25px + (100 - 25) * ((60vw - 303px) / (1600 - 300)))"
+            fontSize: "calc(25px + (100 - 25) * ((50vw - 303px) / (1600 - 300)))"
         },
         "& .secondary": {
             textAlign: "center",
@@ -178,7 +99,7 @@ export default useStyles = makeStyles((theme) => ({
         padding: "1%",
         display: "flex",
         height: "56%",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
     },
     LeftBox: {
         minWidth: "280px",
@@ -201,7 +122,8 @@ export default useStyles = makeStyles((theme) => ({
             height: ".3em",
         },
         "& .MuiFormLabel-root": {
-            marginTop: "-5px"
+            marginTop: "-5px",
+            overflowWrap: "break-word"
         },
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent"
@@ -219,7 +141,8 @@ export default useStyles = makeStyles((theme) => ({
         width: "20%",
         "& > *": {
             fontSize: "calc(12px + (24 - 12) * ((70vw - 303px) / (1600 - 300)))",
-            fontWeight: "600"
+            fontWeight: "600",
+            color: "#5f5f5f"
         }
     },
     textFieldContainer2: {
@@ -235,6 +158,7 @@ export default useStyles = makeStyles((theme) => ({
         minWidth: "40px",
         backgroundColor: "#e0e0e0",
         marginTop: "-14px",
+        color: "#5f5f5f",
         "&:hover": {
             backgroundColor: "#0c0c0cde",
             color: "whitesmoke",
@@ -248,16 +172,54 @@ export default useStyles = makeStyles((theme) => ({
         width: "80%"
     },
     AuthItem: {
-        // #f44336 rojo
-        // #4caf50 verde
+        margin: "1%",
+        display: "flex",
+        alignItems: "center",
         width: "70%",
         height: "6.7vh",
-        "& .AuthName": {
+        "& > .AuthName": {
             width: "45%",
             height: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "space-evenly",
+            "& > * ": {
+                fontWeight: 600,
+                color: "#5f5f5f"
+            }
+        },
+        "& > .IsActive": {
+            width: "55%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "whitesmoke"
+        },
+        "& > * ": {
+            fontWeight: 600,
+            color: "#5f5f5f"
         }
-    }
+    },
+    red: {
+        backgroundColor: "#f44336"
+    },
+    green: {
+        backgroundColor: "#4caf50"
+    },
+    AuthContent: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        height: "100%"
+    },
+    loading: {
+        animationName: '$loading',
+        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
+        backgroundSize: "400% 400%",
+        animationDuration: '1s',
+        animationIterationCount: 'infinite',
+        color: "transparent",
+      },
 }));

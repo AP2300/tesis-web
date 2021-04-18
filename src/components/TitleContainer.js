@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Accordion, AccordionSummary, AccordionDetails, FormHelperText,
-    FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Button, InputLabel, Select
-} from "@material-ui/core";
+import {Paper} from "@material-ui/core";
 import useStyles from '../styles/TitleContainer';
 import clsx from 'clsx';
 
@@ -15,7 +11,7 @@ export default function TitleContainer(props) {
                 {props.title}
             </Paper>
             <div className={classes.content}>
-                {props.loading ? "" : props.children}
+                {props.children}
             </div>
         </Paper>
     );
