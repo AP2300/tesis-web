@@ -208,7 +208,7 @@ export default function History() {
                         <Divider />
                         <div className={classes.OuterContainer}>
                             <div className={classes.innerContainer}>
-                                <TitleContainer title={"Mostrar accesos en:"} loading={false} className={classes.box}>
+                                <TitleContainer title={"Mostrar accesos en:"} loading={false} >
                                     <FormControl variant="filled" className={classes.formControl}>
                                         <Select
                                             labelId="demo-simple-select-filled-label"

@@ -7,5 +7,7 @@ export const Home = `${url}/Home`;
 export const Graph = `${url}/access_data`;
 export const Search = `${url}/Search`
 export const SearchData = `${url}/UserHistory`
+export const profile = `${url}/profile`
+export const changeData = `${url}/editProfile`
 
 

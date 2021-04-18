@@ -99,7 +99,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     FilterContainer: {
         width: "100vw",
-        height: "30vh",
+        height: "35vh",
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
