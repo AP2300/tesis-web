@@ -41,7 +41,10 @@ export default useStyles = makeStyles((theme) => ({
         flexGrow: "1",
         "& .activeSince": {
             display: "flex",
-            alignSelf: "baseline"
+            alignSelf: "baseline",
+            "& > *":{
+                fontWeight: "600",
+            }
         }
     },
     rightUpperContainer: {
