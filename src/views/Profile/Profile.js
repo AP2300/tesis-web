@@ -41,8 +41,8 @@ export default function Profile(props) {
             email: EmailControl === "" ? Email : EmailControl
         }
         if (arg === "name" || arg === "email") {
-            UpdateBasicData(params)
-            location.reload()
+            UpdateBasicData(params);
+            window.location.reload();
         } else {
 
         }
@@ -67,7 +67,7 @@ export default function Profile(props) {
                             <Typography variant="h3" className={clsx("name", !IsPromiseReady && classes.loading)}>
                                 {IsPromiseReady ? FullName : "||||||||||||||||||||||"}</Typography>
                             <Typography variant="subtitle1" className={clsx("secondary", !IsPromiseReady && classes.loading)}>
-                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - tipo Usuario</Typography>
+                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - Tipo Usuario</Typography>
                         </div>
                         <div className={classes.modifyImg}>
                             <Typography variant="h5">Modificar foto de perfil</Typography>
