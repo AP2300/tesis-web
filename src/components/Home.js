@@ -20,11 +20,13 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import HistoryIcon from '@material-ui/icons/History';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import useStyles from "../styles/Home";
 import { GetUserData, GetHistoryData } from "../api/user";
 import { EndSession } from "../api/session";
 import { PageSelector, otherPage } from "../helpers/Home";
 import { useHistory } from 'react-router';
+import AdminDial from './AdminDial';
 
 export default function Home() {
   const history = useHistory();
@@ -52,7 +54,7 @@ export default function Home() {
 
 
   const items = [
-    { text: 'Panel Principal', icon: <InboxIcon className={classes.ListIcons} /> },
+    { text: 'Panel Principal', icon: <DashboardIcon className={classes.ListIcons} /> },
     { text: 'Panel Personal', icon: <AccountBoxTwoToneIcon className={classes.ListIcons} /> },
     { text: 'Historial', icon: <HistoryIcon className={classes.ListIcons} /> },
     { text: 'Seguridad', icon: <LockTwoToneIcon className={classes.ListIcons} /> },
@@ -90,7 +92,7 @@ export default function Home() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar >
+        <Toolbar>
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -99,11 +101,12 @@ export default function Home() {
           >
             <MenuIcon className={classes.userWelcome} />
           </IconButton >
-          <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
-            {activeWindow !== "Panel Personal" ?
-              (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
-            }
-          </Typography>
+            <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
+              {activeWindow !== "Panel Personal" ?
+                (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
+              }
+            </Typography>
+            <AdminDial  />
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}
