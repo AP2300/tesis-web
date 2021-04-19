@@ -13,6 +13,11 @@ export default useStyles = makeStyles((theme) => ({
     width: "100vw",
     height: "100vh",
   },
+  toolbar:{
+    width:"100%",
+    display: "flex",
+    alignItems: "center"
+  },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
@@ -94,7 +99,7 @@ export default useStyles = makeStyles((theme) => ({
   typography: {
     fontWeight: 600,
     marginLeft: "1rem",
-    fontSize: "calc(18px + (24 - 18) * ((20vw - 303px) / (1600 - 300)))",
+    fontSize: "calc(18px + (24 - 18) * ((40vw - 303px) / (1600 - 300)))",
 
   },
   List: {
@@ -160,5 +165,5 @@ export default useStyles = makeStyles((theme) => ({
   },
   active: {
     backgroundColor: "#0000001a"
-  }
+  },
 }));
