@@ -25,7 +25,6 @@ export default function DashBoard() {
     const data = await GetGraphData();
     let dates = "";
     if (data) {
-      console.log(data)
       data.forEach((e) => {
         if(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]){
           dates = e;

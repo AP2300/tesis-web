@@ -27,15 +27,19 @@ export default function History() {
     const [TimeStamp, setTimeStamp] = useState('S');
     const [Type, setType] = useState("U");
     const [expanded, setExpanded] = useState(false);
-    const [graph, setgraph] = useState("");
-    const [week, setweek] = useState(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')));
-    const [month, setmonth] = useState(moment().month());
-    const [year, setyear] = useState(moment().year());
+    const [graph, setGraph] = useState("");
+    const [week, setWeek] = useState("");
+    const [month, setMonth] = useState(moment().month());
+    const [year, setYear] = useState(moment().year());
 
 
     useEffect(() => {
         if (Users === "") GetHistory()
     }, [Users])
+
+    useEffect(() => {
+        if (week === "") setNumWeek();
+    }, [week])
 
     useEffect(() => {
         if (Users != "") FuzzySearch()
@@ -60,7 +64,7 @@ export default function History() {
         if (res) {
             setUserData(res.data.data);
             setIsUserPromiseReady(true);
-            // FilterSearch();
+            
         } else {
             history.push("/");
         }
@@ -75,6 +79,31 @@ export default function History() {
         setExpanded(isExpanded ? panel : false);
         setIsUserPromiseReady(false);
     };
+
+    function calcNumWeek(){
+        let indexWeek = [];
+        let j = 0;
+        for (let i = 0; i < 5; i++) {
+            let date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY-MM-DD").startOf('isoWeek'));
+            if(i !== 0){
+                if(date === indexWeek[i-1]){
+                    j++;
+                    date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY-MM-DD").startOf('isoWeek'))
+                }
+            }
+            indexWeek.push(date);
+        }
+        return indexWeek;
+    }
+
+    function setNumWeek(){
+        let indexWeek = calcNumWeek();
+        indexWeek.forEach((e,i) => {
+            if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
+                setWeek(i);
+            }
+        });
+    }
 
     function FuzzySearch() {
         Textfield.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&");
@@ -99,21 +128,22 @@ export default function History() {
             let result = "";
             switch (TimeStamp) {
                 case "S":
-                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('isoWeek'));
+                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
                     result = Object.entries(groupedResults);
                     result.forEach((e) => {
-                        if(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]){
-                            console.log(e);
-                            graphData = e;
+                        if(month === moment(e[0]).month() && year === moment(e[0]).year()){
+                            let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
+                            let order = Object.entries(dates);
+                            graphData = _.orderBy(order, (DateData) => moment(DateData[0]).startOf('isoWeek'));
                         }
-                    });
+                    })
                     ChangeGraph(graphData);
                 break;
                 case "M":
                     groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
                     result = Object.entries(groupedResults);
                     result.forEach((e) => {
-                        if(moment().month() === moment(e[0]).month() && moment().year() === moment(e[0]).year()){
+                        if(month === moment(e[0]).month() && year === moment(e[0]).year()){
                             let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
                             let order = Object.entries(dates);
                             graphData = _.orderBy(order, (DateData) => moment(DateData[0]).startOf('isoWeek'));
@@ -125,7 +155,7 @@ export default function History() {
                     groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
                     result = Object.entries(groupedResults);
                     result.forEach((e) => {
-                        if(moment().year() === moment(e[0]).year()){
+                        if(year === moment(e[0]).year()){
                             // ordenar por Mes 
                             let monthsData = _.groupBy(e[1], (Data) => moment(Data.RegDate).startOf('month'));
                             let res = Object.entries(monthsData);
@@ -141,27 +171,32 @@ export default function History() {
         let graphW = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
         let graphM = [ 0 , 0 , 0 , 0 , 0 ];
         let graphY = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
+        let indexWeek = calcNumWeek();
         switch (TimeStamp) {
             case "S":
                 const days = [1, 2, 3, 4, 5, 6, 0];
                 if (graphData) {
-                    graphData[1].forEach(date => {
+                    graphData[week][1].forEach(date => {
                         days.forEach((day,d) => {
                             if(day === moment(date.RegDate).day()){
                                 graphW[d] += 1;                                 
                             }
                         });
                     });
-                    setgraph([["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW])
+                    setGraph([["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW])
                 }
             break;
             case "M":
                 const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
                 if(graphData){
                     graphData.forEach((d,i) => {
-                        graphM[i] = d[1].length;
+                        indexWeek.forEach((w) =>{
+                            if(d[0] === w){
+                                graphM[i] = d[1].length;
+                            }
+                        })
                     })
-                    setgraph([weeks,graphM])
+                    setGraph([weeks,graphM])
                 }
             break;
             case "A":
@@ -173,7 +208,7 @@ export default function History() {
                             if(monthsShort[i] === y[0].split(" ")[1]) graphY[i] = y[1].length; 
                         })
                     }
-                    setgraph([months,graphY])
+                    setGraph([months,graphY])
                 }
             break;
         }
