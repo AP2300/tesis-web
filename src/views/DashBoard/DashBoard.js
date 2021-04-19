@@ -23,11 +23,16 @@ export default function DashBoard() {
 
   const getData = async () => {
     const data = await GetGraphData();
+    let dates = "";
     if (data) {
-      let accessData = _.groupBy(data[1], (data) => moment(data.RegDate).startOf('day'))
-      let access = Object.entries(accessData)
-      setIsPromiseReady(true)
-      setgraphData(access)
+      console.log(data)
+      data.forEach((e) => {
+        if(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]){
+          dates = e;
+        }
+        setIsPromiseReady(true)
+        setgraphData(dates);
+      });
     } else {
       setgraphData([])
       setIsPromiseReady(true)
@@ -45,26 +50,16 @@ export default function DashBoard() {
   }
 
   function generateGraphData() {
-    let graph = [];
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    let j = 0;
-    if (graphData) {
-      for (let i = 0; i < days.length; i++) {
-        if (graphData[i]) {
-          if (days[i] === graphData[i - j][0].split(" ")[0]) {
-            graph.push(graphData[i - j][1].length)
-          } else {
-            graph.push(0)
-            j++
-          }
-        } else {
-          if (graphData[i - j]) {
-            graph.push(graphData[i - j][1].length)
-          } else {
-            graph.push(0)
-          }
-        }
-      }
+    let graph = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
+    const days = [1, 2, 3, 4, 5, 6, 0];
+    if(graphData) {
+      graphData[1].forEach(date => {
+          days.forEach((day,d) => {
+              if(day === moment(date.RegDate).day()){
+                  graph[d] += 1;                                 
+              }
+          });
+      });
     }
     return graph
   }

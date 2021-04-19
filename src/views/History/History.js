@@ -8,7 +8,6 @@ import { ExpandMore, FilterList } from "@material-ui/icons";
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
-import Chart from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
@@ -25,10 +24,14 @@ export default function History() {
     const [UserData, setUserData] = useState("");
     const [Textfield, setTextfield] = useState("");
     const [Users, setUsers] = useState("");
-    const [TimeStamp, setTimeStamp] = useState('A');
+    const [TimeStamp, setTimeStamp] = useState('S');
     const [Type, setType] = useState("U");
     const [expanded, setExpanded] = useState(false);
-    const [graph, setgraph] = useState("")
+    const [graph, setgraph] = useState("");
+    const [week, setweek] = useState(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')));
+    const [month, setmonth] = useState(moment().month());
+    const [year, setyear] = useState(moment().year());
+
 
     useEffect(() => {
         if (Users === "") GetHistory()
