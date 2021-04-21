@@ -6,7 +6,7 @@ import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
-import { generateGraphData } from '../../helpers/Graph'
+import { generateGraphData, getDateAccess } from '../../helpers/Graph'
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
@@ -16,11 +16,9 @@ export default function DashBoard() {
   const [graphData, setgraphData] = useState("")
   const [isPromiseReady, setIsPromiseReady] = useState(false)
 
-
   useEffect(() => {
     getData()
   }, [])
-
 
   const getData = async () => {
     const data = await GetGraphData();
@@ -34,7 +32,7 @@ export default function DashBoard() {
         setgraphData(dates);
       });
     } else {
-      setgraphData([])
+      setgraphData("")
       setIsPromiseReady(true)
     }
   }
@@ -49,26 +47,18 @@ export default function DashBoard() {
     }, 200)
   }
 
-  function getWeekAccess() {
-    let calc = 0;
-    generateGraphData(graphData).forEach(e => {
-      calc += e;
-    })
-    return calc
-  }
-
   return (
     <div className={classes.root}>
       <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
         <Typography > Esta semana</Typography>
-        <Typography className={classes.number}>{getWeekAccess()}</Typography>
+        <Typography className={classes.number}>{getDateAccess(generateGraphData(graphData))}</Typography>
         <Typography >Accesos</Typography>
       </Paper>
       <Paper elevation={0} className={clsx(!isPromiseReady && classes.loading)} />
       <Paper elevation={0} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading)} />
 
       <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
-        {graphData !== [] ? isPromiseReady ? <Line
+        {graphData !== "" ? isPromiseReady ? <Line
           data={
             {
               labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],

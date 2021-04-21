@@ -82,6 +82,15 @@ export default useStyles = makeStyles((theme) => ({
         borderLeft: `2px solid ${theme.palette.divider}`,
         padding: theme.spacing(1, 2),
     },
+    message: {
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        "&& > *": {
+          fontSize: "3em"
+        }
+    },
     link: {
         color: theme.palette.primary.main,
         textDecoration: 'none',

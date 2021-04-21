@@ -59,7 +59,6 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             result = Object.entries(groupedResults);
             result.forEach((e) => {
                 if(year === moment(e[0]).year()){
-                    // ordenar por Mes 
                     let monthsData = _.groupBy(e[1], (Data) => moment(Data.RegDate).startOf('month'));
                     let res = Object.entries(monthsData);
                     graphData = _.orderBy(res, (Data) => moment(Data[0]).startOf('month'));
@@ -79,8 +78,8 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
     switch (TimeStamp) {
         case "S":
             const days = [1, 2, 3, 4, 5, 6, 0];
-            graphData.forEach((d,i) => {
-                if(d[0] === week){
+            graphData.forEach((d) => {
+                if(d[0] === indexWeek[week]){
                     d[1].forEach(date => {
                         days.forEach((day,d) => {
                             if(day === moment(date.RegDate).day()){
@@ -90,8 +89,10 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
                     })
                 }
             })
-            return [["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW];
-        break;
+            if(getDateAccess(graphW) === 0){
+                return false;
+            } else return [["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW];
+
         case "M":
             const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
             if(graphData){
@@ -102,9 +103,11 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
                         }
                     })
                 })
-                return [weeks,graphM];
             }
-        break;
+            if(getDateAccess(graphM) === 0){
+                return false;
+            }
+            return [weeks,graphM];
         case "A":
             const monthsShort = moment()._locale._monthsShort;
             const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -114,13 +117,26 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
                         if(monthsShort[i] === y[0].split(" ")[1]) graphY[i] = y[1].length; 
                     })
                 }
+            }
+            if(getDateAccess(graphY) === 0){
+                return false;
+            } else {
                 return [months,graphY];
             }
-        break;
         default:
-            return [["No Data"],[0]];
+            return false;
     }
 } 
+
+export function getDateAccess(graphData) {
+    let calc = 0;
+    if(graphData){
+        graphData.forEach(e => {
+            calc += e;
+        })
+    }
+    return calc
+  }
 
 export function generateGraphData(graphData) {
     let graph = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
@@ -134,5 +150,9 @@ export function generateGraphData(graphData) {
           });
       });
     }
-    return graph
+    if(getDateAccess(graph) === 0){
+        return false;
+    } else {
+        return graph
+    }
   }
