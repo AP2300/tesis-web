@@ -9,5 +9,7 @@ export const Search = `${url}/Search`
 export const SearchData = `${url}/UserHistory`
 export const profile = `${url}/profile`
 export const changeData = `${url}/editProfile`
+export const updateBio = `${url}/bioUpdate`
+export const updatePass = `${url}/updateUserPass`
 
 
