@@ -6,6 +6,7 @@ import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
+import { generateGraphData } from '../../helpers/Graph'
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
@@ -48,29 +49,13 @@ export default function DashBoard() {
     }, 200)
   }
 
-  function generateGraphData() {
-    let graph = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-    const days = [1, 2, 3, 4, 5, 6, 0];
-    if(graphData) {
-      graphData[1].forEach(date => {
-          days.forEach((day,d) => {
-              if(day === moment(date.RegDate).day()){
-                  graph[d] += 1;                                 
-              }
-          });
-      });
-    }
-    return graph
-  }
-
   function getWeekAccess() {
     let calc = 0;
-    generateGraphData().forEach(e => {
+    generateGraphData(graphData).forEach(e => {
       calc += e;
     })
     return calc
   }
-
 
   return (
     <div className={classes.root}>
@@ -89,7 +74,7 @@ export default function DashBoard() {
               labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
               datasets: [{
                 label: "accesos",
-                data: generateGraphData(),
+                data: generateGraphData(graphData),
                 backgroundColor: "#f5deb382",
                 borderColor: "wheat"
               },]
