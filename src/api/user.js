@@ -86,6 +86,7 @@ export async function GetFullUserData() {
     }
   } catch (e) {
     console.error(e)
+    return false
   }
 }
 
