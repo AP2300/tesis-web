@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import useStyles from "../../styles/Login";
 import { LogIn } from '../../api/session';
 import LoginLoading from './LoginLoading';
+import { GetFullUserData } from '../../api/user';
 
 function Login() {
     const classes = useStyles();
@@ -33,6 +34,18 @@ function Login() {
             setTimeout(() => { setOpen(false) }, 5000);
         }
     }, [open])
+
+    useEffect(() => {
+        async function getData() {
+            let bool = await GetFullUserData();
+            console.log(bool);
+            if(bool) {
+                setisLoading(true);
+                setTimeout(() => { history.push('/home'); }, 3000);
+            }
+        }
+        getData()
+    }, [])
 
     async function handleLogin(e) {
         if (!email) {
@@ -75,7 +88,7 @@ function Login() {
                         <Avatar className={classes.avatar} alt="" src="" />
                         <CardContent className={classes.cardContent}>
                             <Typography gutterBottom variant="h5" component="h2">
-                                Inicia Sesion
+                                Inicia Sesión
                             </Typography>
                             <Divider className={classes.divider} variant="middle" />
                             <ValidatorForm
@@ -114,7 +127,7 @@ function Login() {
                                     errorMessages={['El campo no puede estar vacío']}
                                 />
                                 <Button type="submit" variant="contained" style={btn}>
-                                    Iniciar Sesion
+                                    Iniciar Sesión
                                 </Button>
                             </ValidatorForm>
                         </CardContent>

@@ -86,6 +86,7 @@ export async function GetFullUserData() {
     }
   } catch (e) {
     console.error(e)
+    return false
   }
 }
 
@@ -105,5 +106,40 @@ export async function UpdateBasicData(params) {
   } catch (e) {
     console.error(e)
   }
+}
 
+export async function UpdateAuthMethods(params) {
+  try {
+    const res = axios.post(Cons.updateBio, params, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function UpdateUserPassword(params){
+  try{
+    const res = axios.post(Cons.updatePass, params, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  }catch(e){
+    console.error(e)
+  }
 }

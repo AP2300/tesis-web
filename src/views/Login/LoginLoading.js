@@ -10,7 +10,7 @@ export default function LoginLoading(props) {
         props.isLoading ? (
             <div className={classes.cont}>
                 <Typography className={classes.text} gutterBottom variant="h5" component="h2">
-                    Iniciando Sesion...
+                    Iniciando Sesión...
                 </Typography>
                 <Ellipsis size={120} color={"black"}/>
             </div>

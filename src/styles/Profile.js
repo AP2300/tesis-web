@@ -12,15 +12,16 @@ export default useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginLeft: "5%",
-        marginRight: "5%",
+        marginLeft: "2%",
+        marginRight: "2%",
         "& > *":{
             color: "#5f5f5f"
         }
     },
     mainContainer: {
+        marginTop: "-10px",
         width: "100vw",
-        height: "80vh",
+        height: "82.5vh",
         overflowY: "scroll"
     },
     upperContainer: {
@@ -106,6 +107,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     LeftBox: {
         minWidth: "280px",
+        width: "0%",
         flexGrow: 1,
         padding: "1%"
     },
@@ -172,20 +174,25 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: "80%"
+        width: "100%",
+        minWidth: "220px"
     },
     AuthItem: {
-        margin: "1%",
+        margin: "1.3%",
         display: "flex",
         alignItems: "center",
         width: "70%",
+        cursor: "default",
         height: "6.7vh",
         "& > .AuthName": {
             width: "45%",
             height: "100%",
             display: "flex",
             alignItems: "center",
+            cursor: "pointer",
             justifyContent: "space-evenly",
+            zIndex: "12",
+            transition: "350ms",
             "& > * ": {
                 fontWeight: 600,
                 color: "#5f5f5f"
@@ -197,11 +204,22 @@ export default useStyles = makeStyles((theme) => ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            color: "whitesmoke"
+            color: "whitesmoke",
+            transition: "350ms",
         },
         "& > * ": {
             fontWeight: 600,
             color: "#5f5f5f"
+        }
+    },
+    disabled:{  
+        "& > .AuthName":{
+            transform: "translateX(122.5%)",
+            transition: "350ms"
+        },
+        "& > .IsActive":{
+            transform: "translateX(-80%)",
+            transition: "350ms"
         }
     },
     red: {
@@ -213,9 +231,10 @@ export default useStyles = makeStyles((theme) => ({
     AuthContent: {
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: "100%"
+        height: "26vh"
     },
     loading: {
         animationName: '$loading',
@@ -225,4 +244,33 @@ export default useStyles = makeStyles((theme) => ({
         animationIterationCount: 'infinite',
         color: "transparent",
       },
+      Noti:{
+          width: "70vw",
+          maxWidth: "500px",
+          height: "9vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight:"600",
+          padding: "2%",
+          backgroundColor: "#ff9800",
+          cursor: "default",
+          color: "#fff",
+          "& > .icon":{
+              marginRight: "2.5%",
+              "& > *":{
+                fontSize: "3em"
+              } 
+          },
+          "& > .closeIcon":{
+              marginLeft: "4%",
+          }
+      },
+      Modal:{
+          marginTop: "9%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+      },
+
 }));
