@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Accordion, AccordionSummary, AccordionDetails,
+    Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
     Paper, Divider, AccordionActions, Button, Select
 } from "@material-ui/core";
@@ -11,11 +11,13 @@ import clsx from 'clsx';
 import { Line } from "react-chartjs-2";
 import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
-import { setNumWeek, FilterSearch, ChangeGraph, calcNumWeek } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
 export default function History() {
+    const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
+    const monthsName = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const classes = useStyles();
     const history = useHistory();
     const [isPromiseReady, setIsPromiseReady] = useState(false);
@@ -31,7 +33,6 @@ export default function History() {
     const [week, setWeek] = useState("");
     const [month, setMonth] = useState(moment().month());
     const [year, setYear] = useState(moment().year());
-
 
     useEffect(() => {
         if (Users === "") GetHistory()
@@ -75,6 +76,9 @@ export default function History() {
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setTimeStamp(event.target.value);
         else if (event.target.name === "mail") setType(event.target.value);
+        else if (event.target.name === "week") setWeek(event.target.value);
+        else if (event.target.name === "month") setMonth(event.target.value);
+        else if (event.target.name === "year") setYear(event.target.value);
     };
 
     const handleAcordion = (panel) => (event, isExpanded) => {
@@ -86,7 +90,7 @@ export default function History() {
         let indexWeek = calcNumWeek(year,month);
         indexWeek.forEach((e,i) => {
             if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
-                setWeek(e); 
+                setWeek(i); 
             }
         });
     }
@@ -209,7 +213,7 @@ export default function History() {
                                     <AccordionDetails className={classes.details}>
                                         <div className={clsx(classes.column1, !isUserPromiseReady && classes.loading)}>
                                             {
-                                                isUserPromiseReady ? <Line
+                                                graph ? isUserPromiseReady ? <Line
                                                     data={
                                                         {
                                                             labels: graph[0],
@@ -234,7 +238,7 @@ export default function History() {
                                                         }
                                                     }
                                                     }
-                                                /> : "" 
+                                                /> : "" : <div className={classes.message}><Typography >No hay accesos para esta Fecha</Typography></div>
                                             }
                                         </div>
                                         <div className={clsx(classes.column, isUserPromiseReady ? "" : classes.loading, classes.helper)}>
@@ -243,14 +247,56 @@ export default function History() {
                                     </AccordionDetails>
                                     <Divider />
                                     <AccordionActions>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="week-simple-select-label">Semana</InputLabel>
+                                        <Select
+                                            id="week-simple-select"
+                                            value={week}
+                                            name="week"
+                                            onChange={handleChange}
+                                        >
+                                            {weeks.map((w,i) =><MenuItem value={i}>{w}</MenuItem>)}
+                                            {/* <MenuItem value={0}>1era</MenuItem>
+                                            <MenuItem value={1}>2da</MenuItem>
+                                            <MenuItem value={2}>3era</MenuItem>
+                                            <MenuItem value={3}>4ta</MenuItem>
+                                            <MenuItem value={4}>5ta</MenuItem> */}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="month-simple-select-label">Mes</InputLabel>
+                                        <Select
+                                            id="month-simple-select"
+                                            value={month}
+                                            name="month"
+                                            onChange={handleChange}
+                                        >
+                                            {monthsName.map((e,i)=><MenuItem value={i}>{String(e)}</MenuItem>)}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="year-simple-select-label">Año</InputLabel>
+                                        <Select
+                                            id="year-simple-select"
+                                            value={year}
+                                            name="year"
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value={2021}>2021</MenuItem>
+                                            <MenuItem value={2022}>2022</MenuItem>
+                                            <MenuItem value={2023}>2023</MenuItem>
+                                            <MenuItem value={2024}>2024</MenuItem>
+                                            <MenuItem value={2025}>2025</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                         <Button size="small">Cancel</Button>
                                         <Button size="small" color="primary">
                                             Save
-                  </Button>
+                                        </Button>
                                     </AccordionActions>
                                 </Accordion>
                             )
-                        }) : ""
+                        }) : "" 
                 }
             </Paper>
 

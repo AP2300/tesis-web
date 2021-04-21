@@ -12,8 +12,6 @@ function App() {
         <Route exact path="/dashboard" render={(routeprops) => <Home {...routeprops} />} />
         <Route path="/profile" render={(routeprops) => <Home {...routeprops} />} />
         <Route path="/home" render={(routeprops) => <Home {...routeprops} />} />
-        {/* <Route exact path="/profile" render={(routeprops) => <Home {...routeprops} />} /> */}
-        {/* <Route exact path="/profile" render={() => <Profile/>}/> */}
       </Switch>
     </div>
   );
