@@ -58,6 +58,7 @@ function Login() {
         if (response.data.success) {
             history.push("/home");
         } else {
+            setisLoading(false);
             setMsg("Los datos ingresados son inválidos, intente nuevamente");
             console.log(msg);
             setOpen(true);
