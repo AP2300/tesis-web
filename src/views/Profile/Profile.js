@@ -67,7 +67,7 @@ export default function Profile(props) {
         else return <Dialpad />
     }
 
-    function HandleClick(arg, event) {
+    function HandleClick(arg) {
         const params = {
             name: FormControl.NameControl === "" ? FullName : FormControl.NameControl,
             email: FormControl.EmailControl === "" ? Email : FormControl.EmailControl
@@ -89,7 +89,7 @@ export default function Profile(props) {
         }
     }
 
-    function UpdatePassword() {
+    async function UpdatePassword() {
         if(FormControl.PassControlConfirm !== ""){
             const params = {
                 OldPass: FormControl.PassControlConfirm,
@@ -97,9 +97,12 @@ export default function Profile(props) {
             }
             console.log("hola");
             UpdateUserPassword(params)
-            EndSession()
-            setModal(false)
-            history.push("/")
+
+            const res = await EndSession()
+            if(res){
+                setModal(false)
+                history.push("/")
+            }
         }else{
             //show warning
         }
@@ -194,7 +197,7 @@ export default function Profile(props) {
                                 <div className={classes.item}>
                                     <TextField id="Pass" label="Contraseña nueva" variant="outlined" name="PassControl"
                                         className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange}/>
-                                    <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass", event)}><Edit /></Button>
+                                    <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass")}><Edit /></Button>
                                 </div>
 
                             </div>
