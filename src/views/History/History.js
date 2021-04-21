@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Accordion, AccordionSummary, AccordionDetails, FormHelperText,
+    Accordion, AccordionSummary, AccordionDetails,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Button, InputLabel, Select
+    Paper, Divider, AccordionActions, Button, Select
 } from "@material-ui/core";
 import { ExpandMore, FilterList } from "@material-ui/icons";
 import useStyles from "../../styles/History";
@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { Line } from "react-chartjs-2";
 import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
-const _ = require('lodash');
+import { setNumWeek, FilterSearch, ChangeGraph, calcNumWeek } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
@@ -27,10 +27,10 @@ export default function History() {
     const [TimeStamp, setTimeStamp] = useState('S');
     const [Type, setType] = useState("U");
     const [expanded, setExpanded] = useState(false);
-    const [graph, setgraph] = useState("");
-    const [week, setweek] = useState(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')));
-    const [month, setmonth] = useState(moment().month());
-    const [year, setyear] = useState(moment().year());
+    const [graph, setGraph] = useState("");
+    const [week, setWeek] = useState("");
+    const [month, setMonth] = useState(moment().month());
+    const [year, setYear] = useState(moment().year());
 
 
     useEffect(() => {
@@ -38,11 +38,15 @@ export default function History() {
     }, [Users])
 
     useEffect(() => {
+        if (week === "") NumWeek(year,month);
+    }, [week])
+
+    useEffect(() => {
         if (Users != "") FuzzySearch()
     }, [Textfield])
 
     useEffect(() => {
-        if (UserData != "") FilterSearch()
+        if (UserData != "") handleFilterSearch()
     }, [UserData])
 
 
@@ -52,6 +56,8 @@ export default function History() {
             setSearchData(res.data.data);
             setUsers(res.data.data);
             setIsPromiseReady(true);
+        } else {
+            history.push("/");
         }
     }
 
@@ -60,7 +66,7 @@ export default function History() {
         if (res) {
             setUserData(res.data.data);
             setIsUserPromiseReady(true);
-            // FilterSearch();
+            
         } else {
             history.push("/");
         }
@@ -75,6 +81,15 @@ export default function History() {
         setExpanded(isExpanded ? panel : false);
         setIsUserPromiseReady(false);
     };
+    
+    function NumWeek(year,month){
+        let indexWeek = calcNumWeek(year,month);
+        indexWeek.forEach((e,i) => {
+            if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
+                setWeek(e); 
+            }
+        });
+    }
 
     function FuzzySearch() {
         Textfield.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&");
@@ -93,91 +108,9 @@ export default function History() {
         });
     }
 
-    async function FilterSearch() {
-            let graphData = [];
-            let groupedResults = "";
-            let result = "";
-            switch (TimeStamp) {
-                case "S":
-                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('isoWeek'));
-                    result = Object.entries(groupedResults);
-                    result.forEach((e) => {
-                        if(String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]){
-                            console.log(e);
-                            graphData = e;
-                        }
-                    });
-                    ChangeGraph(graphData);
-                break;
-                case "M":
-                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
-                    result = Object.entries(groupedResults);
-                    result.forEach((e) => {
-                        if(moment().month() === moment(e[0]).month() && moment().year() === moment(e[0]).year()){
-                            let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
-                            let order = Object.entries(dates);
-                            graphData = _.orderBy(order, (DateData) => moment(DateData[0]).startOf('isoWeek'));
-                        }
-                    })
-                    ChangeGraph(graphData);
-                break;
-                case "A":
-                    groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
-                    result = Object.entries(groupedResults);
-                    result.forEach((e) => {
-                        if(moment().year() === moment(e[0]).year()){
-                            // ordenar por Mes 
-                            let monthsData = _.groupBy(e[1], (Data) => moment(Data.RegDate).startOf('month'));
-                            let res = Object.entries(monthsData);
-                            graphData = _.orderBy(res, (Data) => moment(Data[0]).startOf('month'));
-                        }
-                    })
-                    ChangeGraph(graphData);
-                break;
-            }
+    async function handleFilterSearch(){
+        setGraph(ChangeGraph(TimeStamp,year,month,week,FilterSearch(UserData, month, year, TimeStamp)));
     }
-
-    async function ChangeGraph(graphData){
-        let graphW = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-        let graphM = [ 0 , 0 , 0 , 0 , 0 ];
-        let graphY = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-        switch (TimeStamp) {
-            case "S":
-                const days = [1, 2, 3, 4, 5, 6, 0];
-                if (graphData) {
-                    graphData[1].forEach(date => {
-                        days.forEach((day,d) => {
-                            if(day === moment(date.RegDate).day()){
-                                graphW[d] += 1;                                 
-                            }
-                        });
-                    });
-                    setgraph([["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW])
-                }
-            break;
-            case "M":
-                const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
-                if(graphData){
-                    graphData.forEach((d,i) => {
-                        graphM[i] = d[1].length;
-                    })
-                    setgraph([weeks,graphM])
-                }
-            break;
-            case "A":
-                const monthsShort = moment()._locale._monthsShort;
-                const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                if(graphData){
-                    for (let i = 0; i < 12; i++) {
-                        graphData.forEach((y) => {
-                            if(monthsShort[i] === y[0].split(" ")[1]) graphY[i] = y[1].length; 
-                        })
-                    }
-                    setgraph([months,graphY])
-                }
-            break;
-        }
-    } 
 
     return (
         <div >
@@ -301,9 +234,8 @@ export default function History() {
                                                         }
                                                     }
                                                     }
-                                                /> : ""
+                                                /> : "" 
                                             }
-
                                         </div>
                                         <div className={clsx(classes.column, isUserPromiseReady ? "" : classes.loading, classes.helper)}>
 
@@ -317,7 +249,6 @@ export default function History() {
                   </Button>
                                     </AccordionActions>
                                 </Accordion>
-
                             )
                         }) : ""
                 }
