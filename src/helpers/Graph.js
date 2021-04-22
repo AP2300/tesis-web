@@ -5,11 +5,11 @@ export function calcNumWeek(year,month){
     let indexWeek = [];
     let j = 0;
     for (let i = 0; i < 5; i++) {
-        let date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY-MM-DD").startOf('isoWeek'));
+        let date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
         if(i !== 0){
             if(date === indexWeek[i-1]){
                 j++;
-                date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY-MM-DD").startOf('isoWeek'))
+                date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))
             }
         }
         indexWeek.push(date);
@@ -21,7 +21,6 @@ export function setNumWeek(year,month){
     let indexWeek = calcNumWeek(year,month);
     indexWeek.map((e,i) => {
         if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
-            console.log("hola",i)
             return i
         }
     });

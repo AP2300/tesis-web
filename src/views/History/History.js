@@ -43,12 +43,16 @@ export default function History() {
     }, [week])
 
     useEffect(() => {
-        if (Users != "") FuzzySearch()
+        if (Users !== "") FuzzySearch()
     }, [Textfield])
 
     useEffect(() => {
-        if (UserData != "") handleFilterSearch()
+        if (UserData !== "") handleFilterSearch()
     }, [UserData])
+
+    useEffect(()=>{
+        handleFilterSearch();
+    },[TimeStamp])
 
 
     const GetHistory = async () => {
@@ -93,6 +97,17 @@ export default function History() {
                 setWeek(i); 
             }
         });
+    }
+
+    function getYearRange(){
+        let val= 2021;
+        let year = new Date()
+        val = val - year.getFullYear()+1;
+        let newArr = new Array(val);
+        for (let i = 0; i < newArr.length; i++) {
+            newArr[i] = 2021+i;            
+        }
+        return newArr
     }
 
     function FuzzySearch() {
@@ -190,8 +205,7 @@ export default function History() {
             </Accordion>
 
             <Paper elevation={0} className={classes.resultBox}>
-                {
-                    isPromiseReady ?
+                { isPromiseReady ?
                         SearchData.map((el, index) => {
                             return (
                                 <Accordion onClick={() => GetData(el.IDUser)} key={index}
@@ -236,8 +250,7 @@ export default function History() {
                                                                 }
                                                             }]
                                                         }
-                                                    }
-                                                    }
+                                                    }}
                                                 /> : "" : <div className={classes.message}><Typography >No hay accesos para esta Fecha</Typography></div>
                                             }
                                         </div>
@@ -254,13 +267,9 @@ export default function History() {
                                             value={week}
                                             name="week"
                                             onChange={handleChange}
+                                            disabled={TimeStamp === "A" || TimeStamp === "M"? true : false}
                                         >
-                                            {weeks.map((w,i) =><MenuItem value={i}>{w}</MenuItem>)}
-                                            {/* <MenuItem value={0}>1era</MenuItem>
-                                            <MenuItem value={1}>2da</MenuItem>
-                                            <MenuItem value={2}>3era</MenuItem>
-                                            <MenuItem value={3}>4ta</MenuItem>
-                                            <MenuItem value={4}>5ta</MenuItem> */}
+                                            {weeks.map((w,i) =><MenuItem key={i} value={i}>{w}</MenuItem>)}
                                         </Select>
                                     </FormControl>
                                     <FormControl className={classes.formControl}>
@@ -270,8 +279,9 @@ export default function History() {
                                             value={month}
                                             name="month"
                                             onChange={handleChange}
+                                            disabled={TimeStamp === "A"? true : false}
                                         >
-                                            {monthsName.map((e,i)=><MenuItem value={i}>{String(e)}</MenuItem>)}
+                                            {monthsName.map((e,i)=><MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
                                         </Select>
                                     </FormControl>
                                     <FormControl className={classes.formControl}>
@@ -282,11 +292,11 @@ export default function History() {
                                             name="year"
                                             onChange={handleChange}
                                         >
-                                            <MenuItem value={2021}>2021</MenuItem>
+                                            {getYearRange().map((e,i)=><MenuItem key={i} value={e}>{String(e)}</MenuItem>)}
                                             <MenuItem value={2022}>2022</MenuItem>
                                             <MenuItem value={2023}>2023</MenuItem>
                                             <MenuItem value={2024}>2024</MenuItem>
-                                            <MenuItem value={2025}>2025</MenuItem>
+                                            <MenuItem value={2025}>2025</MenuItem> 
                                         </Select>
                                     </FormControl>
                                         <Button size="small">Cancel</Button>

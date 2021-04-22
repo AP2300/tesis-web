@@ -181,19 +181,19 @@ export default function Profile(props) {
                             </div>
                             <div className={classes.textFieldContainer2}>
                                 <div className={classes.item}>
-                                    <TextField id="Name" variant="outlined" label="Nombre nuevo" onChange={handleChange}
+                                    <TextField id="NameM" variant="outlined" label="Nombre nuevo" onChange={handleChange}  
                                         className={classes.textField} value={FormControl.Name} name="NameControl" />
                                     <Button className={classes.editButton} name="name" onClick={() => HandleClick("name")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="Email" variant="outlined" label="Email nuevo" onChange={handleChange}
+                                    <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange}  type="email"
                                         className={classes.textField} value={FormControl.Email} name="EmailControl" />
                                     <Button className={classes.editButton} onClick={() => HandleClick("email")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="Pass" label="Contraseña nueva" variant="outlined" name="PassControl"
+                                    <TextField id="PassM" label="Contraseña nueva" variant="outlined" name="PassControl" 
                                         className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange} />
                                     <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass")}><Edit /></Button>
                                 </div>
