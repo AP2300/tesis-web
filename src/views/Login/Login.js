@@ -12,6 +12,7 @@ import useStyles from "../../styles/Login";
 import { LogIn } from '../../api/session';
 import LoginLoading from './LoginLoading';
 import { GetFullUserData } from '../../api/user';
+import Notification from '../../components/Notifications';
 
 function Login() {
     const classes = useStyles();
@@ -81,7 +82,8 @@ function Login() {
     return (
         <div>
             {open && (
-                <Alert className={classes.alert} severity="error" onClose={() => { setOpen(false) }}>{msg}</Alert>)}
+                <Notification className={classes.alert} close={() => setOpen(false)} data={{severity: "error", open: open,  description: msg}}/>
+                )}
             <div className={classes.login}>
                 <Card className={classes.root}>
                     <LoginLoading isLoading={isLoading}>
