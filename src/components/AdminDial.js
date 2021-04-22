@@ -23,7 +23,6 @@ export default function AdminDial() {
   const useStyles = makeStyles((theme) => ({
     root: {
       position: "absolute",
-      top: "13%",
       right: "1%"
     },
       speedDial: {
@@ -46,7 +45,7 @@ export default function AdminDial() {
           "& div.MuiSpeedDial-actions":{
               width: 0,
               display: "flex",
-              height: "7.2vh",
+              height: "48px",
               alignItems: "center",
               paddingRight: "35px",
               paddingLeft: "10px",
@@ -65,12 +64,13 @@ export default function AdminDial() {
           "& div.MuiSpeedDial-actions:hover":{
               backgroundColor: "#4c4c4cba",
               display: "flex",
-              height: "7.2vh",
+              height: "70px",
               alignItems: "center",
               paddingRight: "35px",
               paddingLeft: "10px",
               borderRadius: "2em",
-              width: "220px"
+              width: "220px",
+              transition: "200ms"
           }
       },
       
