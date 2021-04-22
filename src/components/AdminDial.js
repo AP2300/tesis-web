@@ -23,8 +23,8 @@ export default function AdminDial() {
   const useStyles = makeStyles((theme) => ({
     root: {
       position: "absolute",
-      top: "8px",
-      right: "8px"
+      top: "13%",
+      right: "1%"
     },
       speedDial: {
           bottom: theme.spacing(2),
@@ -36,7 +36,7 @@ export default function AdminDial() {
               backgroundColor: open?"#4c4c4cba":"transparent",
               transition: "300ms ease-in",
               display: "flex",
-              height: "7.2vh",
+              height: "48px",
               alignItems: "center",
               paddingRight: "35px",
               paddingLeft: "10px",
