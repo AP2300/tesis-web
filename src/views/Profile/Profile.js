@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import TitleContainer from "../../components/TitleContainer"
 import Modal from "../../components/Modal"
-import { Paper, Avatar, Divider, Typography, TextField, Button, Snackbar, Slide, IconButton, Popper } from '@material-ui/core/';
-import { Dialpad, Edit, Fingerprint, Mood, Close, ReportProblemRounded, Done } from '@material-ui/icons/';
-import useStyles from "../../styles/Profile"
-import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword } from "../../api/user"
-import clsx from 'clsx';
 import Alert from '@material-ui/lab/Alert';
+import clsx from 'clsx';
+import { Paper, Avatar, Divider, Typography, TextField, Button, Snackbar, Slide, IconButton } from '@material-ui/core/';
+import { Dialpad, Edit, Fingerprint, Mood, Close, ReportProblemRounded, Done } from '@material-ui/icons/';
+import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword } from "../../api/user"
+import useStyles from "../../styles/Profile"
 import { useHistory } from 'react-router';
 import { EndSession } from '../../api/session';
+import Notification from '../../components/Notifications';
 var moment = require('moment');
 moment().format();
 
-function SlideTransition(props) {
-    return <Slide {...props} direction="up" />;
-}
 
 export default function Profile(props) {
     const { FullName, Email, RegDate } = props.Data
@@ -23,33 +21,13 @@ export default function Profile(props) {
     const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "" })
     const [UserData, setUserData] = useState("")
     const [IsPromiseReady, setIsPromiseReady] = useState(false)
-    const [state, setState] = useState({
-        open: false,
-        Transition: Slide,
-    });
     const [modal, setModal] = useState(false)
+    const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
 
     useEffect(() => {
         if (UserData === "") GetUserData()
     }, [UserData])
 
-
-    ////////////////////////////////////////////////////// SNACKBAR ////////////////////////////////////////////////////
-
-    function handleOpen(Transition) {
-        setState({
-            open: true,
-            Transition,
-        });
-    };
-
-    function handleClose() {
-        setState({
-            ...state,
-            open: false,
-        });
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const GetUserData = async () => {
         const res = await GetFullUserData()
@@ -67,6 +45,10 @@ export default function Profile(props) {
         else return <Dialpad />
     }
 
+    function getNoti() {
+        if (noti.open) return < Notification close={setNoti} data={noti} />
+    }
+
     function HandleClick(arg) {
         const params = {
             name: FormControl.NameControl === "" ? FullName : FormControl.NameControl,
@@ -77,34 +59,45 @@ export default function Profile(props) {
                 UpdateBasicData(params);
                 window.location.reload();
             } else {
-                //show warning
+                setNoti({
+                    ...noti, severity: "warning",
+                    description: "No se introdujeron datos nuevos",
+                    open: true
+                })
             }
         } else if (arg === "pass") {
-            if(FormControl.PassControl !== ""){
+            if (FormControl.PassControl !== "") {
                 setModal(true)
-            }else{
-                //show warning
+            } else {
+                setNoti({
+                    ...noti, severity: "warning",
+                    description: "No se introdujo una contraseña nueva",
+                    open: true
+                })
             }
-            
+
         }
     }
 
     async function UpdatePassword() {
-        if(FormControl.PassControlConfirm !== ""){
+        if (FormControl.PassControlConfirm !== "") {
             const params = {
                 OldPass: FormControl.PassControlConfirm,
                 Password: FormControl.PassControl
             }
-            console.log("hola");
             UpdateUserPassword(params)
 
             const res = await EndSession()
-            if(res){
+            if (res) {
                 setModal(false)
                 history.push("/")
             }
-        }else{
-            //show warning
+        } else {
+            setNoti({
+                ...noti, severity: "error",
+                description: "No introdujo la contraseña anterior",
+                open: true
+            })
         }
     }
 
@@ -122,7 +115,12 @@ export default function Profile(props) {
             if (!res) history.push("/")
             else setUserData(Update)
         } else {
-            handleOpen(SlideTransition)
+            setNoti({
+                ...noti, severity: "warning",
+                description: "No puedes desactivar tu último metodo de autenticacion activo",
+                open: true
+            })
+
         }
     }
 
@@ -196,7 +194,7 @@ export default function Profile(props) {
 
                                 <div className={classes.item}>
                                     <TextField id="Pass" label="Contraseña nueva" variant="outlined" name="PassControl"
-                                        className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange}/>
+                                        className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange} />
                                     <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass")}><Edit /></Button>
                                 </div>
 
@@ -206,23 +204,11 @@ export default function Profile(props) {
                     </div>
                 </div>
             </Paper>
-            <Snackbar open={state.open}
-                onClose={handleClose}
-                autoHideDuration={5000}
-                TransitionComponent={state.Transition}
-                key={state.Transition.name}
-            >
-                <Paper elevation={6} className={classes.Noti}>
-                    <span className="icon"><ReportProblemRounded /></span> <span>No puedes desactivar la ultima autenticacion activa</span>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose} className="closeIcon">
-                        <Close fontSize="small" />
-                    </IconButton>
-                </Paper>
-            </Snackbar>
+            {getNoti()}
             <Modal IsOpen={modal} close={setModal} PassConfirm={setFormControl} okFunction={UpdatePassword} title="Comprueba que eres tú">
                 <div className={classes.Modal}>
                     <TextField id="Pass" label="Contraseña anterior" variant="outlined" value={FormControl.PassControlConfirm}
-                        className={classes.textField} onChange={handleChange} name="PassControlConfirm" type="password"/> 
+                        className={classes.textField} onChange={handleChange} name="PassControlConfirm" type="password" />
                 </div>
                 <Alert severity="warning" variant="filled">Completar esta acción cerrara la sesión</Alert>
             </Modal>
