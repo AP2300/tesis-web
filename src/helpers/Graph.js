@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const moment = require('moment');
+moment().format();
 
 export function calcNumWeek(year,month){
     let indexWeek = [];
@@ -34,11 +35,12 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
         case "S":
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
             result = Object.entries(groupedResults);
+            
             result.forEach((e) => {
-                if(month === moment(e[0]).month() && year === moment(e[0]).year()){
+                if(month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()){
                     let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
                     let order = Object.entries(dates);
-                    graphData = _.orderBy(order, (DateData) => moment(DateData[0]).startOf('isoWeek'));
+                    graphData = _.orderBy(order, (DateData) => moment(DateData[0], "dd MMM DD YYYY").startOf('isoWeek'));
                 }
             })
             return graphData;
@@ -46,10 +48,10 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
             result = Object.entries(groupedResults);
             result.forEach((e) => {
-                if(month === moment(e[0]).month() && year === moment(e[0]).year()){
+                if(month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()){
                     let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
                     let order = Object.entries(dates);
-                    graphData = _.orderBy(order, (DateData) => moment(DateData[0]).startOf('isoWeek'));
+                    graphData = _.orderBy(order, (DateData) => moment(DateData[0], "dd MMM DD YYYY").startOf('isoWeek'));
                 }
             })
             return graphData;
@@ -57,10 +59,10 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
             result = Object.entries(groupedResults);
             result.forEach((e) => {
-                if(year === moment(e[0]).year()){
+                if(year === moment(e[0], "dd MMM DD YYYY").year()){
                     let monthsData = _.groupBy(e[1], (Data) => moment(Data.RegDate).startOf('month'));
                     let res = Object.entries(monthsData);
-                    graphData = _.orderBy(res, (Data) => moment(Data[0]).startOf('month'));
+                    graphData = _.orderBy(res, (Data) => moment(Data[0], "dd MMM DD YYYY").startOf('month'));
                 }
             })
             return graphData;
@@ -91,7 +93,6 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
             if(getDateAccess(graphW) === 0){
                 return false;
             } else return [["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW];
-
         case "M":
             const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
             if(graphData){
@@ -154,4 +155,4 @@ export function generateGraphData(graphData) {
     } else {
         return graph
     }
-  }
+}

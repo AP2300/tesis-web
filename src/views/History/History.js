@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Accordion, AccordionSummary, AccordionDetails, InputLabel,
+    Accordion, AccordionSummary, AccordionDetails, InputLabel, List, ListItem, ListItemAvatar, Avatar, ListItemText,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
     Paper, Divider, AccordionActions, Button, Select
 } from "@material-ui/core";
-import { ExpandMore, FilterList } from "@material-ui/icons";
+import { ExpandMore, FilterList, Title } from "@material-ui/icons";
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
@@ -30,7 +30,7 @@ export default function History() {
     const [Type, setType] = useState("U");
     const [expanded, setExpanded] = useState(false);
     const [graph, setGraph] = useState("");
-    const [week, setWeek] = useState("");
+    const [week, setWeek] = useState(3);
     const [month, setMonth] = useState(moment().month());
     const [year, setYear] = useState(moment().year());
 
@@ -254,8 +254,8 @@ export default function History() {
                                                 /> : "" : <div className={classes.message}><Typography >No hay accesos para esta Fecha</Typography></div>
                                             }
                                         </div>
-                                        <div className={clsx(classes.column, isUserPromiseReady ? "" : classes.loading, classes.helper)}>
-
+                                        <div className={clsx(classes.info,classes.column, isUserPromiseReady ? "" : classes.loading, classes.helper)}>
+                                            
                                         </div>
                                     </AccordionDetails>
                                     <Divider />
@@ -299,10 +299,10 @@ export default function History() {
                                             <MenuItem value={2025}>2025</MenuItem> 
                                         </Select>
                                     </FormControl>
-                                        <Button size="small">Cancel</Button>
+                                        {/* <Button size="small">Cancel</Button>
                                         <Button size="small" color="primary">
                                             Save
-                                        </Button>
+                                        </Button> */}
                                     </AccordionActions>
                                 </Accordion>
                             )
