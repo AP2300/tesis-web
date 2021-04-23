@@ -176,7 +176,7 @@ export default function Profile(props) {
                         <TitleContainer title="Modificar perfil">
                             <div className={classes.textFieldContainer1}>
                                 <span>Nombre</span>
-                                <span>Email</span>
+                                <span>Correo Electronico</span>
                                 <span>Contraseña</span>
                             </div>
                             <div className={classes.textFieldContainer2}>
@@ -187,7 +187,7 @@ export default function Profile(props) {
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange}  type="email"
+                                    <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange} type="email"
                                         className={classes.textField} value={FormControl.Email} name="EmailControl" />
                                     <Button className={classes.editButton} onClick={() => HandleClick("email")}><Edit /></Button>
                                 </div>

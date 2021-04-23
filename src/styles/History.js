@@ -80,8 +80,6 @@ export default useStyles = makeStyles((theme) => ({
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
         padding: theme.spacing(1, 2),
-        boxShadow: "3px 2px 5px #00000038",
-        borderRadius: "3%"
     },
     message: {
         display: "flex",

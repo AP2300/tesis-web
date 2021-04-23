@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Accordion, AccordionSummary, AccordionDetails, InputLabel, List, ListItem, ListItemAvatar, Avatar, ListItemText,
+    Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Button, Select
+    Paper, Divider, AccordionActions, Select
 } from "@material-ui/core";
-import { ExpandMore, FilterList, Title } from "@material-ui/icons";
+import { ExpandMore, FilterList } from "@material-ui/icons";
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
@@ -299,17 +299,12 @@ export default function History() {
                                             <MenuItem value={2025}>2025</MenuItem> 
                                         </Select>
                                     </FormControl>
-                                        {/* <Button size="small">Cancel</Button>
-                                        <Button size="small" color="primary">
-                                            Save
-                                        </Button> */}
                                     </AccordionActions>
                                 </Accordion>
                             )
                         }) : "" 
                 }
             </Paper>
-
         </div>
     );
 }
