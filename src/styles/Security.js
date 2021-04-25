@@ -108,17 +108,46 @@ export default useStyles = makeStyles((theme) => ({
     },
     Buttons:{
         display: "flex",
-        width: "18vw" ,
-        height: "26vh",
+        width: "1vw" ,
+        height: "50vh",
         marginLeft: "3%",
         justifyContent: "center",
+        alignItems: "center",
         flexGrow: 1
     },
     fingerBox:{
         display: "flex",
-        width: "60%",
+        width: "70%",
         height: "100%",
         minWidth: "300px",
         flexGrow: 1
+    },
+    sideButton:{
+        width: "100%",
+        transition: "200ms ease-in",
+        "& > .MuiButtonBase-root.MuiToggleButton-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedVertical":{
+            height: "15vh",
+            color: "#630505b5",
+            backgroundColor: "#ff0b0b12",
+            transition: "200ms ease-in",
+        },
+        "& > .MuiButtonBase-root.MuiToggleButton-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedVertical.Mui-selected":{
+           color: "#056311eb",
+           backgroundColor: "#0bff151c",
+           border: "0.5px solid #0563113b",
+           transition: "200ms ease-in",
+        }
+    },
+    sideButtonUnloaded:{
+        width: "100%",
+        transition: "2000ms ease-in",
+        "& > .MuiButtonBase-root.MuiToggleButton-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedVertical":{
+            height: "15vh",
+            transition: "2000ms ease-in",
+        },
+        "& > .MuiButtonBase-root.MuiToggleButton-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedVertical.Mui-selected":{
+           color: "#056311eb",
+           transition: "2000ms ease-in",
+        }
     }
 }));

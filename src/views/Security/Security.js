@@ -1,12 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useStyles from '../../styles/Security';
 import { Paper, Avatar, Divider, Typography, TextField, Button, Chip, Slide, IconButton } from '@material-ui/core/';
 import { Dialpad, Edit, Fingerprint, Mood, Close, ReportProblemRounded, Done } from '@material-ui/icons/';
-import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab/';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab/';
 import TitleContainer from '../../components/TitleContainer';
+import { GetFullUserData } from "../../api/user"
+import { useHistory } from 'react-router';
 
 export default function Security(props) {
     const classes = useStyles();
+    const history = useHistory()
+    const [formats, setFormats] = useState(() => []);
+    const [isPromiseReady, setIsPromiseReady] = useState(false)
+    const [state, setState] = useState({ Security: "" })
+
+    useEffect(() => {
+        if (state.Security === "") GetUserSecurityData()
+    }, [state.Security])
+
+    useEffect(()=>{    
+            if(state.Security) SetSideButton()
+    },[state.Security])
+
+    const GetUserSecurityData = async () => {
+        const res = await GetFullUserData()
+        if (res) {
+            console.log(res);
+            setState({ ...state, Security: res.data.data })
+            // setUserData(res.data.data)
+            setIsPromiseReady(true)
+        } else {
+            history.push("/")
+        }
+    }
+
+    async function SetSideButton() {
+        let Arr=[]
+        console.log(state.Security);
+        state.Security.forEach(el => {
+            if(el.Name !== "Codigo"){
+                Arr.push(el.Name)
+            }
+        });
+        setFormats(Arr)
+    }
+
+
+    const handleFormat = (event, newFormats) => {
+        setFormats(newFormats);
+    };
 
     return (
         <div className={classes.root}>
@@ -29,16 +71,24 @@ export default function Security(props) {
 
                     <div className={classes.fingerContainer}>
                         <div className={classes.fingerBox}>
-                        <TitleContainer title={`Huellas Registradas`}>
-                            <Chip
-                                className={classes.chip}
-                                icon={<ReportProblemRounded />}
-                                label="Las huellas estan desactivadas"
-                            />
-                        </TitleContainer>
+                            <TitleContainer title={`Huellas Registradas`}>
+                                <Chip
+                                    className={classes.chip}
+                                    icon={<ReportProblemRounded />}
+                                    label="Las huellas estan desactivadas"
+                                />
+                            </TitleContainer>
                         </div>
                         <div className={classes.Buttons}>
-                            
+                            <ToggleButtonGroup value={formats} onChange={handleFormat}
+                                aria-label="text formatting" orientation="vertical" className={isPromiseReady ? classes.sideButton : classes.sideButtonUnloaded}>
+                                <ToggleButton value="Huella" aria-label="bold">
+                                    <Fingerprint />
+                                </ToggleButton>
+                                <ToggleButton value="Facial" aria-label="italic">
+                                    <Mood />
+                                </ToggleButton>
+                            </ToggleButtonGroup>
                         </div>
                     </div>
 
