@@ -8,7 +8,7 @@ import { ExpandMore, FilterList } from "@material-ui/icons";
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
 import { FilterSearch, ChangeGraph, calcNumWeek } from '../../helpers/Graph';
@@ -20,47 +20,38 @@ export default function History() {
     const monthsName = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const classes = useStyles();
     const history = useHistory();
-    const [isPromiseReady, setIsPromiseReady] = useState(false);
-    const [isUserPromiseReady, setIsUserPromiseReady] = useState(false);
-    const [SearchData, setSearchData] = useState("");
-    const [UserData, setUserData] = useState("");
+    const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
+    const [Data, setData] = useState({ Search: [], User: "", Users: "", graph: "" });
+    const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
+    const [States, setStates] = useState({ TimeStamp: "S", Type: "U" });
     const [Textfield, setTextfield] = useState("");
-    const [Users, setUsers] = useState("");
-    const [TimeStamp, setTimeStamp] = useState('S');
-    const [Type, setType] = useState("U");
-    const [expanded, setExpanded] = useState(false);
-    const [graph, setGraph] = useState("");
-    const [week, setWeek] = useState(3);
-    const [month, setMonth] = useState(moment().month());
-    const [year, setYear] = useState(moment().year());
 
     useEffect(() => {
-        if (Users === "") GetHistory()
-    }, [Users])
+        if (Data.Users === "") GetHistory()
+    }, [Data.Users])
 
     useEffect(() => {
-        if (week === "") NumWeek(year,month);
-    }, [week])
+        if (Dates.week === "") NumWeek(Dates.year,Dates.month);
+    }, [Dates.week])
 
     useEffect(() => {
-        if (Users !== "") FuzzySearch()
+        if (Data.Users !== "") FuzzySearch()
     }, [Textfield])
 
     useEffect(() => {
-        if (UserData !== "") handleFilterSearch()
-    }, [UserData])
+        if (Data.User !== "") handleFilterSearch()
+    }, [Data.User])
 
     useEffect(()=>{
         handleFilterSearch();
-    },[TimeStamp])
+    },[States])
 
 
     const GetHistory = async () => {
         const res = await GetHistoryData();
         if (res) {
-            setSearchData(res.data.data);
-            setUsers(res.data.data);
-            setIsPromiseReady(true);
+            setData({...Data, Users: res.data.data, Search: res.data.data});
+            setPromises({...Promises, isReady: true});
         } else {
             history.push("/");
         }
@@ -69,8 +60,8 @@ export default function History() {
     const GetData = async (id) => {
         const res = await GetHistoryUserData(id);
         if (res) {
-            setUserData(res.data.data);
-            setIsUserPromiseReady(true);
+            setData({...Data, User: res.data.data});
+            setPromises({...Promises, isUserReady: true});
             
         } else {
             history.push("/");
@@ -78,23 +69,23 @@ export default function History() {
     }
 
     const handleChange = (event) => {
-        if (event.target.name === "timestamp") setTimeStamp(event.target.value);
-        else if (event.target.name === "mail") setType(event.target.value);
-        else if (event.target.name === "week") setWeek(event.target.value);
-        else if (event.target.name === "month") setMonth(event.target.value);
-        else if (event.target.name === "year") setYear(event.target.value);
+        if (event.target.name === "timestamp") setStates({...States, TimeStamp: event.target.value});
+        else if (event.target.name === "mail") setStates({...States, Type: event.target.value});
+        else if (event.target.name === "week") setDates({...Dates, week: event.target.value});
+        else if (event.target.name === "month") setDates({...Dates, month: event.target.value});
+        else if (event.target.name === "year") setDates({...Dates, year: event.target.value});
     };
 
     const handleAcordion = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-        setIsUserPromiseReady(false);
+        setStates({...States, Expanded: isExpanded ? panel : false});
+        setPromises({...Promises, isUserReady: false});
     };
     
     function NumWeek(year,month){
         let indexWeek = calcNumWeek(year,month);
         indexWeek.forEach((e,i) => {
             if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
-                setWeek(i); 
+                setDates({...Dates, week: i}); 
             }
         });
     }
@@ -114,21 +105,25 @@ export default function History() {
         Textfield.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&");
         let reg = new RegExp(`\\b${Textfield}`, 'i');
         let newSearchArr = []
-        Users.forEach(e => {
+        Data.Users.forEach(e => {
             if (reg.test(e.FullName) && Textfield !== ""
                 || reg.test(e.Email) && Textfield !== ""
                 || reg.test(e.IDUser) && Textfield !== "") {
+                    console.log("holiwi",e)
                 newSearchArr.push(e)
             } else if (Textfield === "") {
-                setSearchData(Users);
+                console.log(newSearchArr, 1)
+                setData({...Data, Search: Data.Users});
             } else {
-                setSearchData(newSearchArr);
+                console.log(newSearchArr, 2)    
+                setData({...Data, Search: newSearchArr});
             }
         });
     }
 
     async function handleFilterSearch(){
-        setGraph(ChangeGraph(TimeStamp,year,month,week,FilterSearch(UserData, month, year, TimeStamp)));
+        setData({...Data, graph: ChangeGraph(States.TimeStamp,Dates.year,Dates.month,Dates.week,
+                    FilterSearch(Data.User, Dates.month, Dates.year, States.TimeStamp))});
     }
 
     return (
@@ -168,7 +163,7 @@ export default function History() {
                                         <Select
                                             labelId="demo-simple-select-filled-label"
                                             id="demo-simple-select-outlined"
-                                            value={TimeStamp}
+                                            value={States.TimeStamp}
                                             displayEmpty
                                             onChange={handleChange}
                                             name="timestamp"
@@ -186,7 +181,7 @@ export default function History() {
                                         <Select
                                             labelId="demo-simple-select-filled-label"
                                             id="demo-simple-select-outlined"
-                                            value={Type}
+                                            value={States.Type}
                                             displayEmpty
                                             onChange={handleChange}
                                             name="mail"
@@ -205,11 +200,11 @@ export default function History() {
             </Accordion>
 
             <Paper elevation={0} className={classes.resultBox}>
-                { isPromiseReady ?
-                        SearchData.map((el, index) => {
+                { Promises.isReady ?
+                        Data.Search.map((el, index) => {
                             return (
                                 <Accordion onClick={() => GetData(el.IDUser)} key={index}
-                                    expanded={expanded === `panel${index}`} onChange={handleAcordion(`panel${index}`)}>
+                                     onChange={handleAcordion(`panel${index}`)}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
                                         aria-controls="panel1c-content"
@@ -225,16 +220,16 @@ export default function History() {
                                         </div>
                                     </AccordionSummary>
                                     <AccordionDetails className={classes.details}>
-                                        <div className={clsx(classes.column1, !isUserPromiseReady && classes.loading)}>
+                                        <div className={clsx(classes.column1, !Promises.isUserReady && classes.loading)}>
                                             {
-                                                graph ? isUserPromiseReady ? <Line
+                                                Data.graph ? Promises.isUserReady ? <Bar
                                                     data={
                                                         {
-                                                            labels: graph[0],
+                                                            labels: Data.graph[0],
                                                             datasets: [{
                                                                 label: "accesos",
-                                                                data: graph[1],
-                                                                backgroundColor: "#f5deb382",
+                                                                data: Data.graph[1],
+                                                                backgroundColor: "#2978b5",
                                                                 borderColor: "wheat"
                                                             },]
                                                         }
@@ -251,10 +246,10 @@ export default function History() {
                                                             }]
                                                         }
                                                     }}
-                                                /> : "" : <div className={classes.message}><Typography >No hay accesos para esta Fecha</Typography></div>
+                                                /> : "" : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
                                             }
                                         </div>
-                                        <div className={clsx(classes.info,classes.column, isUserPromiseReady ? "" : classes.loading, classes.helper)}>
+                                        <div className={clsx(classes.info,classes.column, Promises.isUserReady ? "" : classes.loading, classes.helper)}>
                                             
                                         </div>
                                     </AccordionDetails>
@@ -264,10 +259,10 @@ export default function History() {
                                         <InputLabel id="week-simple-select-label">Semana</InputLabel>
                                         <Select
                                             id="week-simple-select"
-                                            value={week}
+                                            value={Dates.week}
                                             name="week"
                                             onChange={handleChange}
-                                            disabled={TimeStamp === "A" || TimeStamp === "M"? true : false}
+                                            disabled={States.TimeStamp === "A" || States.TimeStamp === "M"? true : false}
                                         >
                                             {weeks.map((w,i) =><MenuItem key={i} value={i}>{w}</MenuItem>)}
                                         </Select>
@@ -276,10 +271,10 @@ export default function History() {
                                         <InputLabel id="month-simple-select-label">Mes</InputLabel>
                                         <Select
                                             id="month-simple-select"
-                                            value={month}
+                                            value={Dates.month}
                                             name="month"
                                             onChange={handleChange}
-                                            disabled={TimeStamp === "A"? true : false}
+                                            disabled={States.TimeStamp === "A"? true : false}
                                         >
                                             {monthsName.map((e,i)=><MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
                                         </Select>
@@ -288,7 +283,7 @@ export default function History() {
                                         <InputLabel id="year-simple-select-label">Año</InputLabel>
                                         <Select
                                             id="year-simple-select"
-                                            value={year}
+                                            value={Dates.year}
                                             name="year"
                                             onChange={handleChange}
                                         >
