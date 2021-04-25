@@ -72,7 +72,6 @@ export default useStyles = makeStyles((theme) => ({
     column1: {
         width: "63vw",
         height: "100%",
-
     },
     column: {
         width: '27vw',
@@ -130,5 +129,8 @@ export default useStyles = makeStyles((theme) => ({
     },
     formControl: {
         width: "100%",
+    },
+    info: {
+
     }
 }));
