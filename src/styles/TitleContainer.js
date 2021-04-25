@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 let useStyles = "";
 export default useStyles = makeStyles((theme) => ({
     ParentContainer:{
-        backgroundColor: "#FBFBFB",
+        backgroundColor: "#f9f9f9",
         borderRadius: "0.5em",
         height: "100%",
         width: "100%",

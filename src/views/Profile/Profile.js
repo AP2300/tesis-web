@@ -40,8 +40,8 @@ export default function Profile(props) {
     }
 
     function getIcon(name) {
-        if (name === "Face") return <Mood />
-        else if (name === "Finger") return <Fingerprint />
+        if (name === "Facial") return <Mood />
+        else if (name === "Huella") return <Fingerprint />
         else return <Dialpad />
     }
 
@@ -105,7 +105,7 @@ export default function Profile(props) {
     function Toggle(index) {
         let Update = JSON.parse(JSON.stringify(UserData))
         Update[index].IsActive = Number(!Update[index].IsActive)
-        const IsToUpdate = Update.some(el => el.IsActive && el.Name != "Code")
+        const IsToUpdate = Update.some(el => el.IsActive && el.Name != "Codigo")
         if (IsToUpdate) {
             const params = {
                 id: Update[index].IDBiometrics,
@@ -155,7 +155,7 @@ export default function Profile(props) {
                         <TitleContainer title="Metodos de autenticacion" >
                             <div className={classes.AuthContent}>
                                 {IsPromiseReady ? UserData.map((d, index) => {
-                                    if (d.Name !== "Code") {
+                                    if (d.Name !== "Codigo") {
                                         return (
                                             <Paper onClick={() => Toggle(index)} key={index}
                                                 className={clsx(classes.AuthItem, d.IsActive && classes.disabled, d.IsActive ? classes.green : classes.red)} elevation={1}>
