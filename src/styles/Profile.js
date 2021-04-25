@@ -198,6 +198,20 @@ export default useStyles = makeStyles((theme) => ({
                 color: "#5f5f5f"
             }
         },
+        "& > .AuthNameDis": {
+            width: "45%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            zIndex: "12",
+            backgroundColor: "#c4c4c4",
+            transition: "350ms",
+            "& > * ": {
+                fontWeight: 600,
+                color: "#8a8a8a"
+            }
+        },
         "& > .IsActive": {
             width: "55%",
             height: "100%",
@@ -205,6 +219,15 @@ export default useStyles = makeStyles((theme) => ({
             justifyContent: "center",
             alignItems: "center",
             color: "whitesmoke",
+            transition: "350ms",
+        },
+        "& > .IsDis": {
+            width: "55%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "#636363",
             transition: "350ms",
         },
         "& > * ": {
@@ -227,6 +250,9 @@ export default useStyles = makeStyles((theme) => ({
     },
     green: {
         backgroundColor: "#4caf50"
+    },
+    gray: {
+        backgroundColor: "#9c9c9c"
     },
     AuthContent: {
         display: "flex",
@@ -272,5 +298,7 @@ export default useStyles = makeStyles((theme) => ({
           alignItems: "center",
           justifyContent: "center"
       },
+      unSet: {
 
+      }
 }));
