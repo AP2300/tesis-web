@@ -141,7 +141,7 @@ export default function History() {
         <div >
             <Accordion className={classes.Acordion}  >
                 <AccordionSummary className={classes.margins}
-                    expandIcon={<ExpandMore />}
+                    expandIcon={<FilterList />}
                     aria-label="Expand"
                     aria-controls="additional-actions1-content"
                     id="additional-actions1-header"
@@ -167,12 +167,12 @@ export default function History() {
                         onFocus={(event) => event.stopPropagation()}
                         control={<Timeline onClick={() => { setStates({...States, TypeChart: "line"}) }}/>}
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
                         control={<FilterList />}
-                    />
+                    /> */}
                 </AccordionSummary>
                 <AccordionDetails>
                     <Paper elevation={0} className={classes.FilterContainer}>
