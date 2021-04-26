@@ -128,6 +128,14 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
     }
 } 
 
+export const setGradientColor = (canvas) => {
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,80,400);
+    gradient.addColorStop(0, "#2978b5b2");
+    gradient.addColorStop(0.95, "#caffbfb2");
+    return gradient;
+}
+
 export function getDateAccess(graphData) {
     let calc = 0;
     if(graphData){
