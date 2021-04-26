@@ -4,6 +4,11 @@ import sizes from "./sizes";
 let useStyles = "";
 
 export default useStyles = makeStyles((theme) => ({
+    "@keyframes loading ": {
+        " 0%": { backgroundPosition: "0% 50%" },
+        "50%": { backgroundPosition: "100% 50%" },
+        "100%": { backgroundPosition: "0% 50%" }
+      },
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -49,7 +54,6 @@ export default useStyles = makeStyles((theme) => ({
         padding: "6% 3% 2% 3%",
         display: "flex",
         flexDirection: "column",
-        minWidth: "33.2vw",
         height: "28vh",
         minHeight: "190px",
         flexGrow: 1,
@@ -67,7 +71,6 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "space-evenly",
         flexDirection: "column",
-        minWidth: "33.2vw",
         minHeight: "45vh",
         flexGrow: 1,
         "& > .Text":{
@@ -149,5 +152,30 @@ export default useStyles = makeStyles((theme) => ({
            color: "#056311eb",
            transition: "2000ms ease-in",
         }
-    }
+    },
+    List: {
+        width: '100%',
+        "& > .MuiListItem-container":{
+            backgroundColor: theme.palette.background.paper,
+            margin: "2%"
+        }
+      },
+      innerContainer:{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          alignItems: "center"
+      },
+      Title:{
+        height: "auto",
+        width: "100%"
+      },
+      loading: {
+        animationName: '$loading',
+        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
+        backgroundSize: "400% 400%",
+        animationDuration: '1s',
+        animationIterationCount: 'infinite',
+        color: "transparent",
+      },
 }));

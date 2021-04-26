@@ -11,12 +11,10 @@ import { useLocation } from "react-router";
         return <DashBoard />;
       case "/home/profile":
         return <Profile Data={userData}/>;
-      case "/home/profile/admin":
-        return <Profile Data={userData}/>;
       case "/home/history":
         return <History/>
         case "/home/security":
-        return <Security/>
+        return <Security Data={userData}/>
       default: 
         return <DashBoard/>;
     };
