@@ -32,7 +32,37 @@ export default function Profile(props) {
     const GetUserData = async () => {
         const res = await GetFullUserData()
         if (res) {
-            setUserData(res.data.data)
+            let data = res.data.data.filter((biometric, index, self) =>
+                index === self.findIndex((t) => (
+                    t.Name === biometric.Name
+                ))
+            )
+
+            if(data.findIndex((item) => item.Name === "Facial") === -1) {
+                data.push({
+                    Name: 'Facial',
+                    IsActive: 0,
+                    IDSecurity: 3,
+                    disabled: true
+                })
+            }
+
+            if(data.findIndex((item) => item.Name === "Huella") === -1) {
+                data.push({
+                    Name: 'Huella',
+                    IsActive: 0,
+                    IDSecurity: 2,
+                    disabled: true
+                })
+            }
+
+            data.sort(function(a, b) {
+                var textA = a.Name[0].toUpperCase();
+                var textB = b.Name[0].toUpperCase();
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+            });
+            
+            setUserData(data)
             setIsPromiseReady(true)
         } else {
             history.push("/")
@@ -40,8 +70,8 @@ export default function Profile(props) {
     }
 
     function getIcon(name) {
-        if (name === "Face") return <Mood />
-        else if (name === "Finger") return <Fingerprint />
+        if (name === "Facial") return <Mood />
+        else if (name === "Huella") return <Fingerprint />
         else return <Dialpad />
     }
 
@@ -105,10 +135,10 @@ export default function Profile(props) {
     function Toggle(index) {
         let Update = JSON.parse(JSON.stringify(UserData))
         Update[index].IsActive = Number(!Update[index].IsActive)
-        const IsToUpdate = Update.some(el => el.IsActive && el.Name != "Code")
+        const IsToUpdate = Update.some(el => el.IsActive && el.Name != "Codigo")
         if (IsToUpdate) {
             const params = {
-                id: Update[index].IDBiometrics,
+                id: Update[index].IDSecurity,
                 active: Update[index].IsActive
             }
             const res = UpdateAuthMethods(params)
@@ -155,13 +185,22 @@ export default function Profile(props) {
                         <TitleContainer title="Metodos de autenticacion" >
                             <div className={classes.AuthContent}>
                                 {IsPromiseReady ? UserData.map((d, index) => {
-                                    if (d.Name !== "Code") {
-                                        return (
-                                            <Paper onClick={() => Toggle(index)} key={index}
-                                                className={clsx(classes.AuthItem, d.IsActive && classes.disabled, d.IsActive ? classes.green : classes.red)} elevation={1}>
-                                                <Paper className="AuthName" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
-                                                <Typography className="IsActive">{d.IsActive ? "Activo" : "Inactivo"}</Typography>
-                                            </Paper>)
+                                    if (d.Name !== "Codigo") {
+                                        if(!d.disabled) {
+                                            return (
+                                                <Paper onClick={() => Toggle(index)} key={index}
+                                                    className={clsx(classes.AuthItem, d.IsActive && classes.disabled, d.IsActive ? classes.green : classes.red)} elevation={1}>
+                                                    <Paper className="AuthName" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
+                                                    <Typography className="IsActive">{d.IsActive ? "Activo" : "Inactivo"}</Typography>
+                                                </Paper>)
+                                        } else {
+                                            return (
+                                                <Paper 
+                                                    className={clsx(classes.AuthItem, d.IsActive && classes.disabled, classes.gray)} elevation={1}>
+                                                    <Paper className="AuthNameDis" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
+                                                    <Typography className="IsDis">{"No registrado"}</Typography>
+                                                </Paper>)
+                                        }
                                     }
                                 }) : <div className={classes.AuthContent}>
                                     <Paper className={clsx(classes.AuthItem, classes.loading)} />
