@@ -6,7 +6,8 @@ import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
-import { generateGraphData, getDateAccess } from '../../helpers/Graph'
+import { generateGraphData, getDateAccess, setGradientColor } from '../../helpers/Graph'
+import ChartComponent from "../../components/Chart";
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
@@ -47,6 +48,20 @@ export default function DashBoard() {
     }, 200)
   }
 
+  function getDataGraph(){
+    return canvas => {
+        return {
+            labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
+            datasets: [{
+              label: "accesos",
+              data: generateGraphData(graphData),
+              backgroundColor: setGradientColor(canvas),
+              borderColor: setGradientColor(canvas)
+            }]
+        };
+    }
+}
+
   return (
     <div className={classes.root}>
       <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
@@ -58,32 +73,9 @@ export default function DashBoard() {
       <Paper elevation={0} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading)} />
 
       <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
-        {graphData !== "" ? isPromiseReady ? <Line
-          data={
-            {
-              labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
-              datasets: [{
-                label: "accesos",
-                data: generateGraphData(graphData),
-                backgroundColor: "#f5deb382",
-                borderColor: "wheat"
-              },]
-            }
-          }
-          redraw={true}
-          options={{
-            maintainAspectRatio: false,
-            responsiveAnimationDuration: 100,
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  stepSize: 1,
-                }
-              }]
-            }
-          }
-          }
+        {graphData !== "" ? isPromiseReady ? <ChartComponent
+          type="line"
+          data={getDataGraph()}
         /> : "" : <div className={classes.message}><Typography >No hay accesos la ultima semana</Typography></div>}
       </Paper>
     </div>

@@ -4,14 +4,14 @@ import {
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
     Paper, Divider, AccordionActions, Select
 } from "@material-ui/core";
-import { ExpandMore, FilterList } from "@material-ui/icons";
+import { ExpandMore, FilterList, Timeline,  BarChart  } from "@material-ui/icons";
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import clsx from 'clsx';
-import { Line, Bar } from "react-chartjs-2";
 import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
-import { FilterSearch, ChangeGraph, calcNumWeek } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor } from '../../helpers/Graph';
+import ChartComponent from '../../components/Chart';
 const moment = require('moment');
 moment().format();
 
@@ -23,7 +23,7 @@ export default function History() {
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
     const [Data, setData] = useState({ Search: [], User: "", Users: "", graph: "" });
     const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U" });
+    const [States, setStates] = useState({ TimeStamp: "S", Type: "U" , TypeChart: "bar"});
     const [Textfield, setTextfield] = useState("");
 
     useEffect(() => {
@@ -90,6 +90,20 @@ export default function History() {
         });
     }
 
+    function getDataGraph(){
+        return canvas => {
+            return {
+                labels: Data.graph[0],
+                datasets: [{
+                    backgroundColor : setGradientColor(canvas), 
+                    borderColor : setGradientColor(canvas),
+                    label: "Accesos",
+                    data: Data.graph[1],
+                },]
+            };
+        }
+    }
+
     function getYearRange(){
         let val= 2021;
         let year = new Date()
@@ -109,13 +123,10 @@ export default function History() {
             if (reg.test(e.FullName) && Textfield !== ""
                 || reg.test(e.Email) && Textfield !== ""
                 || reg.test(e.IDUser) && Textfield !== "") {
-                    console.log("holiwi",e)
                 newSearchArr.push(e)
             } else if (Textfield === "") {
-                console.log(newSearchArr, 1)
                 setData({...Data, Search: Data.Users});
             } else {
-                console.log(newSearchArr, 2)    
                 setData({...Data, Search: newSearchArr});
             }
         });
@@ -148,8 +159,19 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
+                        control={<BarChart onClick={() => { setStates({...States, TypeChart: "bar"}) }}/>}
+                    />
+                    <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={<Timeline onClick={() => { setStates({...States, TypeChart: "line"}) }}/>}
+                    />
+                    <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
                         control={<FilterList />}
-
                     />
                 </AccordionSummary>
                 <AccordionDetails>
@@ -222,35 +244,13 @@ export default function History() {
                                     <AccordionDetails className={classes.details}>
                                         <div className={clsx(classes.column1, !Promises.isUserReady && classes.loading)}>
                                             {
-                                                Data.graph ? Promises.isUserReady ? <Bar
-                                                    data={
-                                                        {
-                                                            labels: Data.graph[0],
-                                                            datasets: [{
-                                                                label: "accesos",
-                                                                data: Data.graph[1],
-                                                                backgroundColor: "#2978b5",
-                                                                borderColor: "wheat"
-                                                            },]
-                                                        }
-                                                    }
-                                                    options={{
-                                                        maintainAspectRatio: false,
-                                                        responsiveAnimationDuration: 100,
-                                                        scales: {
-                                                            yAxes: [{
-                                                                ticks: {
-                                                                    beginAtZero: true,
-                                                                    stepSize: 1,
-                                                                }
-                                                            }]
-                                                        }
-                                                    }}
+                                                Data.graph ? Promises.isUserReady ? <ChartComponent
+                                                    type={States.TypeChart}
+                                                    data={getDataGraph()}
                                                 /> : "" : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
                                             }
                                         </div>
                                         <div className={clsx(classes.info,classes.column, Promises.isUserReady ? "" : classes.loading, classes.helper)}>
-                                            
                                         </div>
                                     </AccordionDetails>
                                     <Divider />
