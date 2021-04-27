@@ -42,7 +42,7 @@ export default function HistoryUser(props) {
                         <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
                             <div className={clsx(classes.formControl, animations.Filter && classes.show)}>
                                 <FormControl className="timestamp">
-                                    <InputLabel id="Timestamp">escala de tiempo</InputLabel>
+                                    <InputLabel id="Timestamp">Escala de tiempo</InputLabel>
                                     <Select
                                         labelId="Timestamp"
                                         id="Timestamp"
@@ -56,7 +56,7 @@ export default function HistoryUser(props) {
                                 </FormControl>
 
                                 <FormControl>
-                                    <InputLabel id="week">semana</InputLabel>
+                                    <InputLabel id="week">Semana</InputLabel>
                                     <Select
                                         labelId="week"
                                         id="week"
