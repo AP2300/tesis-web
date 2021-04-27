@@ -31,10 +31,7 @@ import { isObject } from "lodash";
     };
   }
 
-  export function otherPage(e){
-    let route = "";
-    if(isObject(e)) route = e.target.outerText; 
-    else route = e; 
+  export function otherPage(route){
     switch(route) {
       case "Panel Principal": return("/home");
       case "Panel Personal": return("/home/profile");
