@@ -3,6 +3,7 @@ import DashBoard from "../views/DashBoard/DashBoard";
 import History from "../views/History/History"
 import Security from "../views/Security/Security"
 import { useLocation } from "react-router";
+import HistoryUser from "../views/HistoryUser/HistoryUser";
 
  export function PageSelector(userData, SearchData){
     const location = useLocation();
@@ -12,7 +13,7 @@ import { useLocation } from "react-router";
       case "/home/profile":
         return <Profile Data={userData}/>;
       case "/home/history":
-        return <History/>
+        return <HistoryUser/>
         case "/home/security":
         return <Security Data={userData}/>
       default: 
