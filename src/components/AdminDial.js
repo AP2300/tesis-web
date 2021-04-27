@@ -8,8 +8,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import HistoryIcon from '@material-ui/icons/History';
 import PeopleIcon from '@material-ui/icons/People';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-
-
+import { PageSelector, otherPage } from "../helpers/Home";
+import { useHistory } from "react-router";
 
 const actions = [
   { icon: <PeopleIcon />, name: 'Aministar Usuarios' },
@@ -18,6 +18,7 @@ const actions = [
 ];
 
 export default function AdminDial() {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -85,6 +86,14 @@ export default function AdminDial() {
     setOpen(false);
   };
 
+  const ChangePage = (name) => {
+    let path = otherPage(name);
+    if (path) {
+      setOpen(false);
+      history.push(path);
+    }
+  }
+
   return (
     <div className={classes.root}>
       <SpeedDial
@@ -99,9 +108,10 @@ export default function AdminDial() {
         {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
+            id={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={handleClose}
+            onClick={() => ChangePage(action.name)}
           />
         ))}
       </SpeedDial>
