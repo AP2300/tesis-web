@@ -13,6 +13,7 @@ export default function Security(props) {
     const history = useHistory()
     const [formats, setFormats] = useState(() => []);
     const [isPromiseReady, setIsPromiseReady] = useState({ ReqPromise: false, PropsPromise: false })
+    const [PropsPromise, setPropsPromise] = useState(false)
     const [state, setState] = useState({ Security: "", checked: [], BasicData: "", Code: 0 })
 
     const handleToggle = (value) => () => {
@@ -29,7 +30,7 @@ export default function Security(props) {
 
     function getFingerStatus() {
         let newArr = []
-        state.Security.forEach((e, i) => {
+        state.Security.forEach(e => {
             if (e.Name !== "Codigo" && e.Name !== "Facial") {
                 if (e.IsActive) newArr.push(`${e.fingerName}`)
             }
@@ -39,28 +40,37 @@ export default function Security(props) {
     }
 
     useEffect(() => {
-        if (state.Security === "" && isPromiseReady.PropsPromise === false) {
-            console.log("hello");
+        if (state.Security === "") {
+            console.log("primer UE");
             GetUserSecurityData()
         }
     }, [state.Security])
 
     useEffect(() => {
-        if (state.Security !== "" && isPromiseReady.PropsPromise === false) {
+        if (state.Security !== "") {
+            console.log("segundo UE");
             SetSideButton()
             getFingerStatus()
             state.Security.forEach(e => { if (e.Name === "Codigo") setState({ ...state, Code: e.data }) })
         }
     }, [state.Security])
 
-    useEffect(async () => {
-        const Data = await props.Data
-        if (Data) {
-            console.log("asdsad");
-            setState({ ...state, BasicData: Data })
-            setIsPromiseReady({ ...isPromiseReady, PropsPromise: true })
-        }
+    useEffect(() => {
+        GetBasicData()
     }, [props])
+
+    const GetBasicData = async () => {
+        console.log("das");
+        const Data = await props.Data
+        console.log(Data, props.Data);
+        if (Data) {
+            console.log("tercer UE");
+            setState({ ...state, BasicData: props.Data })
+            // setIsPromiseReady({ ...isPromiseReady, PropsPromise: !isPromiseReady.PropsPromise })
+            setPropsPromise(true)
+        }
+    }
+
 
     const GetUserSecurityData = async () => {
         const res = await GetFullUserData()
@@ -115,23 +125,23 @@ export default function Security(props) {
                         <Typography className="Text">Tu codigo de acceso es: </Typography>
                         <Typography className={clsx(classes.CodeNumber, state.Code === 0 ? classes.loading : "")}>
                             {state.Code === 0 ? "|||||||||||||" : state.Code}
-                            </Typography>
+                        </Typography>
                     </div>
                     <Divider orientation="horizontal" variant={"middle"} />
                     <div className={classes.faceModel}>
                         <Typography className="Text" align="center">Foto para reconocimiento facial actual: </Typography>
-                        {/* {!formats.includes("Facial") && <Chip
-                                    className={classes.chip}
-                                    icon={<ReportProblemRounded />}
-                                    label="El reconocimiento facial esta desactivado"
-                                />} */}
+                        {!formats.includes("Facial") && <Chip
+                            className={classes.chip}
+                            icon={<ReportProblemRounded />}
+                            label="El reconocimiento facial esta desactivado"
+                        />}
                         <Avatar src="" className={classes.img} />
                     </div>
                 </Paper>
                 <div className={classes.rightContainer}>
-                    <Typography variant={"h4"} align="center" className={clsx(!isPromiseReady.PropsPromise && classes.loading, classes.Title)}>{
-                        isPromiseReady.PropsPromise ?
-                            `${state.BasicData.FullName}, estos son tus metodos de autenticacion` :
+                    <Typography variant={"h4"} align="center" className={clsx(!PropsPromise && classes.loading, classes.Title)}>{
+                        PropsPromise ?
+                            `${props.Data.FullName}, estos son tus metodos de autenticacion` :
                             "|||||||||||||||||||||||||||||||||||||||||||||||||||"}
                         <Divider orientation="horizontal" variant={"middle"} flexItem />
                     </Typography>
