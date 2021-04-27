@@ -17,7 +17,7 @@ const actions = [
   { icon: <LockOpenIcon />, name: 'Administrar seguridad' }
 ];
 
-export default function AdminDial() {
+export default function AdminDial(props) {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles((theme) => ({
@@ -86,12 +86,9 @@ export default function AdminDial() {
     setOpen(false);
   };
 
-  const ChangePage = (name) => {
-    let path = otherPage(name);
-    if (path) {
-      setOpen(false);
-      history.push(path);
-    }
+  const handleChange = (name) => {
+    setOpen(false);
+    props.ChangePage(name);
   }
 
   return (
@@ -111,7 +108,7 @@ export default function AdminDial() {
             id={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={() => ChangePage(action.name)}
+            onClick={() => handleChange(action.name)}
           />
         ))}
       </SpeedDial>

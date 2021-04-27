@@ -5,7 +5,6 @@ import Security from "../views/Security/Security"
 import { useLocation } from "react-router";
 import HistoryUser from "../views/HistoryUser/HistoryUser";
 import AdminSecurity from "../views/AdminSecurity/AdminSecurity";
-import { isObject } from "lodash";
 
 export function PageSelector(userData, SearchData) {
   const location = useLocation();
@@ -34,17 +33,28 @@ export function PageSelector(userData, SearchData) {
   };
 }
 
-export function otherPage(e) {
-  let route = "";
-  if (isObject(e)) route = e.target.outerText;
-  else route = e;
-  switch (route) {
-    case "Panel Principal": return ("/home");
-    case "Panel Personal": return ("/home/profile");
-    case "Historial": return ("/home/history");
-    case "Seguridad": return ("/home/security");
-    case "Administrar seguridad": return ("/admin/security");
-    case "Historial global": return ("/admin/history");
-    default: return ("/home");
+// export function otherPage(e) {
+//   let route = "";
+//   if (isObject(e)) route = e.target.outerText;
+//   else route = e;
+//   switch (route) {
+//     case "Panel Principal": return ("/home");
+//     case "Panel Personal": return ("/home/profile");
+//     case "Historial": return ("/home/history");
+//     case "Seguridad": return ("/home/security");
+//     case "Administrar seguridad": return ("/admin/security");
+//     case "Historial global": return ("/admin/history");
+//     default: return ("/home");
+//   }
+
+  export function otherPage(route){
+    switch(route) {
+      case "Panel Principal": return("/home");
+      case "Panel Personal": return("/home/profile");
+      case "Historial": return("/home/history");
+      case "Seguridad": return("/home/security");
+      case "Administrar seguridad": return("/admin/security");
+      case "Historial global": return ("/admin/history");
+      default : return("/home");
+    }
   }
-}

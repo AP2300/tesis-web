@@ -33,7 +33,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("")
-  const [activeWindow, setActiveWindow] = useState("")
+  const [activeWindow, setActiveWindow] = useState("Panel Principal")
   const [SearchData, setSearchData] = useState("")
 
   useEffect(() => {
@@ -64,9 +64,13 @@ export default function Home() {
   };
 
   function ChangePage(e) {
-    let path = otherPage(e);
+    console.log(e);
+    let route = "";
+    if(typeof e === 'object') route = e.target.outerText; 
+    else route = e; 
+    let path = otherPage(route);
     if (path) {
-      setActiveWindow(e.target.outerText);
+      setActiveWindow(route);
       setOpen(false);
       history.push(path);
     }
@@ -101,11 +105,11 @@ export default function Home() {
             <MenuIcon className={classes.userWelcome} />
           </IconButton >
             <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
-              {activeWindow !== "Panel Personal" ?
+              {activeWindow == "Panel Principal" ?
                 (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
               }
             </Typography>
-            <AdminDial  />
+            <AdminDial ChangePage={ChangePage} />
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}
