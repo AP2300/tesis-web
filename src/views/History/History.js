@@ -43,7 +43,6 @@ export default function History() {
     }, [Textfield])
 
     useEffect(() => {
-        console.log("putabida");
         if (Data.AllUsers.length !== 0) handleFilterSearch(Data.AllUsers)
     }, [Promises.isUserReady,Dates,States.TimeStamp]) 
 
@@ -71,7 +70,6 @@ export default function History() {
                     AllUsersData.push({ id: User.IDUser, name: User.FullName, Data: res.data.data })
                 }
                 if (AllUsersData.length === Data.Users.length){
-                    console.log("putabida entre al setState");
                     setData({ ...Data, AllUsers: AllUsersData });
                     setPromises({ ...Promises, isUserReady: true });
                     handleFilterSearch(AllUsersData);            
@@ -295,7 +293,7 @@ export default function History() {
                                 <AccordionDetails className={classes.details}>
                                     <div className={clsx(classes.column1)}>
                                         {
-                                            Data.graph ? <ChartComponent
+                                            Data.graph.[el.FullName] ? <ChartComponent
                                                 type={States.TypeChart}
                                                 data={getDataGraph(el.FullName)}
                                             /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
