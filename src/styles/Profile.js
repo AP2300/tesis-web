@@ -229,6 +229,7 @@ export default useStyles = makeStyles((theme) => ({
             alignItems: "center",
             color: "#636363",
             transition: "350ms",
+            fontSize: "1em",
         },
         "& > * ": {
             fontWeight: 600,
