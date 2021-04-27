@@ -32,11 +32,14 @@ export default useStyles = makeStyles((theme) => ({
     },
     ButtonDiv: {
         width: "100%",
-        height: "13vh",
+        height: "16vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "2%"
+        padding: "2%",
+        "& > .AFC":{
+            display: "flex"
+        }
     },
     ExpandibleButton: {
         height: "7vh",
@@ -52,6 +55,7 @@ export default useStyles = makeStyles((theme) => ({
         fontFamily: "Century Gothic",
         letterSpacing: "1.3px",
         borderRadius: "2em",
+        zIndex: 10,
         "&:hover": {
             color: "whitesmoke",
             backgroundColor: "#565656"
@@ -62,16 +66,30 @@ export default useStyles = makeStyles((theme) => ({
     },
     ExpandibleContainer: {
         width: "0",
+        opacity: 0,
+        marginLeft: "-15vw",
         borderRadius: "2em",
-        transition: "250ms ease-in"
+        transition: "200ms ease-in",
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: "16vw",
+        paddingRight: "5%",
+        paddingTop: "-3%"
     },
     ExpandedContainer: {
-        width: "85%",
+        width: "71vw",
         borderRadius: "2em",
-        transition: "250ms ease-in"
+        transition: "200ms ease-in",
+        display: "flex",
+        alignItems: "center",
+        opacity: 1,
+        zIndex: 1,
+        [sizes.Wdown("xs")]: {
+            width: "66vw",
+        },
     },
     panelContainer: {
-        height: "67vh",
+        height: "64vh",
         padding: "2%",
         display: "flex",
         overflowY: "scroll",
@@ -103,6 +121,7 @@ export default useStyles = makeStyles((theme) => ({
     minimizerButton: {
         width: "5%",
         color: "inherit",
+        padding: "0",
         [sizes.Wdown("xs")]: {
             height: "5%",
             width: "100%",
@@ -115,5 +134,31 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    },
+    iconContainer:{
+        display: "flex",
+        alignItems: "center",
+        [sizes.Wdown("xs")]: {
+            flexDirection: "column"
+        },
+    },
+    formControl:{
+        width: "100%",
+        height: "3vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "15px",
+        opacity: 0,
+        transition: "300ms ease-in",
+        "& > .MuiFormControl-root":{
+            width: "8vw"
+        },
+        "& > .MuiFormControl-root.timestamp":{
+            width: "15vw"
+        }
+    },
+    show:{
+        opacity: 1
     }
 }));

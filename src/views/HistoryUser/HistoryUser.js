@@ -27,16 +27,79 @@ export default function HistoryUser(props) {
         else setAnimations({ ...animations, Minimize: false })
     }
 
+    function handleChange() {
+
+    }
+
     return (
         <div className={classes.root}>
             <Paper className={classes.mainContainer}>
                 <div className={classes.ButtonDiv}>
-                    <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
+                    <div className="AFC">
                         <Paper elevation={3} className={classes.ExpandibleButton} onClick={ShowFilters}>
-                            Filtrar<ChevronRightIcon />
+                            Filtrar {!animations.Filter ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                         </Paper>
-                    </Paper>
-                    <div>
+                        <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
+                            <div className={clsx(classes.formControl, animations.Filter && classes.show)}>
+                                <FormControl className="timestamp">
+                                    <InputLabel id="Timestamp">escala de tiempo</InputLabel>
+                                    <Select
+                                        labelId="Timestamp"
+                                        id="Timestamp"
+                                        value={""}
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl>
+                                    <InputLabel id="week">semana</InputLabel>
+                                    <Select
+                                        labelId="week"
+                                        id="week"
+                                        value={""}
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl>
+                                    <InputLabel id="month">Mes</InputLabel>
+                                    <Select
+                                        labelId="month"
+                                        id="month"
+                                        value={""}
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl>
+                                    <InputLabel id="year">Año</InputLabel>
+                                    <Select
+                                        labelId="year"
+                                        id="year"
+                                        value={""}
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </Paper>
+                    </div>
+                    <div className={classes.iconContainer}>
                         <IconButton><TimelineIcon /></IconButton>
                         <IconButton><BarChartIcon /></IconButton>
                     </div>
