@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import Chart from 'chart.js'
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SubjectIcon from '@material-ui/icons/Subject';

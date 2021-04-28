@@ -11,6 +11,7 @@ import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
 import ChartComponent from '../../components/Chart';
+import Chart from 'chart.js'
 import { colors } from '../../api/constants';
 import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
 const moment = require('moment');
