@@ -187,9 +187,9 @@ export default function HistoryUser(props) {
                         </Paper>
                     </div>
                     <div className={classes.iconContainer}>
-                        <IconButton onClick={GraphType} name="line" className={clsx(States.TypeChart === "line" ? classes.selectedChart : "")}>
-                            <i className="fas fa-chart-bar"></i></IconButton>
                         <IconButton onClick={GraphType} name="bar" className={clsx(States.TypeChart === "bar" ? classes.selectedChart : "")}>
+                            <i className="fas fa-chart-bar"></i></IconButton>
+                        <IconButton onClick={GraphType} name="line" className={clsx(States.TypeChart === "line" ? classes.selectedChart : "")}>
                             <i className="fas fa-chart-area"></i>
                         </IconButton>
                     </div>

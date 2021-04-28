@@ -42,12 +42,12 @@ export default useStyles = makeStyles((theme) => ({
         }
     },
     ExpandibleButton: {
-        minHeight: "46px",
+        minHeight: "59px",
         minWidth: "156px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "calc(17px + (30 - 17) * ((50vw - 303px) / (1600 - 300)))",
+        fontSize: "calc(21px + (30 - 21) * ((50vw - 303px) / (1600 - 300)))",
         fontWeight: "800",
         color: "#5f5f5f",
         cursor: "pointer",
@@ -61,7 +61,7 @@ export default useStyles = makeStyles((theme) => ({
             backgroundColor: "#565656"
         },
         "& > * ": {
-            fontSize: "1.8em",
+            fontSize: "1.7em",
         }
     },
     ExpandibleContainer: {
@@ -72,8 +72,8 @@ export default useStyles = makeStyles((theme) => ({
         transition: "200ms ease-in",
         display: "flex",
         alignItems: "center",
-        paddingLeft: "16vw",
-        paddingRight: "5%",
+        paddingLeft: "15vw",
+        paddingRight: "6%",
         [sizes.Wdown("md")]: {
             marginBottom: "-240px",
             // marginLeft: "-155px"
@@ -91,7 +91,7 @@ export default useStyles = makeStyles((theme) => ({
             height: "279px",
             width: "232px",
             flexDirection: "column",
-            paddingTop: "23%",
+            paddingTop: "28%",
             paddingLeft: "4%"
         },
     },
@@ -150,12 +150,10 @@ export default useStyles = makeStyles((theme) => ({
         },
     },
     formControl: {
-        width: "100%",
+        display: "none",
         height: "3vh",
-        display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "15px",
         opacity: 0,
         "& > .MuiFormControl-root": {
             width: "8vw"
@@ -175,12 +173,14 @@ export default useStyles = makeStyles((theme) => ({
     },
     show: {
         opacity: 1,
+        display: "flex",
+        width: "100%"
     },
     selectedChart: {
-        "& > *":{
+        "& > *": {
             background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
-        "-webkit-background-clip": "text",
-         "-webkit-text-fill-color": "transparent",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
         },
         // background: "-webkit-gradient(linear, left top, left bottom, from(#f00), to(#333))",
         // "-webkit-background-clip": "text",

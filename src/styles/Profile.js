@@ -143,7 +143,7 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "space-around",
         flexDirection: "column",
-        width: "20%",
+        width: "27%",
         "& > *": {
             fontSize: "calc(12px + (24 - 12) * ((70vw - 303px) / (1600 - 300)))",
             fontWeight: "600",
