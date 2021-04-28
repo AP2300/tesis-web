@@ -71,6 +71,19 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
     }
 }
 
+export const GraphLabels = (TimeStamp) => {
+    switch (TimeStamp) {
+        case "S":
+            return ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+        case "M":
+            return ["1era", "2da", "3era", "4ta", "5ta"];
+        case "A":
+            return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        default:
+            return ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+    }
+}
+
 export function ChangeGraph(TimeStamp,year,month,week,graphData){
     let graphW = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
     let graphM = [ 0 , 0 , 0 , 0 , 0 ];
@@ -92,9 +105,9 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
             })
             if(getDateAccess(graphW) === 0){
                 return false;
-            } else return [["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],graphW];
+            } else return [GraphLabels(TimeStamp),graphW];
         case "M":
-            const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
+            const weeks = GraphLabels(TimeStamp);
             if(graphData){
                 graphData.forEach((d,i) => {
                     indexWeek.forEach((w) =>{
@@ -110,7 +123,7 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
             return [weeks,graphM];
         case "A":
             const monthsShort = moment()._locale._monthsShort;
-            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            const months = GraphLabels(TimeStamp);
             if(graphData){
                 for (let i = 0; i < 12; i++) {
                     graphData.forEach((y) => {
@@ -128,11 +141,12 @@ export function ChangeGraph(TimeStamp,year,month,week,graphData){
     }
 } 
 
-export const setGradientColor = (canvas) => {
+export const setGradientColor = (canvas,colors) => {
     const ctx = canvas.getContext('2d');
-    const gradient = ctx.createLinearGradient(0,0,80,400);
-    gradient.addColorStop(0, "#2978b5b2");
-    gradient.addColorStop(0.95, "#caffbfb2");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 370);
+    gradient.addColorStop(colors[0].stop, colors[0].color);
+    gradient.addColorStop(colors[1].stop, colors[1].color);
+    gradient.addColorStop(colors[2].stop, colors[2].color);
     return gradient;
 }
 

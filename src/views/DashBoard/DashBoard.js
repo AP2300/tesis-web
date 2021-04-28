@@ -8,6 +8,7 @@ import { Typography } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
 import { generateGraphData, getDateAccess, setGradientColor } from '../../helpers/Graph'
 import ChartComponent from "../../components/Chart";
+import { colors } from '../../api/constants';
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
@@ -55,8 +56,8 @@ export default function DashBoard() {
             datasets: [{
               label: "accesos",
               data: generateGraphData(graphData),
-              backgroundColor: setGradientColor(canvas),
-              borderColor: setGradientColor(canvas)
+              backgroundColor: setGradientColor(canvas,colors[2]),
+              borderColor: setGradientColor(canvas,colors[2])
             }]
         };
     }

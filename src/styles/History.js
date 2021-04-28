@@ -53,6 +53,14 @@ export default useStyles = makeStyles((theme) => ({
         boxShadow: "3px 2px 5px #00000038",
         overflowY: "scroll"
     },
+    GeneralGraph: {
+        width: "100%",
+        height: "50vh", 
+    },
+    HideGraph: {
+        width: "100%",
+        height: "0",
+    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
     },
@@ -107,7 +115,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     FilterContainer: {
         width: "100vw",
-        height: "35vh",
+        height: "27vh",
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
@@ -117,7 +125,9 @@ export default useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         display: "flex",
         flexDirection: "row",
-        width: "50%",
+        flexWrap: "wrap",
+        flexGrow: "1",
+        minWidth: "210px",
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -125,12 +135,19 @@ export default useStyles = makeStyles((theme) => ({
     OuterContainer: {
         display: "flex",
         flexDirection: "row",
-        height: "100%"
+        flexWrap: "wrap",
+        height: "100%",
+        width: "100%",
+        overflowY: "scroll",
+        justifyContent: "center"
     },
     formControl: {
         width: "100%",
     },
-    info: {
-
+    BtnActive: {
+        color: "linear-gradient(to bottom, #2978b5c2, #2978b5a2, #caffbf52, #caffbfa2, #caffbfc2)"
+    },
+    BtnOff: {
+        color: "linear-gradient(to right, #2978b5c2, #2978b5a2, #caffbf52, #caffbfa2, #caffbfc2)"
     }
 }));
