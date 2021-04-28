@@ -7,13 +7,14 @@ import {
 } from "@material-ui/core";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SubjectIcon from '@material-ui/icons/Subject';
 import clsx from 'clsx';
 
 export default function HistoryUser(props) {
     const [animations, setAnimations] = useState({ Filter: false, Minimize: false })
+    const [typeChart, setTypeChart] = useState("line")
     const classes = useStyles()
 
 
@@ -29,6 +30,10 @@ export default function HistoryUser(props) {
 
     function handleChange() {
 
+    }
+
+    function GraphType(e) {
+        setTypeChart(e.currentTarget.name)
     }
 
     return (
@@ -100,8 +105,11 @@ export default function HistoryUser(props) {
                         </Paper>
                     </div>
                     <div className={classes.iconContainer}>
-                        <IconButton><TimelineIcon /></IconButton>
-                        <IconButton><BarChartIcon /></IconButton>
+                        <IconButton onClick={GraphType} name="line" className={clsx(typeChart === "line" ? classes.selectedChart : "")}>
+                            <i className="fas fa-chart-bar"></i></IconButton>
+                        <IconButton onClick={GraphType} name="bar" className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
+                            <i className="fas fa-chart-area"></i>
+                        </IconButton>
                     </div>
 
                 </div>
