@@ -7,16 +7,13 @@ export default function ChartComponent(props) {
         maintainAspectRatio: false,
         responsiveAnimationDuration: 100,
         scales: {
-          yAxes: {
+          yAxes: [{
             ticks: {
               beginAtZero: true,
               stepSize: 1,
-            },
-          },
-        },
-        interaction: {
-          intersect: false
-        },    
+            }
+          }]
+        }
       }
     const render = type === "line" ? type === "bar" ? 
         "" : 
