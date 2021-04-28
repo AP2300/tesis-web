@@ -12,7 +12,7 @@ export default useStyles = makeStyles((theme) => ({
         backgroundColor: "#F3F3F3",
         borderRadius: "0.5em",
         color: "#000000a6",
-        height: "60px",
+        height: "50px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
