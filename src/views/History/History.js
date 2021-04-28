@@ -12,7 +12,7 @@ import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
 import ChartComponent from '../../components/Chart';
 import { colors } from '../../api/constants';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
@@ -170,17 +170,6 @@ export default function History() {
                 datasets: DataSet
             };
         }
-    }
-
-    function getYearRange() {
-        let val = 2021;
-        let year = new Date()
-        val = val - year.getFullYear() + 1;
-        let newArr = new Array(val);
-        for (let i = 0; i < newArr.length; i++) {
-            newArr[i] = 2021 + i;
-        }
-        return newArr
     }
 
     function FuzzySearch() {

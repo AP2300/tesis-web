@@ -17,7 +17,7 @@ export function PageSelector(userData, SearchData) {
       return <Profile Data={userData} />;
 
     case "/home/history":
-      return <HistoryUser />
+      return <HistoryUser User={userData} />
 
     case "/admin/history":
       return <History />

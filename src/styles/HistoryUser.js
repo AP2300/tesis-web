@@ -91,7 +91,7 @@ export default useStyles = makeStyles((theme) => ({
             height: "279px",
             width: "232px",
             flexDirection: "column",
-            paddingTop: "16%",
+            paddingTop: "23%",
             paddingLeft: "4%"
         },
     },

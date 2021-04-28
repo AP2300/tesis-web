@@ -84,6 +84,17 @@ export const GraphLabels = (TimeStamp) => {
     }
 }
 
+export function getYearRange() {
+    let val = 2021;
+    let year = new Date()
+    val = val - year.getFullYear() + 1;
+    let newArr = new Array(val);
+    for (let i = 0; i < newArr.length; i++) {
+        newArr[i] = 2021 + i;
+    }
+    return newArr
+}
+
 export function ChangeGraph(TimeStamp,year,month,week,graphData){
     let graphW = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
     let graphM = [ 0 , 0 , 0 , 0 , 0 ];
