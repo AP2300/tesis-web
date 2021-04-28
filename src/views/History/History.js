@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import {
     Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select
+    Paper, Divider, AccordionActions, Select, IconButton
 } from "@material-ui/core";
 import { ExpandMore, FilterList, Timeline, BarChart, Public } from "@material-ui/icons";
 import clsx from 'clsx';
@@ -233,20 +233,29 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<BarChart className={clsx( States.TypeChart === "bar" ? classes.BtnActive : classes.Btnoff)} onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} />}
+                        control={<IconButton 
+                        className={clsx( States.TypeChart === "bar" ? classes.BtnActive : classes.Btnoff)} 
+                        onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} >
+                            <i className="fas fa-chart-bar"></i></IconButton>}
                     />
                     <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<Timeline className={clsx( States.TypeChart === "line" ? classes.BtnActive : classes.Btnoff)} onClick={() => { setStates({ ...States, TypeChart: "line" }) }} />}
+                        control={<IconButton 
+                            className={clsx( States.TypeChart === "line" ? classes.BtnActive : "")} 
+                        onClick={() => { setStates({ ...States, TypeChart: "line" }) }} >
+                            <i className="fas fa-chart-line"></i></IconButton>}
                     />
                     <FormControlLabel
-                        className={clsx( States.ShowGeneral ? classes.BtnActive : classes.Btnoff)}
+                        className={clsx( States.ShowGeneral ? classes.BtnActive : "")}
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<Public onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} />}
+                        control={<IconButton 
+                        onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
+                            <i class="fas fa-globe-americas"></i>
+                        </IconButton>}
                     />
                     {/* <FormControlLabel
                         aria-label="Acknowledge"

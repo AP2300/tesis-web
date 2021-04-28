@@ -13,8 +13,8 @@ export default useStyles = makeStyles((theme) => ({
     },
     Acordion: {
         backgroundColor: "rgb(232 232 232)",
-        "& > * ": {
-            padding: "0 10px"
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root.Mui-expanded":{
+            height: "9vh"
         },
         width: "100%"
     },
@@ -55,11 +55,15 @@ export default useStyles = makeStyles((theme) => ({
     },
     GeneralGraph: {
         width: "100%",
-        height: "50vh", 
+        height: "50vh",
+        padding: "1.3%",
+        transition: "200ms ease-in"
     },
     HideGraph: {
         width: "100%",
         height: "0",
+        transition: "200ms ease-out"
+
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
@@ -95,7 +99,7 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         "&& > *": {
-          fontSize: "3em"
+            fontSize: "3em"
         }
     },
     link: {
@@ -119,7 +123,7 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
-        padding: "2%"
+        padding: ".5%"
     },
     innerContainer: {
         margin: theme.spacing(1),
@@ -145,9 +149,10 @@ export default useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     BtnActive: {
-        color: "linear-gradient(to bottom, #2978b5c2, #2978b5a2, #caffbf52, #caffbfa2, #caffbfc2)"
+        "& > *": {
+            background: "linear-gradient(348deg, rgba(207,14,31,1) 0%, rgba(243,177,59,1) 70%, rgba(249,206,64,1) 100%)",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+        }
     },
-    BtnOff: {
-        color: "linear-gradient(to right, #2978b5c2, #2978b5a2, #caffbf52, #caffbfa2, #caffbfc2)"
-    }
 }));
