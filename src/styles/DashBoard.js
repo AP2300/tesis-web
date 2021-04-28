@@ -66,5 +66,22 @@ export default makeStyles((theme) => ({
     backgroundSize: "400% 400%",
     animationDuration: '1s',
     animationIterationCount: 'infinite'
+  },
+  buttonBox:{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    "& > .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
+      fontSize: "calc(34px + (50 - 34) * ((90vw - 320px) / (1600 - 300)))",
+      width: "13vw",
+      height: "19.2vh",
+      borderRadius: "5px",
+      color: "#565656"
+    }
+  },
+  selectedChart:{
+    background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
+    "-webkit-background-clip": "text",
+     "-webkit-text-fill-color": "transparent",
   }
 }));

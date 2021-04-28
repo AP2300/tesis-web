@@ -3,9 +3,9 @@ import { useHistory } from 'react-router';
 import {
     Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select, IconButton
+    Paper, Divider, AccordionActions, Select, IconButton, Button
 } from "@material-ui/core";
-import { ExpandMore, FilterList, Timeline, BarChart, Public } from "@material-ui/icons";
+import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
 import clsx from 'clsx';
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
@@ -22,7 +22,7 @@ export default function History() {
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
     const [Data, setData] = useState({ Search: [], User: "", Users: "", AllUsers: "", graph: "" });
     const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true });
+    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
 
     useEffect(() => {
@@ -126,14 +126,33 @@ export default function History() {
         });
     }
 
+    window.addEventListener("click", beforePrintHandler);
+
+    function handleClick(e) {
+        if (States.showChart) setStates({ ...States, showChart: false })
+        else setStates({ ...States, showChart: true })
+
+
+    }
+
+    function beforePrintHandler() {
+        setTimeout(() => {
+            console.log("putabida");
+            for (var id in Chart.instances) {
+                console.log(Chart.instances[id]);
+                Chart.instances[id].resize();
+            }
+        }, 100)
+    }
+
     function getDataGraph(name) {
         if (name !== "") {
             return canvas => {
                 return {
                     labels: Data.graph[name][0],
                     datasets: [{
-                        backgroundColor: setGradientColor(canvas,colors[0]),
-                        borderColor: setGradientColor(canvas,colors[0]),
+                        backgroundColor: setGradientColor(canvas, colors[0]),
+                        borderColor: setGradientColor(canvas, colors[0]),
                         label: "Accesos",
                         data: Data.graph[name][1],
                     },]
@@ -146,25 +165,25 @@ export default function History() {
         let names = Object.keys(Data.graph);
         let DataSet = Array(names.length)
         return canvas => {
-            for(let i = 0; i < names.length; i++){
-                if(Data.graph[names[i]][1]){
+            for (let i = 0; i < names.length; i++) {
+                if (Data.graph[names[i]][1]) {
                     DataSet[i] = {
                         fill: true,
-                        backgroundColor: setGradientColor(canvas,colors[i]),
-                        borderColor: setGradientColor(canvas,colors[i]),
+                        backgroundColor: setGradientColor(canvas, colors[i]),
+                        borderColor: setGradientColor(canvas, colors[i]),
                         label: names[i],
                         data: Data.graph[names[i]][1],
                     }
                 } else {
                     DataSet[i] = {
                         fill: false,
-                        backgroundColor: setGradientColor(canvas,colors[i]),
-                        borderColor: setGradientColor(canvas,colors[i]),
+                        backgroundColor: setGradientColor(canvas, colors[i]),
+                        borderColor: setGradientColor(canvas, colors[i]),
                         label: names[i],
                         data: [0],
                     }
                 }
-            }    
+            }
             return {
                 labels: GraphLabels(States.TimeStamp),
                 datasets: DataSet
@@ -233,27 +252,27 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<IconButton 
-                        className={clsx( States.TypeChart === "bar" ? classes.BtnActive : classes.Btnoff)} 
-                        onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} >
+                        control={<IconButton
+                            className={clsx(States.TypeChart === "bar" ? classes.BtnActive : classes.Btnoff)}
+                            onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} >
                             <i className="fas fa-chart-bar"></i></IconButton>}
                     />
                     <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<IconButton 
-                            className={clsx( States.TypeChart === "line" ? classes.BtnActive : "")} 
-                        onClick={() => { setStates({ ...States, TypeChart: "line" }) }} >
+                        control={<IconButton
+                            className={clsx(States.TypeChart === "line" ? classes.BtnActive : "")}
+                            onClick={() => { setStates({ ...States, TypeChart: "line" }) }} >
                             <i className="fas fa-chart-line"></i></IconButton>}
                     />
                     <FormControlLabel
-                        className={clsx( States.ShowGeneral ? classes.BtnActive : "")}
+                        className={clsx(States.ShowGeneral ? classes.BtnActive : "")}
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<IconButton 
-                        onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
+                        control={<IconButton
+                            onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
                             <i class="fas fa-globe-americas"></i>
                         </IconButton>}
                     />
@@ -361,7 +380,7 @@ export default function History() {
 
             <Paper elevation={0} className={classes.resultBox}>
                 <Accordion>
-                    <div className={clsx( States.ShowGeneral ? Promises.isUserReady ? classes.GeneralGraph: classes.loading : classes.HideGraph)}>
+                    <div className={clsx(States.ShowGeneral ? Promises.isUserReady ? classes.GeneralGraph : classes.loading : classes.HideGraph)}>
                         {Data.graph ? <ChartComponent
                             type={States.TypeChart}
                             data={getGeneralGraph()}
@@ -388,18 +407,21 @@ export default function History() {
                                     </div>
                                 </AccordionSummary>
                                 <AccordionDetails className={classes.details}>
-                                    <div className={clsx(classes.column1)}>
+                                    <div className={clsx(States.showChart ? classes.column1 : classes.columnDisabled)}>
                                         {
-                                            Data.graph[el.FullName] ? <ChartComponent
+                                            States.showChart ? Data.graph[el.FullName] ? <ChartComponent
                                                 type={States.TypeChart}
                                                 data={getDataGraph(el.FullName)}
-                                            /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
+                                            /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div> : <BarChart />
                                         }
                                     </div>
-                                    <div className={clsx(classes.info, classes.column, classes.helper)}>
+                                    <Button className={classes.dividerButton}
+                                        onClick={handleClick}>{States.showChart ? <ChevronLeft /> : <ChevronRight />}
+                                    </Button>
+                                    <div className={clsx(classes.info, !States.showChart ? classes.column : classes.columnDisabled)}>
+                                        {States.showChart ? <Subject /> : ""}
                                     </div>
                                 </AccordionDetails>
-                                <Divider />
                             </Accordion>
                         )
                     }) : ""

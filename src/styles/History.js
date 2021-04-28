@@ -82,12 +82,25 @@ export default useStyles = makeStyles((theme) => ({
         height: "29vh"
     },
     column1: {
-        width: "63vw",
+        width: "80vw",
         height: "100%",
+        transition: "250ms ease-in"
     },
     column: {
         width: '27vw',
         height: "100%",
+        transition: "250ms ease-in"
+    },
+    columnDisabled:{
+        width: "8vw",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "250ms ease-in"
+    },
+    dividerButton:{
+        height: "100%"
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
