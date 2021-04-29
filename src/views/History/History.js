@@ -138,12 +138,11 @@ export default function History() {
 
     function beforePrintHandler() {
         setTimeout(() => {
-            console.log("putabida");
             for (var id in Chart.instances) {
                 console.log(Chart.instances[id]);
                 Chart.instances[id].resize();
             }
-        }, 100)
+        }, 260)
     }
 
     function getDataGraph(name) {
@@ -185,6 +184,7 @@ export default function History() {
                     }
                 }
             }
+            beforePrintHandler()
             return {
                 labels: GraphLabels(States.TimeStamp),
                 datasets: DataSet
@@ -263,7 +263,7 @@ export default function History() {
                         onFocus={(event) => event.stopPropagation()}
                         control={<IconButton
                             onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
-                            <i class="fas fa-globe-americas"></i>
+                            <i className="fas fa-globe-americas"></i>
                         </IconButton>}
                     />
                     {/* <FormControlLabel
@@ -374,25 +374,25 @@ export default function History() {
                         {Data.graph ? <ChartComponent
                             type={States.TypeChart}
                             data={getGeneralGraph()}
-                        /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
+                        />  : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
                     </div>
                 </Accordion>
                 {Promises.isReady ?
                     Data.Search.map((el, index) => {
                         return (
-                            <Accordion onClick={(e) => GetData(el.IDUser, el.FullName)} key={index}
+                            <Accordion onClick={(e) => GetData(el.IDUser, el.FullName)} key={index} className={classes.AcordionResult}
                                 onChange={handleAcordion(`panel${index}`)}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMore />}
                                     aria-controls="panel1c-content"
                                 >
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.heading}>{el.FullName}</Typography>
                                     </div>
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.secondaryHeading}>ID: {el.IDUser}</Typography>
                                     </div>
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.secondaryHeading}>{el.Email}</Typography>
                                     </div>
                                 </AccordionSummary>

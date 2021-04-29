@@ -74,8 +74,8 @@ export default makeStyles((theme) => ({
     justifyContent: "space-evenly",
     "& > .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
       fontSize: "calc(18px + (50 - 18) * ((90vw - 320px) / (1600 - 300)))",
-      width: "13vw",
-      height: "19.2vh",
+      width: "50%",
+      height: "100%",
       borderRadius: "5px",
       color: "#565656",
       minWidth: 0

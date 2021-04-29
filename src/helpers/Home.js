@@ -2,12 +2,13 @@ import Profile from "../views/Profile/Profile";
 import DashBoard from "../views/DashBoard/DashBoard";
 import History from "../views/History/History";
 import Security from "../views/Security/Security"
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import HistoryUser from "../views/HistoryUser/HistoryUser";
 import AdminSecurity from "../views/AdminSecurity/AdminSecurity";
 
 export function PageSelector(userData, SearchData) {
   const location = useLocation();
+  const history = useHistory()
   switch (location.pathname) {
 
     case "/dashboard":
@@ -20,13 +21,15 @@ export function PageSelector(userData, SearchData) {
       return <HistoryUser User={userData} />
 
     case "/admin/history":
-      return <History />
+      if (userData.IsAdmin) return <History />
+      else return history.push("/home")
 
     case "/home/security":
       return <Security Data={userData} />
 
     case "/admin/security":
-      return <AdminSecurity />;
+      if (userData.IsAdmin) return <AdminSecurity />;
+      else return history.push("/home")
 
     default:
       return <DashBoard />;
@@ -47,14 +50,14 @@ export function PageSelector(userData, SearchData) {
 //     default: return ("/home");
 //   }
 
-  export function otherPage(route){
-    switch(route) {
-      case "Panel Principal": return("/home");
-      case "Panel Personal": return("/home/profile");
-      case "Historial": return("/home/history");
-      case "Seguridad": return("/home/security");
-      case "Administrar seguridad": return("/admin/security");
-      case "Historial global": return ("/admin/history");
-      default : return("/home");
-    }
+export function otherPage(route) {
+  switch (route) {
+    case "Panel Principal": return ("/home");
+    case "Panel Personal": return ("/home/profile");
+    case "Historial": return ("/home/history");
+    case "Seguridad": return ("/home/security");
+    case "Administrar seguridad": return ("/admin/security");
+    case "Historial global": return ("/admin/history");
+    default: return ("/home");
   }
+}
