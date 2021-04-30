@@ -2,15 +2,15 @@ const _ = require('lodash');
 const moment = require('moment');
 moment().format();
 
-export function calcNumWeek(year,month){
+export function calcNumWeek(year, month) {
     let indexWeek = [];
     let j = 0;
     for (let i = 0; i < 5; i++) {
-        let date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
-        if(i !== 0){
-            if(date === indexWeek[i-1]){
+        let date = String(moment(`${year}-${month + 1}-${i === 0 ? 1 : (i * 7) + j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
+        if (i !== 0) {
+            if (date === indexWeek[i - 1]) {
                 j++;
-                date = String(moment(`${year}-${month+1}-${i === 0 ? 1 : (i*7)+j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))
+                date = String(moment(`${year}-${month + 1}-${i === 0 ? 1 : (i * 7) + j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))
             }
         }
         indexWeek.push(date);
@@ -18,10 +18,10 @@ export function calcNumWeek(year,month){
     return indexWeek;
 }
 
-export function setNumWeek(year,month){
-    let indexWeek = calcNumWeek(year,month);
-    indexWeek.map((e,i) => {
-        if(e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))){
+export function setNumWeek(year, month) {
+    let indexWeek = calcNumWeek(year, month);
+    indexWeek.map((e, i) => {
+        if (e === String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek'))) {
             return i
         }
     });
@@ -35,9 +35,9 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
         case "S":
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
             result = Object.entries(groupedResults);
-            
+
             result.forEach((e) => {
-                if(month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()){
+                if (month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()) {
                     let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
                     let order = Object.entries(dates);
                     graphData = _.orderBy(order, (DateData) => moment(DateData[0], "dd MMM DD YYYY").startOf('isoWeek'));
@@ -48,7 +48,7 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
             result = Object.entries(groupedResults);
             result.forEach((e) => {
-                if(month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()){
+                if (month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()) {
                     let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
                     let order = Object.entries(dates);
                     graphData = _.orderBy(order, (DateData) => moment(DateData[0], "dd MMM DD YYYY").startOf('isoWeek'));
@@ -59,7 +59,7 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('year'));
             result = Object.entries(groupedResults);
             result.forEach((e) => {
-                if(year === moment(e[0], "dd MMM DD YYYY").year()){
+                if (year === moment(e[0], "dd MMM DD YYYY").year()) {
                     let monthsData = _.groupBy(e[1], (Data) => moment(Data.RegDate).startOf('month'));
                     let res = Object.entries(monthsData);
                     graphData = _.orderBy(res, (Data) => moment(Data[0], "dd MMM DD YYYY").startOf('month'));
@@ -76,7 +76,7 @@ export const GraphLabels = (TimeStamp) => {
         case "S":
             return ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
         case "M":
-            return ["1era", "2da", "3era", "4ta", "5ta"];
+            return ["1era Semana", "2da Semana", "3era Semana", "4ta Semana", "5ta Semana"];
         case "A":
             return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
         default:
@@ -95,64 +95,74 @@ export function getYearRange() {
     return newArr
 }
 
-export function ChangeGraph(TimeStamp,year,month,week,graphData){
-    let graphW = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-    let graphM = [ 0 , 0 , 0 , 0 , 0 ];
-    let graphY = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-    let indexWeek = calcNumWeek(year,month);
+export function ChangeGraph(TimeStamp, year, month, week, graphData) {
+    let OrderResut = "";
+    let graphW = [0, 0, 0, 0, 0, 0, 0];
+    let graphM = [0, 0, 0, 0, 0];
+    let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let indexWeek = calcNumWeek(year, month);
+    let info = [];
     switch (TimeStamp) {
         case "S":
             const days = [1, 2, 3, 4, 5, 6, 0];
             graphData.forEach((d) => {
-                if(d[0] === indexWeek[week]){
+                if (d[0] === indexWeek[week]) {
+                    info = d[1];
                     d[1].forEach(date => {
-                        days.forEach((day,d) => {
-                            if(day === moment(date.RegDate).day()){
-                                graphW[d] += 1;                                 
+                        days.forEach((day, d) => {
+                            if (day === moment(date.RegDate).day()) {
+                                graphW[d] += 1;
                             }
                         })
                     })
                 }
             })
-            if(getDateAccess(graphW) === 0){
+            if (getDateAccess(graphW) === 0) {
                 return false;
-            } else return [GraphLabels(TimeStamp),graphW];
+            } else return [GraphLabels(TimeStamp), graphW, info];
+
         case "M":
-            const weeks = GraphLabels(TimeStamp);
-            if(graphData){
-                graphData.forEach((d,i) => {
-                    indexWeek.forEach((w) =>{
-                        if(d[0] === w){
+            if (graphData) {
+                graphData.forEach((d, i) => {
+                    indexWeek.forEach((w) => {
+                        if (d[0] === w) {
+                            OrderResut = _.orderBy(d[1], (UserData) => moment(UserData.RegDate).startOf('day'));
+                            info[i] = {week: i, info: OrderResut}
                             graphM[i] = d[1].length;
                         }
                     })
                 })
             }
-            if(getDateAccess(graphM) === 0){
+            if (getDateAccess(graphM) === 0) {
                 return false;
             }
-            return [weeks,graphM];
+            return [GraphLabels(TimeStamp), graphM, info];
+
         case "A":
             const monthsShort = moment()._locale._monthsShort;
             const months = GraphLabels(TimeStamp);
-            if(graphData){
+            if (graphData) {
                 for (let i = 0; i < 12; i++) {
                     graphData.forEach((y) => {
-                        if(monthsShort[i] === y[0].split(" ")[1]) graphY[i] = y[1].length; 
+                        if (monthsShort[i] === y[0].split(" ")[1]) {
+                            OrderResut = _.orderBy(y[1], (UserData) => moment(UserData.RegDate).startOf('day'));
+                            info[i] = {month: i, info: OrderResut}
+                            graphY[i] = y[1].length;
+                        }
                     })
                 }
             }
-            if(getDateAccess(graphY) === 0){
+            if (getDateAccess(graphY) === 0) {
                 return false;
             } else {
-                return [months,graphY];
+                return [months, graphY, info];
             }
         default:
             return false;
     }
-} 
+}
 
-export const setGradientColor = (canvas,colors) => {
+export const setGradientColor = (canvas, colors) => {
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 370);
     gradient.addColorStop(colors[0].stop, colors[0].color);
@@ -163,27 +173,27 @@ export const setGradientColor = (canvas,colors) => {
 
 export function getDateAccess(graphData) {
     let calc = 0;
-    if(graphData){
+    if (graphData) {
         graphData.forEach(e => {
             calc += e;
         })
     }
     return calc
-  }
+}
 
 export function generateGraphData(graphData) {
-    let graph = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 ];
+    let graph = [0, 0, 0, 0, 0, 0, 0];
     const days = [1, 2, 3, 4, 5, 6, 0];
-    if(graphData) {
-      graphData[1].forEach(date => {
-          days.forEach((day,d) => {
-              if(day === moment(date.RegDate).day()){
-                  graph[d] += 1;                                 
-              }
-          });
-      });
+    if (graphData) {
+        graphData[1].forEach(date => {
+            days.forEach((day, d) => {
+                if (day === moment(date.RegDate).day()) {
+                    graph[d] += 1;
+                }
+            });
+        });
     }
-    if(getDateAccess(graph) === 0){
+    if (getDateAccess(graph) === 0) {
         return false;
     } else {
         return graph

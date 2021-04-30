@@ -13,6 +13,7 @@ import Chart from 'chart.js'
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SubjectIcon from '@material-ui/icons/Subject';
 import ChartComponent from '../../components/Chart';
+import DataInfo from '../../components/DataInfo';
 import { GetHistoryUserData } from "../../api/user"
 import { colors } from '../../api/constants';
 import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
@@ -96,7 +97,6 @@ export default function HistoryUser(props) {
     window.addEventListener("click", beforePrintHandler);
     function beforePrintHandler() {
         setTimeout(() => {
-            console.log('putabida');
             for (var id in Chart.instances) {
                 Chart.instances[id].resize();
             }
@@ -208,7 +208,7 @@ export default function HistoryUser(props) {
                         {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
                     </Button>
                     <Paper className={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? "" : <SubjectIcon />}
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp}  /> : <SubjectIcon />}
                     </Paper>
                 </div>
             </Paper>

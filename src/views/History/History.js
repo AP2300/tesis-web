@@ -11,6 +11,7 @@ import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
 import ChartComponent from '../../components/Chart';
+import DataInfo from '../../components/DataInfo';
 import Chart from 'chart.js'
 import { colors } from '../../api/constants';
 import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
@@ -21,7 +22,7 @@ export default function History() {
     const classes = useStyles();
     const history = useHistory();
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
-    const [Data, setData] = useState({ Search: [], User: "", Users: "", AllUsers: "", graph: "" });
+    const [Data, setData] = useState({ Search: [], Users: "", AllUsers: "", graph: "" });
     const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
     const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
@@ -48,10 +49,6 @@ export default function History() {
             console.log("change")
         }
     }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
-
-    // useEffect(()=>{
-    //     handleFilterSearch();
-    // },[States])
 
 
     const GetHistory = async () => {
@@ -128,22 +125,17 @@ export default function History() {
     }
 
     window.addEventListener("click", beforePrintHandler);
-
     function handleClick(e) {
         if (States.showChart) setStates({ ...States, showChart: false })
         else setStates({ ...States, showChart: true })
-
-
     }
 
     function beforePrintHandler() {
         setTimeout(() => {
-            console.log("putabida");
             for (var id in Chart.instances) {
-                console.log(Chart.instances[id]);
                 Chart.instances[id].resize();
             }
-        }, 100)
+        }, 260)
     }
 
     function getDataGraph(name) {
@@ -380,7 +372,7 @@ export default function History() {
                 {Promises.isReady ?
                     Data.Search.map((el, index) => {
                         return (
-                            <Accordion onClick={(e) => GetData(el.IDUser, el.FullName)} key={index}
+                            <Accordion key={index}
                                 onChange={handleAcordion(`panel${index}`)}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMore />}
@@ -409,7 +401,7 @@ export default function History() {
                                         onClick={handleClick}>{States.showChart ? <ChevronLeft /> : <ChevronRight />}
                                     </Button>
                                     <div className={clsx(classes.info, !States.showChart ? classes.column : classes.columnDisabled)}>
-                                        {States.showChart ? <Subject /> : ""}
+                                        {States.showChart ? <Subject /> : <DataInfo classes={classes.column} TimeStamp={States.TimeStamp} Data={Data.graph[el.FullName]} />}
                                     </div>
                                 </AccordionDetails>
                             </Accordion>
