@@ -90,6 +90,29 @@ export async function GetFullUserData() {
   }
 }
 
+export async function GetSecurityUserData(id) {
+  try {
+    console.log(id)
+    const res = axios.get(Cons.profile, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        id: id
+      },
+      withCredentials: true,
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+    return false
+  }
+}
+
 export async function UpdateBasicData(params) {
   try {
     const res = axios.post(Cons.changeData, params, {
