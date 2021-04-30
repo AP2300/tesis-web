@@ -30,7 +30,7 @@ export function PageSelector(userData, SearchData) {
     case "/admin/security":
       if (userData.IsAdmin) return <AdminSecurity />;
       else return history.push("/home")
-
+      
     default:
       return <DashBoard />;
   };

@@ -21,7 +21,7 @@ import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import useStyles from "../styles/Home";
-import { GetUserData, GetHistoryData } from "../api/user";
+import { GetUserData } from "../api/user";
 import { EndSession } from "../api/session";
 import { PageSelector, otherPage } from "../helpers/Home";
 import { useHistory } from 'react-router';
