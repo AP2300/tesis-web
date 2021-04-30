@@ -32,19 +32,22 @@ export default useStyles = makeStyles((theme) => ({
     },
     ButtonDiv: {
         width: "100%",
-        height: "13vh",
+        height: "16vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "2%"
+        padding: "2%",
+        "& > .AFC": {
+            display: "flex"
+        }
     },
     ExpandibleButton: {
-        height: "7vh",
-        width: "15vw",
+        minHeight: "59px",
+        minWidth: "156px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "calc(10px + (40 - 10) * ((60vw - 303px) / (1600 - 300)))",
+        fontSize: "calc(21px + (30 - 21) * ((50vw - 303px) / (1600 - 300)))",
         fontWeight: "800",
         color: "#5f5f5f",
         cursor: "pointer",
@@ -52,26 +55,48 @@ export default useStyles = makeStyles((theme) => ({
         fontFamily: "Century Gothic",
         letterSpacing: "1.3px",
         borderRadius: "2em",
+        zIndex: 10,
         "&:hover": {
             color: "whitesmoke",
             backgroundColor: "#565656"
         },
         "& > * ": {
-            fontSize: "1.2em",
+            fontSize: "1.7em",
         }
     },
     ExpandibleContainer: {
         width: "0",
+        opacity: 0,
+        marginLeft: "-156px",
         borderRadius: "2em",
-        transition: "250ms ease-in"
+        transition: "200ms ease-in",
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: "15vw",
+        paddingRight: "6%",
+        [sizes.Wdown("md")]: {
+            marginBottom: "-240px",
+            // marginLeft: "-155px"
+        },
     },
     ExpandedContainer: {
-        width: "85%",
+        width: "71vw",
         borderRadius: "2em",
-        transition: "250ms ease-in"
+        transition: "200ms ease-in",
+        display: "flex",
+        alignItems: "center",
+        opacity: 1,
+        zIndex: 1,
+        [sizes.Wdown("md")]: {
+            height: "279px",
+            width: "232px",
+            flexDirection: "column",
+            paddingTop: "28%",
+            paddingLeft: "4%"
+        },
     },
     panelContainer: {
-        height: "67vh",
+        height: "64vh",
         padding: "2%",
         display: "flex",
         overflowY: "scroll",
@@ -103,10 +128,11 @@ export default useStyles = makeStyles((theme) => ({
     minimizerButton: {
         width: "5%",
         color: "inherit",
+        padding: "0",
         [sizes.Wdown("xs")]: {
             height: "5%",
             width: "100%",
-            "& .icon":{
+            "& .icon": {
                 transform: "rotate(90deg)"
             }
         },
@@ -115,5 +141,50 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    },
+    iconContainer: {
+        display: "flex",
+        alignItems: "center",
+        [sizes.Wdown("xs")]: {
+            flexDirection: "column"
+        },
+    },
+    formControl: {
+        display: "none",
+        height: "3vh",
+        alignItems: "center",
+        justifyContent: "space-between",
+        opacity: 0,
+        "& > .MuiFormControl-root": {
+            width: "8vw"
+        },
+        "& > .MuiFormControl-root.timestamp": {
+            width: "15vw"
+        },
+        [sizes.Wdown("md")]: {
+            flexDirection: "column",
+            "& > .MuiFormControl-root": {
+                width: "180px"
+            },
+            "& > .MuiFormControl-root.timestamp": {
+                width: "180px"
+            },
+        },
+    },
+    show: {
+        opacity: 1,
+        display: "flex",
+        width: "100%"
+    },
+    selectedChart: {
+        "& > *": {
+            background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+        },
+        // background: "-webkit-gradient(linear, left top, left bottom, from(#f00), to(#333))",
+        // "-webkit-background-clip": "text",
+        //  "-webkit-text-fill-color": "transparent",
+
     }
 }));

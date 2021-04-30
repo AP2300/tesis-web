@@ -13,10 +13,10 @@ export default useStyles = makeStyles((theme) => ({
     },
     Acordion: {
         backgroundColor: "rgb(232 232 232)",
-        "& > * ": {
-            padding: "0 10px"
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root.Mui-expanded": {
+            height: "9vh",
         },
-        width: "100%"
+        width: "100%",
     },
     TextInput: {
         width: "100%",
@@ -53,6 +53,18 @@ export default useStyles = makeStyles((theme) => ({
         boxShadow: "3px 2px 5px #00000038",
         overflowY: "scroll"
     },
+    GeneralGraph: {
+        width: "100%",
+        height: "50vh",
+        padding: "1.3%",
+        transition: "200ms ease-in"
+    },
+    HideGraph: {
+        width: "100%",
+        height: "0",
+        transition: "200ms ease-out"
+
+    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
     },
@@ -67,15 +79,31 @@ export default useStyles = makeStyles((theme) => ({
     },
     details: {
         alignItems: 'center',
-        height: "29vh"
+        height: "29vh",
+        width: "100%"
     },
     column1: {
-        width: "63vw",
+        width: "80%",
         height: "100%",
+        transition: "250ms ease-in"
     },
     column: {
-        width: '27vw',
+        width: '80%',
         height: "100%",
+        transition: "250ms ease-in"
+    },
+    columnDisabled: {
+        width: "10%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "250ms ease-in"
+    },
+    dividerButton: {
+        height: "100%",
+        width: "10%",
+        minWidth: 0
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
@@ -87,7 +115,7 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         "&& > *": {
-          fontSize: "3em"
+            fontSize: "2em"
         }
     },
     link: {
@@ -107,17 +135,19 @@ export default useStyles = makeStyles((theme) => ({
     },
     FilterContainer: {
         width: "100vw",
-        height: "35vh",
+        height: "27vh",
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
-        padding: "2%"
+        padding: ".5%"
     },
     innerContainer: {
         margin: theme.spacing(1),
         display: "flex",
         flexDirection: "row",
-        width: "50%",
+        flexWrap: "wrap",
+        flexGrow: "1",
+        minWidth: "210px",
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -125,12 +155,31 @@ export default useStyles = makeStyles((theme) => ({
     OuterContainer: {
         display: "flex",
         flexDirection: "row",
-        height: "100%"
+        flexWrap: "wrap",
+        height: "100%",
+        width: "100%",
+        overflowY: "scroll",
+        justifyContent: "center"
     },
     formControl: {
         width: "100%",
     },
-    info: {
-
+    BtnActive: {
+        "& > *": {
+            background: "linear-gradient(348deg, rgba(207,14,31,1) 0%, rgba(243,177,59,1) 70%, rgba(249,206,64,1) 100%)",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+        }
+    },
+    AcordionResult: {
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root .MuiAccordionSummary-content": {
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            "&  .UserInfo": {
+                display: "flex",
+                width: "30%",
+                minWidth: "220px"
+            }
+        }
     }
 }));

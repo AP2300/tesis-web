@@ -25,55 +25,55 @@ export default function AdminDial(props) {
       position: "absolute",
       right: "1%"
     },
-      speedDial: {
-          bottom: theme.spacing(2),
-          right: theme.spacing(2),
-          "& button.MuiFab-root.MuiSpeedDial-fab":{
-              backgroundColor: "#4c4c4c"
-          },
-          "& button.MuiFab-root.MuiSpeedDial-fab:hover ~ div.MuiSpeedDial-actions":{
-              backgroundColor: open?"#4c4c4cba":"transparent",
-              transition: "300ms ease-in",
-              display: "flex",
-              height: "48px",
-              alignItems: "center",
-              paddingRight: "35px",
-              paddingLeft: "10px",
-              borderRadius: "2em",
-              width: open?"220px":0
-          },
-          "& div.MuiSpeedDial-actions":{
-              width: 0,
-              display: "flex",
-              height: "48px",
-              alignItems: "center",
-              paddingRight: "35px",
-              paddingLeft: "10px",
-              borderRadius: "2em",
-              transition: "300ms ease-out",
-              "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab ":{
-                  backgroundColor:"#4c4c4c",
-                  color: "whitesmoke",
-                  boxShadow: "none",
-              },
-              "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab:hover ":{
-                  color: "#4c4c4c",
-                  backgroundColor: "whitesmoke"
-              }
-          },
-          "& div.MuiSpeedDial-actions:hover":{
-              backgroundColor: "#4c4c4cba",
-              display: "flex",
-              height: "70px",
-              alignItems: "center",
-              paddingRight: "35px",
-              paddingLeft: "10px",
-              borderRadius: "2em",
-              width: "220px",
-              transition: "200ms"
-          }
+    speedDial: {
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+      "& button.MuiFab-root.MuiSpeedDial-fab": {
+        backgroundColor: "#4c4c4c"
       },
-      
+      "& button.MuiFab-root.MuiSpeedDial-fab:hover ~ div.MuiSpeedDial-actions": {
+        backgroundColor: open ? "#4c4c4cba" : "transparent",
+        transition: "300ms ease-in",
+        display: "flex",
+        height: "48px",
+        alignItems: "center",
+        paddingRight: "35px",
+        paddingLeft: "10px",
+        borderRadius: "2em",
+        width: open ? "220px" : 0
+      },
+      "& div.MuiSpeedDial-actions": {
+        width: 0,
+        display: "flex",
+        height: "48px",
+        alignItems: "center",
+        paddingRight: "35px",
+        paddingLeft: "10px",
+        borderRadius: "2em",
+        transition: "300ms ease-out",
+        "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab ": {
+          backgroundColor: "#4c4c4c",
+          color: "whitesmoke",
+          boxShadow: "none",
+        },
+        "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab:hover ": {
+          color: "#4c4c4c",
+          backgroundColor: "whitesmoke"
+        }
+      },
+      "& div.MuiSpeedDial-actions:hover": {
+        backgroundColor: open ? "#4c4c4cba" : "transparent",
+        display: "flex",
+        height: "70px",
+        alignItems: "center",
+        paddingRight: "35px",
+        paddingLeft: "10px",
+        borderRadius: "2em",
+        width: open ? "220px" : 0,
+        transition: "200ms",
+      }
+    },
+
   }));
   const classes = useStyles();
 
@@ -97,7 +97,7 @@ export default function AdminDial(props) {
         ariaLabel="SpeedDial openIcon example"
         className={classes.speedDial}
         direction="left"
-        icon={<SpeedDialIcon icon={<VerifiedUserIcon/>} openIcon={<CloseIcon />} />}
+        icon={<SpeedDialIcon icon={<VerifiedUserIcon />} openIcon={<CloseIcon />} />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}

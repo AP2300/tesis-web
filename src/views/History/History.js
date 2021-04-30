@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import {
     Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select
+    Paper, Divider, Select, IconButton, Button
 } from "@material-ui/core";
-import { ExpandMore, FilterList, Timeline, BarChart } from "@material-ui/icons";
+import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
+import clsx from 'clsx';
 import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
-import clsx from 'clsx';
-import { useHistory } from 'react-router';
 import TitleContainer from '../../components/TitleContainer';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor } from '../../helpers/Graph';
 import ChartComponent from '../../components/Chart';
+import DataInfo from '../../components/DataInfo';
+import Chart from 'chart.js'
+import { colors } from '../../api/constants';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
 export default function History() {
-    const weeks = ["1era", "2da", "3era", "4ta", "5ta"];
-    const monthsName = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const classes = useStyles();
     const history = useHistory();
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
-    const [Data, setData] = useState({ Search: [], User: "", Users: "", AllUsers: "", graph: "" });
+    const [Data, setData] = useState({ Search: [], Users: "", AllUsers: "", graph: "" });
     const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar" });
+    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
 
     useEffect(() => {
@@ -43,12 +44,11 @@ export default function History() {
     }, [Textfield])
 
     useEffect(() => {
-        if (Data.AllUsers.length !== 0) handleFilterSearch(Data.AllUsers)
-    }, [Promises.isUserReady,Dates,States.TimeStamp]) 
-
-    // useEffect(()=>{
-    //     handleFilterSearch();
-    // },[States])
+        if (Data.AllUsers.length !== 0) {
+            handleFilterSearch(Data.AllUsers)
+            console.log("change")
+        }
+    }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
 
 
     const GetHistory = async () => {
@@ -69,37 +69,15 @@ export default function History() {
                 if (res) {
                     AllUsersData.push({ id: User.IDUser, name: User.FullName, Data: res.data.data })
                 }
-                if (AllUsersData.length === Data.Users.length){
+                if (AllUsersData.length === Data.Users.length) {
                     setData({ ...Data, AllUsers: AllUsersData });
                     setPromises({ ...Promises, isUserReady: true });
-                    handleFilterSearch(AllUsersData);            
+                    handleFilterSearch(AllUsersData);
                 }
             });
-            
+        } else {
+            history.push("/");
         }
-    }
-
-    // const GetData = async (id) => {
-    //     console.log("entre")
-    //     const res = await GetHistoryUserData(id);
-    //     if (res) {
-    //         setData({...Data, User: res.data.data});
-    //         setPromises({...Promises, isUserReady: true});
-
-    //     } else {
-    //         history.push("/");
-    //     }
-    // }
-    const GetData = async (id, name) => {
-        // if (Data.AllUsers) {
-        //     Data.AllUsers.forEach( async (User) => {
-        //         if(User.id === id){
-        //             setData({...Data, [User.name]: ChangeGraph(States.TimeStamp,Dates.year,Dates.month,Dates.week,
-        //                 FilterSearch(User.Data, Dates.month, Dates.year, States.TimeStamp))});
-        //             setPromises({...Promises, isUserReady: true});
-        //         }
-        //     });            
-        // } 
     }
 
     const handleChange = (event) => {
@@ -112,7 +90,6 @@ export default function History() {
 
     const handleAcordion = (panel) => (event, isExpanded) => {
         setStates({ ...States, Expanded: isExpanded ? panel : false });
-        // setPromises({ ...Promises, isUserReady: false });
     };
 
     function NumWeek(year, month) {
@@ -124,29 +101,65 @@ export default function History() {
         });
     }
 
+    window.addEventListener("click", beforePrintHandler);
+    function handleClick(e) {
+        if (States.showChart) setStates({ ...States, showChart: false })
+        else setStates({ ...States, showChart: true })
+    }
+
+    function beforePrintHandler() {
+        setTimeout(() => {
+            for (var id in Chart.instances) {
+                Chart.instances[id].resize();
+            }
+        }, 260)
+    }
+
     function getDataGraph(name) {
-        return canvas => {
+        if (name !== "") {
+            return canvas => {
                 return {
-                    labels: Data.graph.[name][0],
+                    labels: Data.graph[name][0],
                     datasets: [{
-                        backgroundColor: setGradientColor(canvas),
-                        borderColor: setGradientColor(canvas),
+                        backgroundColor: setGradientColor(canvas, colors[0]),
+                        borderColor: setGradientColor(canvas, colors[0]),
                         label: "Accesos",
-                        data: Data.graph.[name][1],
+                        data: Data.graph[name][1],
                     },]
                 };
+            }
         }
     }
 
-    function getYearRange() {
-        let val = 2021;
-        let year = new Date()
-        val = val - year.getFullYear() + 1;
-        let newArr = new Array(val);
-        for (let i = 0; i < newArr.length; i++) {
-            newArr[i] = 2021 + i;
+    function getGeneralGraph() {
+        let names = Object.keys(Data.graph);
+        let DataSet = Array(names.length)
+        return canvas => {
+            for (let i = 0; i < names.length; i++) {
+                if (Data.graph[names[i]][1]) {
+                    DataSet[i] = {
+                        fill: true,
+                        backgroundColor: setGradientColor(canvas, colors[i]),
+                        borderColor: setGradientColor(canvas, colors[i]),
+                        label: names[i],
+                        data: Data.graph[names[i]][1],
+                    }
+                } else {
+                    DataSet[i] = {
+                        fill: false,
+                        backgroundColor: setGradientColor(canvas, colors[i]),
+                        borderColor: setGradientColor(canvas, colors[i]),
+                        label: names[i],
+                        data: [0],
+                    }
+                }
+            }
+            beforePrintHandler()
+            return {
+                labels: GraphLabels(States.TimeStamp),
+                datasets: DataSet
+            };
         }
-        return newArr
     }
 
     function FuzzySearch() {
@@ -177,15 +190,6 @@ export default function History() {
         setData({ ...Data, graph: AllGraphData });
     }
 
-    //   function handleFilterSearch(){
-    //     console.log("AllUsers-->",Data.AllUsers)
-    //     Data.AllUsers.forEach(User => {
-    //         setData({...Data, [User.name]: ChangeGraph(States.TimeStamp,Dates.year,Dates.month,Dates.week,
-    //             FilterSearch(User.Data, Dates.month, Dates.year, States.TimeStamp))});
-    //     });
-
-    // }
-
     return (
         <div >
             <Accordion className={classes.Acordion}  >
@@ -208,20 +212,30 @@ export default function History() {
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<BarChart onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} />}
+                        control={<IconButton
+                            className={clsx(States.TypeChart === "bar" ? classes.BtnActive : classes.Btnoff)}
+                            onClick={() => { setStates({ ...States, TypeChart: "bar" }) }} >
+                            <i className="fas fa-chart-bar"></i></IconButton>}
                     />
                     <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<Timeline onClick={() => { setStates({ ...States, TypeChart: "line" }) }} />}
+                        control={<IconButton
+                            className={clsx(States.TypeChart === "line" ? classes.BtnActive : "")}
+                            onClick={() => { setStates({ ...States, TypeChart: "line" }) }} >
+                            <i className="fas fa-chart-line"></i></IconButton>}
                     />
-                    {/* <FormControlLabel
+                    <FormControlLabel
+                        className={clsx(States.ShowGeneral ? classes.BtnActive : "")}
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<FilterList />}
-                    /> */}
+                        control={<IconButton
+                            onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
+                            <i className="fas fa-globe-americas"></i>
+                        </IconButton>}
+                    />
                 </AccordionSummary>
                 <AccordionDetails>
                     <Paper elevation={0} className={classes.FilterContainer}>
@@ -265,47 +279,9 @@ export default function History() {
                                     </FormControl>
                                 </TitleContainer>
                             </div>
-                        </div>
-                    </Paper>
-                </AccordionDetails>
-            </Accordion>
-
-            <Paper elevation={0} className={classes.resultBox}>
-                {Promises.isReady ?
-                    Data.Search.map((el, index) => {
-                        return (
-                            <Accordion onClick={(e) => GetData(el.IDUser, el.FullName)} key={index}
-                                onChange={handleAcordion(`panel${index}`)}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMore />}
-                                    aria-controls="panel1c-content"
-                                >
-                                    <div className={classes.column}>
-                                        <Typography className={classes.heading}>{el.FullName}</Typography>
-                                    </div>
-                                    <div className={classes.column}>
-                                        <Typography className={classes.secondaryHeading}>ID: {el.IDUser}</Typography>
-                                    </div>
-                                    <div className={classes.column}>
-                                        <Typography className={classes.secondaryHeading}>{el.Email}</Typography>
-                                    </div>
-                                </AccordionSummary>
-                                <AccordionDetails className={classes.details}>
-                                    <div className={clsx(classes.column1)}>
-                                        {
-                                            Data.graph.[el.FullName] ? <ChartComponent
-                                                type={States.TypeChart}
-                                                data={getDataGraph(el.FullName)}
-                                            /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
-                                        }
-                                    </div>
-                                    <div className={clsx(classes.info, classes.column, classes.helper)}>
-                                    </div>
-                                </AccordionDetails>
-                                <Divider />
-                                <AccordionActions>
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel id="week-simple-select-label">Semana</InputLabel>
+                            <div className={classes.innerContainer}>
+                                <TitleContainer title={"Semana"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
                                         <Select
                                             id="week-simple-select"
                                             value={Dates.week}
@@ -313,11 +289,14 @@ export default function History() {
                                             onChange={handleChange}
                                             disabled={States.TimeStamp === "A" || States.TimeStamp === "M" ? true : false}
                                         >
-                                            {weeks.map((w, i) => <MenuItem key={i} value={i}>{w}</MenuItem>)}
+                                            {GraphLabels("M").map((w, i) => <MenuItem key={i} value={i}>{w}</MenuItem>)}
                                         </Select>
                                     </FormControl>
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel id="month-simple-select-label">Mes</InputLabel>
+                                </TitleContainer>
+                            </div>
+                            <div className={classes.innerContainer}>
+                                <TitleContainer title={"Mes"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
                                         <Select
                                             id="month-simple-select"
                                             value={Dates.month}
@@ -325,11 +304,14 @@ export default function History() {
                                             onChange={handleChange}
                                             disabled={States.TimeStamp === "A" ? true : false}
                                         >
-                                            {monthsName.map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
+                                            {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
                                         </Select>
                                     </FormControl>
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel id="year-simple-select-label">Año</InputLabel>
+                                </TitleContainer>
+                            </div>
+                            <div className={classes.innerContainer}>
+                                <TitleContainer title={"Año"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
                                         <Select
                                             id="year-simple-select"
                                             value={Dates.year}
@@ -343,7 +325,57 @@ export default function History() {
                                             <MenuItem value={2025}>2025</MenuItem>
                                         </Select>
                                     </FormControl>
-                                </AccordionActions>
+                                </TitleContainer>
+                            </div>
+                        </div>
+                    </Paper>
+                </AccordionDetails>
+            </Accordion>
+
+            <Paper elevation={0} className={classes.resultBox}>
+                <Accordion>
+                    <div className={clsx(States.ShowGeneral ? Promises.isUserReady ? classes.GeneralGraph : classes.loading : classes.HideGraph)}>
+                        {Data.graph ? <ChartComponent
+                            type={States.TypeChart}
+                            data={getGeneralGraph()}
+                        />  : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
+                    </div>
+                </Accordion>
+                {Promises.isReady ?
+                    Data.Search.map((el, index) => {
+                        return (
+                            <Accordion key={index} className={classes.AcordionResult}
+                                onChange={handleAcordion(`panel${index}`)}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMore />}
+                                    aria-controls="panel1c-content"
+                                >
+                                    <div className="UserInfo">
+                                        <Typography className={classes.heading}>{el.FullName}</Typography>
+                                    </div>
+                                    <div className="UserInfo">
+                                        <Typography className={classes.secondaryHeading}>ID: {el.IDUser}</Typography>
+                                    </div>
+                                    <div className="UserInfo">
+                                        <Typography className={classes.secondaryHeading}>{el.Email}</Typography>
+                                    </div>
+                                </AccordionSummary>
+                                <AccordionDetails className={classes.details}>
+                                    <div className={clsx(States.showChart ? classes.column1 : classes.columnDisabled)}>
+                                        {
+                                            States.showChart ? Data.graph[el.FullName] ? <ChartComponent
+                                                type={States.TypeChart}
+                                                data={getDataGraph(el.FullName)}
+                                            /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div> : <BarChart />
+                                        }
+                                    </div>
+                                    <Button className={classes.dividerButton}
+                                        onClick={handleClick}>{States.showChart ? <ChevronLeft /> : <ChevronRight />}
+                                    </Button>
+                                    <div className={clsx(classes.info, !States.showChart ? classes.column : classes.columnDisabled)}>
+                                        {States.showChart ? <Subject /> : <DataInfo classes={classes.column} TimeStamp={States.TimeStamp} Data={Data.graph[el.FullName]} />}
+                                    </div>
+                                </AccordionDetails>
                             </Accordion>
                         )
                     }) : ""

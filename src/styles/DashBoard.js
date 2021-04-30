@@ -10,10 +10,11 @@ export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    marginLeft: "-8px",
     minWidth: "330px",
     '& > *': {
       margin: "2%",
-      width: "25%",
+      width: "29%",
       height: theme.spacing(16),
       boxShadow: "3px 3px 4px 1px #00000052",
 
@@ -46,7 +47,7 @@ export default makeStyles((theme) => ({
   },
   GraphBox: {
     margin: theme.spacing(2),
-    width: "82%",
+    width: "100%",
     height: "50vh",
     padding: "2em",
     textAlign: "center",
@@ -66,5 +67,25 @@ export default makeStyles((theme) => ({
     backgroundSize: "400% 400%",
     animationDuration: '1s',
     animationIterationCount: 'infinite'
+  },
+  buttonBox:{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    "& > .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
+      fontSize: "calc(18px + (50 - 18) * ((90vw - 320px) / (1600 - 300)))",
+      width: "50%",
+      height: "100%",
+      borderRadius: "5px",
+      color: "#565656",
+      minWidth: 0
+    }
+  },
+  selectedChart:{
+    "& > * ":{
+      background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
+      "-webkit-background-clip": "text",
+       "-webkit-text-fill-color": "transparent",
+    }
   }
 }));

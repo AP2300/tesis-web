@@ -33,7 +33,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("")
-  const [activeWindow, setActiveWindow] = useState("")
+  const [activeWindow, setActiveWindow] = useState("Panel Principal")
   const [SearchData, setSearchData] = useState("")
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function Home() {
                 (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
               }
             </Typography>
-            <AdminDial ChangePage={ChangePage} />
+            {Data.IsAdmin && <AdminDial ChangePage={ChangePage} />}
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}
