@@ -64,7 +64,6 @@ export default function Home() {
   };
 
   function ChangePage(e) {
-    console.log(e);
     let route = "";
     if(typeof e === 'object') route = e.target.outerText; 
     else route = e; 

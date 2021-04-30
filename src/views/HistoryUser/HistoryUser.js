@@ -96,7 +96,6 @@ export default function HistoryUser(props) {
     window.addEventListener("click", beforePrintHandler);
     function beforePrintHandler() {
         setTimeout(() => {
-            console.log('putabida');
             for (var id in Chart.instances) {
                 Chart.instances[id].resize();
             }
