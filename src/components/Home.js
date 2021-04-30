@@ -108,7 +108,7 @@ export default function Home() {
                 (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
               }
             </Typography>
-            <AdminDial ChangePage={ChangePage} />
+            {Data.IsAdmin && <AdminDial ChangePage={ChangePage} />}
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}

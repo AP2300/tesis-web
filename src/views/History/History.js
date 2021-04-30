@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import {
     Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select, IconButton, Button
+    Paper, Divider, Select, IconButton, Button
 } from "@material-ui/core";
 import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
 import clsx from 'clsx';
@@ -80,29 +80,6 @@ export default function History() {
         }
     }
 
-    // const GetData = async (id) => {
-    //     console.log("entre")
-    //     const res = await GetHistoryUserData(id);
-    //     if (res) {
-    //         setData({...Data, User: res.data.data});
-    //         setPromises({...Promises, isUserReady: true});
-
-    //     } else {
-    //         history.push("/");
-    //     }
-    // }
-    const GetData = async (id, name) => {
-        // if (Data.AllUsers) {
-        //     Data.AllUsers.forEach( async (User) => {
-        //         if(User.id === id){
-        //             setData({...Data, [User.name]: ChangeGraph(States.TimeStamp,Dates.year,Dates.month,Dates.week,
-        //                 FilterSearch(User.Data, Dates.month, Dates.year, States.TimeStamp))});
-        //             setPromises({...Promises, isUserReady: true});
-        //         }
-        //     });            
-        // } 
-    }
-
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setStates({ ...States, TimeStamp: event.target.value });
         else if (event.target.name === "mail") setStates({ ...States, Type: event.target.value });
@@ -177,6 +154,7 @@ export default function History() {
                     }
                 }
             }
+            beforePrintHandler()
             return {
                 labels: GraphLabels(States.TimeStamp),
                 datasets: DataSet
@@ -255,15 +233,9 @@ export default function History() {
                         onFocus={(event) => event.stopPropagation()}
                         control={<IconButton
                             onClick={() => { setStates({ ...States, ShowGeneral: !States.ShowGeneral }) }} >
-                            <i class="fas fa-globe-americas"></i>
+                            <i className="fas fa-globe-americas"></i>
                         </IconButton>}
                     />
-                    {/* <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={<FilterList />}
-                    /> */}
                 </AccordionSummary>
                 <AccordionDetails>
                     <Paper elevation={0} className={classes.FilterContainer}>
@@ -366,25 +338,25 @@ export default function History() {
                         {Data.graph ? <ChartComponent
                             type={States.TypeChart}
                             data={getGeneralGraph()}
-                        /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
+                        />  : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
                     </div>
                 </Accordion>
                 {Promises.isReady ?
                     Data.Search.map((el, index) => {
                         return (
-                            <Accordion key={index}
+                            <Accordion key={index} className={classes.AcordionResult}
                                 onChange={handleAcordion(`panel${index}`)}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMore />}
                                     aria-controls="panel1c-content"
                                 >
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.heading}>{el.FullName}</Typography>
                                     </div>
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.secondaryHeading}>ID: {el.IDUser}</Typography>
                                     </div>
-                                    <div className={classes.column}>
+                                    <div className="UserInfo">
                                         <Typography className={classes.secondaryHeading}>{el.Email}</Typography>
                                     </div>
                                 </AccordionSummary>

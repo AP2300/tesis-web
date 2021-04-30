@@ -58,7 +58,7 @@ export default function HistoryUser(props) {
         const res = await GetHistoryUserData(User.IDUser);
         if (res) {
             setData({ ...Data, User: res.data.data });
-            if(res.data.data.length !== 0){
+            if (res.data.data.length !== 0) {
                 setPromises({ ...Promises, isUserReady: true });
             }
         } else {
@@ -76,8 +76,10 @@ export default function HistoryUser(props) {
     }
 
     async function handleFilterSearch() {
-        setData({ ...Data, graph: ChangeGraph(States.TimeStamp, Dates.year, Dates.month, Dates.week,
-            FilterSearch(Data.User, Dates.month, Dates.year, States.TimeStamp)) });
+        setData({
+            ...Data, graph: ChangeGraph(States.TimeStamp, Dates.year, Dates.month, Dates.week,
+                FilterSearch(Data.User, Dates.month, Dates.year, States.TimeStamp))
+        });
     }
 
     function getDataGraph(name) {
@@ -85,8 +87,8 @@ export default function HistoryUser(props) {
             return {
                 labels: Data.graph[0],
                 datasets: [{
-                    backgroundColor: setGradientColor(canvas,colors[0]),
-                    borderColor: setGradientColor(canvas,colors[0]),
+                    backgroundColor: setGradientColor(canvas, colors[0]),
+                    borderColor: setGradientColor(canvas, colors[0]),
                     label: "Accesos",
                     data: Data.graph[1],
                 },]
@@ -111,7 +113,7 @@ export default function HistoryUser(props) {
     }
 
     function GraphType(e) {
-        setStates({...States, TypeChart: e.currentTarget.name})
+        setStates({ ...States, TypeChart: e.currentTarget.name })
     }
 
     return (
@@ -163,7 +165,7 @@ export default function HistoryUser(props) {
                                         onChange={handleChange}
                                         disabled={States.TimeStamp === "A" ? true : false}
                                     >
-                                       {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
+                                        {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
                                     </Select>
                                 </FormControl>
 
@@ -199,16 +201,16 @@ export default function HistoryUser(props) {
                 <div className={classes.panelContainer}>
                     <Paper className={clsx(!animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} elevation={2}>
                         {!animations.Minimize ? Data.graph ? <ChartComponent
-                                                type={States.TypeChart}
-                                                data={getDataGraph()}
-                                            /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
+                            type={States.TypeChart}
+                            data={getDataGraph()}
+                        /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
                             : <BarChartIcon />}
                     </Paper>
                     <Button className={classes.minimizerButton} onClick={handleMinimize}>
                         {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
                     </Button>
                     <Paper className={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp}  /> : <SubjectIcon />}
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} /> : <SubjectIcon />}
                     </Paper>
                 </div>
             </Paper>

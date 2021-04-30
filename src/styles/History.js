@@ -13,10 +13,10 @@ export default useStyles = makeStyles((theme) => ({
     },
     Acordion: {
         backgroundColor: "rgb(232 232 232)",
-        "& > .MuiButtonBase-root.MuiAccordionSummary-root.Mui-expanded":{
-            height: "9vh"
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root.Mui-expanded": {
+            height: "9vh",
         },
-        width: "100%"
+        width: "100%",
     },
     TextInput: {
         width: "100%",
@@ -79,28 +79,31 @@ export default useStyles = makeStyles((theme) => ({
     },
     details: {
         alignItems: 'center',
-        height: "29vh"
+        height: "29vh",
+        width: "100%"
     },
     column1: {
-        width: "80vw",
+        width: "80%",
         height: "100%",
         transition: "250ms ease-in"
     },
     column: {
-        width: '27vw',
+        width: '80%',
         height: "100%",
         transition: "250ms ease-in"
     },
-    columnDisabled:{
-        width: "8vw",
+    columnDisabled: {
+        width: "10%",
         height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         transition: "250ms ease-in"
     },
-    dividerButton:{
-        height: "100%"
+    dividerButton: {
+        height: "100%",
+        width: "10%",
+        minWidth: 0
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
@@ -112,7 +115,7 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         "&& > *": {
-            fontSize: "3em"
+            fontSize: "2em"
         }
     },
     link: {
@@ -168,4 +171,15 @@ export default useStyles = makeStyles((theme) => ({
             "-webkit-text-fill-color": "transparent",
         }
     },
+    AcordionResult: {
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root .MuiAccordionSummary-content": {
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            "&  .UserInfo": {
+                display: "flex",
+                width: "30%",
+                minWidth: "220px"
+            }
+        }
+    }
 }));
