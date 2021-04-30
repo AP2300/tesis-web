@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import {
     Accordion, AccordionSummary, AccordionDetails, InputLabel,
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select, IconButton, Button
+    Paper, Divider, Select, IconButton, Button
 } from "@material-ui/core";
 import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
 import clsx from 'clsx';
@@ -11,6 +11,7 @@ import useStyles from "../../styles/History";
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
 import ChartComponent from '../../components/Chart';
+import DataInfo from '../../components/DataInfo';
 import Chart from 'chart.js'
 import { colors } from '../../api/constants';
 import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
@@ -21,7 +22,7 @@ export default function History() {
     const classes = useStyles();
     const history = useHistory();
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
-    const [Data, setData] = useState({ Search: [], User: "", Users: "", AllUsers: "", graph: "" });
+    const [Data, setData] = useState({ Search: [], Users: "", AllUsers: "", graph: "" });
     const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
     const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
@@ -48,10 +49,6 @@ export default function History() {
             console.log("change")
         }
     }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
-
-    // useEffect(()=>{
-    //     handleFilterSearch();
-    // },[States])
 
 
     const GetHistory = async () => {
@@ -83,29 +80,6 @@ export default function History() {
         }
     }
 
-    // const GetData = async (id) => {
-    //     console.log("entre")
-    //     const res = await GetHistoryUserData(id);
-    //     if (res) {
-    //         setData({...Data, User: res.data.data});
-    //         setPromises({...Promises, isUserReady: true});
-
-    //     } else {
-    //         history.push("/");
-    //     }
-    // }
-    const GetData = async (id, name) => {
-        // if (Data.AllUsers) {
-        //     Data.AllUsers.forEach( async (User) => {
-        //         if(User.id === id){
-        //             setData({...Data, [User.name]: ChangeGraph(States.TimeStamp,Dates.year,Dates.month,Dates.week,
-        //                 FilterSearch(User.Data, Dates.month, Dates.year, States.TimeStamp))});
-        //             setPromises({...Promises, isUserReady: true});
-        //         }
-        //     });            
-        // } 
-    }
-
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setStates({ ...States, TimeStamp: event.target.value });
         else if (event.target.name === "mail") setStates({ ...States, Type: event.target.value });
@@ -128,18 +102,14 @@ export default function History() {
     }
 
     window.addEventListener("click", beforePrintHandler);
-
     function handleClick(e) {
         if (States.showChart) setStates({ ...States, showChart: false })
         else setStates({ ...States, showChart: true })
-
-
     }
 
     function beforePrintHandler() {
         setTimeout(() => {
             for (var id in Chart.instances) {
-                console.log(Chart.instances[id]);
                 Chart.instances[id].resize();
             }
         }, 260)
@@ -266,12 +236,6 @@ export default function History() {
                             <i className="fas fa-globe-americas"></i>
                         </IconButton>}
                     />
-                    {/* <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={<FilterList />}
-                    /> */}
                 </AccordionSummary>
                 <AccordionDetails>
                     <Paper elevation={0} className={classes.FilterContainer}>
@@ -380,7 +344,7 @@ export default function History() {
                 {Promises.isReady ?
                     Data.Search.map((el, index) => {
                         return (
-                            <Accordion onClick={(e) => GetData(el.IDUser, el.FullName)} key={index} className={classes.AcordionResult}
+                            <Accordion key={index} className={classes.AcordionResult}
                                 onChange={handleAcordion(`panel${index}`)}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMore />}
@@ -409,7 +373,7 @@ export default function History() {
                                         onClick={handleClick}>{States.showChart ? <ChevronLeft /> : <ChevronRight />}
                                     </Button>
                                     <div className={clsx(classes.info, !States.showChart ? classes.column : classes.columnDisabled)}>
-                                        {States.showChart ? <Subject /> : ""}
+                                        {States.showChart ? <Subject /> : <DataInfo classes={classes.column} TimeStamp={States.TimeStamp} Data={Data.graph[el.FullName]} />}
                                     </div>
                                 </AccordionDetails>
                             </Accordion>

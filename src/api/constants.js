@@ -1,4 +1,4 @@
-const url = " http://192.168.1.120:3001";
+const url = " http://localhost:3001";
 
 // Rutas
 export const LogOut = `${url}/logOut`;
