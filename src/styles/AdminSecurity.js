@@ -137,6 +137,7 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "space-around",
         padding: "0rem 1rem",
+        flexBasis: "60em"
     },
     faceAvatar: {
         width: "9rem",
@@ -151,6 +152,7 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "space-around",
         padding: "0rem 1rem",
+        flexBasis: "100em"
     },
     fingerAvatar: {
         width: "7.5rem",
@@ -160,7 +162,7 @@ export default useStyles = makeStyles((theme) => ({
         margin: "1.3%",
         display: "flex",
         alignItems: "center",
-        width: "70%",
+        width: "15em",
         cursor: "default",
         height: "6.7vh",
         "& > .AuthName": {
@@ -235,4 +237,12 @@ export default useStyles = makeStyles((theme) => ({
         textTransform: "none",
         color: "inherit"
     },
+    editButton: {
+        backgroundColor: "#2196f312",
+        color: "#2196f3"
+    },
+    deleteButton: {
+        backgroundColor: "#f4433612",
+        color: "#f44336"
+    }
 }));

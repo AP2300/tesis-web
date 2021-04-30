@@ -11,9 +11,9 @@ import useStyles from '../../styles/AdminSecurity';
 import PeopleIcon from '@material-ui/icons/People';
 import Fingerprint from '@material-ui/icons/Fingerprint';
 import Mood from '@material-ui/icons/Mood';
-import SecurityIcon from '@material-ui/icons/Security';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Notification from '../../components/Notifications';
 import clsx from 'clsx';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods } from '../../api/user';
 import { useHistory } from 'react-router-dom';
@@ -26,6 +26,7 @@ export default function AdminSecurity() {
     const [userList, setUserList] = useState([])
     const [isPromiseReady, setIsPromiseReady] = useState(false);
     const [isSecDataReady, setIsSecDataReady] = useState(false);
+    const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const classes = useStyles();
 
     useEffect(async () => {
@@ -77,8 +78,9 @@ export default function AdminSecurity() {
         console.log(name)
         let data = await GetSecurityUserData(id);
         let d = ""
+        
         if(data) {
-            if(data.length!==0) {
+            if(data.data.data.length!=0) {
                 console.log(data.data.data);
                 const codigo = data.data.data.filter((d) => d.Name == "Codigo")
                 const huella = data.data.data.filter((d) => d.Name == "Huella")
@@ -87,6 +89,12 @@ export default function AdminSecurity() {
                 console.log(d);
             } else {
                 d = {}
+                console.log(d);
+                setNoti({
+                    ...noti, severity: "warning",
+                    description: "No hay información del usuario para mostrar",
+                    open: true
+                })
             }
             setActiveUser(name);
             setUserData(d);
@@ -96,6 +104,7 @@ export default function AdminSecurity() {
 
     return(
         <div className={classes.root}>
+            {(setNoti.open) ? <Notification data={setNoti}/> : ""}
             <Paper className={classes.mainContainer}>
                 <div className={classes.panelContainer}>
                     <Paper className={clsx(!animations.Minimize ? [classes.maximizedContainerUsers, classes.dataContainer] : [classes.minimizedContainerUsers, classes.logo])} elevation={2}>
@@ -128,7 +137,7 @@ export default function AdminSecurity() {
                                     Usuario: {activeUser}
                                 </Typography>
                                 <Typography gutterBottom variant="h6" style={{fontSize: "calc(0.7em + 0.7vw)" }}>
-                                    Código de acceso: {userData.codigo.data}
+                                    Código de acceso: {userData.codigo[0].data}
                                 </Typography>
                                 <Divider orientation="horizontal" variant={"middle"} style={{width: "95%"}} />
                             </div>
@@ -139,13 +148,13 @@ export default function AdminSecurity() {
                                 <Typography variant="h5" style={{fontSize: "calc(0.8em + 0.8vw)", margin: "0.3em 0"}}>
                                     Foto para reconocimiento facial
                                 </Typography>
-                                <Avatar className={classes.faceAvatar} src={`http://localhost:3001${userData.facial.data}`}/>
+                                <Avatar className={classes.faceAvatar} src={`http://localhost:3001${userData.facial[0].data}`}/>
                                 <div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", width: "100%"}}>
-                                    <Button variant="outlined" className={classes.button}>
-                                        Editar cara
+                                    <Button variant="filled" className={[classes.button, classes.editButton]}>
+                                        Editar
                                     </Button>
-                                    <Button variant="outlined" className={classes.button}>
-                                        Eliminar cara
+                                    <Button variant="filled" className={[classes.button, classes.deleteButton]}>
+                                        Eliminar
                                     </Button>
                                 </div>
                                 <Paper onClick={() => Toggle(userData.facial.Name)} key={userData.facial.Name}
@@ -165,18 +174,34 @@ export default function AdminSecurity() {
                                 <Typography variant="h5" style={{fontSize: "calc(0.8em + 0.8vw)", margin: "0.3em 0"}}>
                                     Huellas dactilares
                                 </Typography>
-                                <Divider orientation="horizontal" variant={"middle"} style={{width: "90%"}}/>
+                                <Divider orientation="horizontal" variant={"middle"} style={{width: "95%"}}/>
                                 <div style={{overflowY: "scroll", width: "100%"}}>
                                     {userData.huella.map((data, index) => {
                                         return (
-                                            <div key={data.IDBiometrics} style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", margin: "0.5em 0"}}>
-                                                <Avatar className={classes.fingerAvatar} style={{margin: "0.4em 0"}}/>
-                                                <Button variant="outlined" className={classes.button} style={{margin: "0.3em 0"}}>
-                                                    Editar huella
-                                                </Button>
-                                                <Button variant="outlined" className={classes.button}>
-                                                    Eliminar huella
-                                                </Button>
+                                            <div key={data.IDBiometrics} style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+                                                <div  style={{display: "flex", alignItems: "center", justifyContent: "space-evenly", flexDirection: "row", margin: "0.5em 0", width: "100%"}}>
+                                                    <Avatar className={classes.fingerAvatar} style={{margin: "0.4em 0"}}>
+                                                        <Fingerprint style={{width: "50%", height: "50%"}}/>
+                                                    </Avatar>
+                                                        <div style={{display: "flex", flexDirection: "column", width: "100%", justifyContent: "space-evenly"}}>
+                                                            <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-evenly", width: "50%"}}>
+                                                                <Typography variant="h5" style={{fontSize: "calc(0.6em + 0.6vw)", marginTop: "0.3em"}}>
+                                                                    Dedo {data.fingerName}
+                                                                </Typography>
+                                                            </div>
+                                                            
+                                                            <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-evenly"}}>
+                                                                <Button variant="filled" className={[classes.button, classes.editButton]} style={{margin: "0.3em 0"}}>
+                                                                    Editar
+                                                                </Button>
+                                                                <Button variant="filled" className={[classes.button, classes.deleteButton]}>
+                                                                    Eliminar
+                                                                </Button>
+                                                            </div>
+                                                            
+                                                        </div>                                                 
+                                                </div>
+                                                <Divider orientation="horizontal" variant={"middle"} style={{width: "80%"}} />
                                             </div>
                                         )
                                     })}
@@ -184,7 +209,7 @@ export default function AdminSecurity() {
                                 
                                 <div style={{width: "100%"}}>                                    
                                     <Divider orientation="horizontal" variant={"middle"} />
-                                    <Paper onClick={() => Toggle(userData.huella.Name)} key={userData.huella.Name} className={clsx(classes.AuthItem, userData.huella.IsActive && classes.disabled, userData.huella.IsActive ? classes.green : classes.red)} elevation={1} style={{margin: "0.2em auto"}}>
+                                    <Paper onClick={() => Toggle(userData.huella.Name)} key={userData.huella.Name} className={clsx(classes.AuthItem, userData.huella.IsActive && classes.disabled, userData.huella.IsActive ? classes.green : classes.red)} elevation={1} style={{margin: "1em auto"}}>
                                     <Paper className="AuthName" elevation={0}>
                                         <Fingerprint />
                                         <Typography>
@@ -201,7 +226,7 @@ export default function AdminSecurity() {
                         </div>
                     ) :
                     <Typography>
-                        No hay datos para mostrar
+                        Seleccione un usuario para visualizar su información
                     </Typography>
                 }
                     </Paper>
