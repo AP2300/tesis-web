@@ -50,25 +50,31 @@ export default function AdminSecurity() {
     }
 
     function Toggle(name) {
+        name = name.toLowerCase();
         let Update = JSON.parse(JSON.stringify(userData))
-        console.log(Update);
-        Update[name].IsActive = Number(!Update[name].IsActive)
-        const IsToUpdate = Update[name].some(el => el.IsActive && el.Name != "Codigo")
+        console.log(Update[name]);
+        Update[name][0].IsActive = Number(!Update[name][0].IsActive)
+        let testDict = []
+        for (let key in Update) {
+            testDict.push(Update[key][0])
+        }
+        console.log(testDict)
+        const IsToUpdate = testDict.some(el => el.IsActive && el.Name != "Codigo")
         if (IsToUpdate) {
             const params = {
-                id: Update[name].IDSecurity,
-                active: Update[name].IsActive
+                id: Update[name][0].IDSecurity,
+                active: Update[name][0].IsActive
             }
             const res = UpdateAuthMethods(params)
             if (!res) history.push("/")
             else setUserData(Update)
         } else {
             console.log("asdasdasd")
-            /*setNoti({
-                ...noti, severity: "warning",
+            setNoti({
+                severity: "warning",
                 description: "No puedes desactivar tu último metodo de autenticacion activo",
                 open: true
-            })*/
+            })
 
         }
     }
@@ -104,7 +110,7 @@ export default function AdminSecurity() {
 
     return(
         <div className={classes.root}>
-            {(setNoti.open) ? <Notification data={setNoti}/> : ""}
+            {(noti.open) ? <Notification close={setNoti} data={noti}/> : ""}
             <Paper className={classes.mainContainer}>
                 <div className={classes.panelContainer}>
                     <Paper className={clsx(!animations.Minimize ? [classes.maximizedContainerUsers, classes.dataContainer] : [classes.minimizedContainerUsers, classes.logo])} elevation={2}>
@@ -132,11 +138,11 @@ export default function AdminSecurity() {
                     <Paper className={clsx(animations.Minimize ? classes.maximizedContainerSecurity : classes.minimizedContainerSecurity)}>
                     {(isSecDataReady && Object.keys(userData).length!=0) ? (
                         <div className={classes.dataContainerSec}>
-                            <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", padding: "1em 0em 0em 0em",}}>
-                                <Typography variant="h4" style={{fontSize: "calc(1em + 1vw)" }}>
+                            <div className={classes.userSecHeader}>
+                                <Typography variant="h4" className={classes.userTitle}>
                                     Usuario: {activeUser}
                                 </Typography>
-                                <Typography gutterBottom variant="h6" style={{fontSize: "calc(0.7em + 0.7vw)" }}>
+                                <Typography gutterBottom variant="h6" className={classes.userCode}>
                                     Código de acceso: {userData.codigo[0].data}
                                 </Typography>
                                 <Divider orientation="horizontal" variant={"middle"} style={{width: "95%"}} />
@@ -145,56 +151,56 @@ export default function AdminSecurity() {
                         <div className={classes.motherContainer}>
                         
                             <Paper className={classes.facialContainer}>
-                                <Typography variant="h5" style={{fontSize: "calc(0.8em + 0.8vw)", margin: "0.3em 0"}}>
+                                <Typography variant="h5" className={classes.photoTitle}>
                                     Foto para reconocimiento facial
                                 </Typography>
                                 <Avatar className={classes.faceAvatar} src={`http://localhost:3001${userData.facial[0].data}`}/>
-                                <div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", width: "100%"}}>
-                                    <Button variant="filled" className={[classes.button, classes.editButton]}>
+                                <div className={classes.photoButtonGroup}>
+                                    <Button variant="contained" className={clsx([classes.button, classes.editButton])}>
                                         Editar
                                     </Button>
-                                    <Button variant="filled" className={[classes.button, classes.deleteButton]}>
+                                    <Button variant="contained" className={clsx([classes.button, classes.deleteButton])}>
                                         Eliminar
                                     </Button>
                                 </div>
-                                <Paper onClick={() => Toggle(userData.facial.Name)} key={userData.facial.Name}
-                                className={clsx(classes.AuthItem, userData.facial.IsActive && classes.disabled, userData.facial.IsActive ? classes.green : classes.red)} elevation={1}>
+                                <Paper onClick={() => Toggle(userData.facial[0].Name)} key={userData.facial[0].Name}
+                                className={clsx(classes.AuthItem, userData.facial[0].IsActive && classes.disabled, userData.facial[0].IsActive ? classes.green : classes.red)} elevation={1}>
                                     <Paper className="AuthName" elevation={0}>
                                         <Mood />
                                         <Typography>
-                                            {userData.facial.Name}
+                                            {userData.facial[0].Name}
                                         </Typography>
                                     </Paper>
                                     <Typography className="IsActive">
-                                        {userData.facial.IsActive ? "Activo" : "Inactivo"}
+                                        {userData.facial[0].IsActive ? "Activo" : "Inactivo"}
                                     </Typography>
                                 </Paper>
                             </Paper>
                             <Paper className={classes.fingerContainer}>
-                                <Typography variant="h5" style={{fontSize: "calc(0.8em + 0.8vw)", margin: "0.3em 0"}}>
+                                <Typography variant="h5" className={classes.fingerTitle}>
                                     Huellas dactilares
                                 </Typography>
                                 <Divider orientation="horizontal" variant={"middle"} style={{width: "95%"}}/>
-                                <div style={{overflowY: "scroll", width: "100%"}}>
+                                <div className={classes.fingerInfoContainer}>
                                     {userData.huella.map((data, index) => {
                                         return (
-                                            <div key={data.IDBiometrics} style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                                                <div  style={{display: "flex", alignItems: "center", justifyContent: "space-evenly", flexDirection: "row", margin: "0.5em 0", width: "100%"}}>
-                                                    <Avatar className={classes.fingerAvatar} style={{margin: "0.4em 0"}}>
+                                            <div key={data.IDBiometrics} className={classes.fingerDataContainer}>
+                                                <div className={classes.fingerContainer2}>
+                                                    <Avatar className={classes.fingerAvatar}>
                                                         <Fingerprint style={{width: "50%", height: "50%"}}/>
                                                     </Avatar>
-                                                        <div style={{display: "flex", flexDirection: "column", width: "100%", justifyContent: "space-evenly"}}>
-                                                            <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-evenly", width: "50%"}}>
-                                                                <Typography variant="h5" style={{fontSize: "calc(0.6em + 0.6vw)", marginTop: "0.3em"}}>
+                                                        <div className={classes.fingerItem}>
+                                                            <div className={classes.fingerItemTitleContainer}>
+                                                                <Typography variant="h5" className={classes.fingerItemTitle}>
                                                                     Dedo {data.fingerName}
                                                                 </Typography>
                                                             </div>
                                                             
-                                                            <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-evenly"}}>
-                                                                <Button variant="filled" className={[classes.button, classes.editButton]} style={{margin: "0.3em 0"}}>
+                                                            <div className={classes.fingerItemButtonGroup}>
+                                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}}>
                                                                     Editar
                                                                 </Button>
-                                                                <Button variant="filled" className={[classes.button, classes.deleteButton]}>
+                                                                <Button variant="contained" className={clsx([classes.button, classes.deleteButton])}>
                                                                     Eliminar
                                                                 </Button>
                                                             </div>
@@ -209,15 +215,15 @@ export default function AdminSecurity() {
                                 
                                 <div style={{width: "100%"}}>                                    
                                     <Divider orientation="horizontal" variant={"middle"} />
-                                    <Paper onClick={() => Toggle(userData.huella.Name)} key={userData.huella.Name} className={clsx(classes.AuthItem, userData.huella.IsActive && classes.disabled, userData.huella.IsActive ? classes.green : classes.red)} elevation={1} style={{margin: "1em auto"}}>
+                                    <Paper onClick={() => Toggle(userData.huella[0].Name)} key={userData.huella[0].Name} className={clsx(classes.AuthItem, userData.huella[0].IsActive && classes.disabled, userData.huella[0].IsActive ? classes.green : classes.red)} elevation={1} style={{margin: "1em auto"}}>
                                     <Paper className="AuthName" elevation={0}>
                                         <Fingerprint />
                                         <Typography>
-                                            {userData.huella.name}
+                                            {userData.huella[0].name}
                                         </Typography>
                                         </Paper>
                                         <Typography className="IsActive">
-                                            {userData.huella.IsActive ? "Activo" : "Inactivo"}
+                                            {userData.huella[0].IsActive ? "Activo" : "Inactivo"}
                                         </Typography>
                                     </Paper>
                                 </div>
@@ -225,7 +231,7 @@ export default function AdminSecurity() {
                         </div>
                         </div>
                     ) :
-                    <Typography>
+                    <Typography className={classes.noInfoText}>
                         Seleccione un usuario para visualizar su información
                     </Typography>
                 }
