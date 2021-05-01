@@ -124,6 +124,19 @@ export default useStyles = makeStyles((theme) => ({
     active: {
         backgroundColor: "#0000001a"
     },
+    userSecHeader: {
+        display: "flex",
+        justifyContent: "center", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        padding: "1em 0em 0em 0em",
+    },
+    userTitle: {
+        fontSize: "calc(1em + 1vw)" 
+    },
+    userCode: {
+        fontSize: "calc(0.7em + 0.7vw)" 
+    },
     motherContainer: {
         display: "flex",
         flexDirection: "row",
@@ -142,9 +155,21 @@ export default useStyles = makeStyles((theme) => ({
         padding: "0rem 1rem",
         flexBasis: "60em"
     },
+    photoTitle: {
+        fontSize: "calc(0.8em + 0.8vw)", 
+        margin: "0.3em 0",
+        textAlign: "center"
+    },
     faceAvatar: {
         width: "9rem",
         height: "9rem"
+    },
+    photoButtonGroup: {
+        display: "flex", 
+        flexDirection: "row", 
+        alignItems: "center", 
+        justifyContent: "space-evenly", 
+        width: "100%"
     },
     fingerContainer: {
         color: "inherit",
@@ -157,9 +182,55 @@ export default useStyles = makeStyles((theme) => ({
         padding: "0rem 1rem",
         flexBasis: "100em"
     },
+    fingerTitle: {
+        fontSize: "calc(0.8em + 0.8vw)",
+        margin: "0.3em 0"
+    },
+    fingerInfoContainer: {
+        overflowY: "scroll", 
+        width: "100%"
+    },
+    fingerDataContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        flexDirection: "column"
+    },
+    fingerContainer2: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-evenly", 
+        flexDirection: "row", 
+        margin: "0.5em 0", 
+        width: "100%"
+    },
     fingerAvatar: {
         width: "7.5rem",
-        height: "7.5rem"
+        height: "7.5rem",
+        margin: "0.4em 0"
+    },
+    fingerItem: {
+        display: "flex", 
+        flexDirection: "column", 
+        width: "100%", 
+        justifyContent: "space-evenly"
+    },
+    fingerItemTitleContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly", 
+        width: "50%"
+    },
+    fingerItemTitle: {
+        fontSize: "calc(0.6em + 0.6vw)", 
+        marginTop: "0.3em"
+    },
+    fingerItemButtonGroup: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly"
     },
     AuthItem: {
         margin: "1.3%",
@@ -247,5 +318,12 @@ export default useStyles = makeStyles((theme) => ({
     deleteButton: {
         backgroundColor: "#f4433612",
         color: "#f44336"
+    },
+    noInfoText: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "calc(1em + 1vw)",
+        height: "100%"
     }
 }));
