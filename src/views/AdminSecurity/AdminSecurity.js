@@ -106,7 +106,7 @@ export default function AdminSecurity() {
         <div className={classes.root}>
             {(setNoti.open) ? <Notification data={setNoti}/> : ""}
             <Paper className={classes.mainContainer}>
-                <div className={classes.panelContainer}>
+                {/* <div className={classes.panelContainer}> */}
                     <Paper className={clsx(!animations.Minimize ? [classes.maximizedContainerUsers, classes.dataContainer] : [classes.minimizedContainerUsers, classes.logo])} elevation={2}>
                         {!animations.Minimize ? (
                             <div style={{width: "100%", height: "100%"}}>
@@ -230,7 +230,7 @@ export default function AdminSecurity() {
                     </Typography>
                 }
                     </Paper>
-                </div>
+                {/* </div> */}
             </Paper>
         </div>
     )

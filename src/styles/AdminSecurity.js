@@ -15,24 +15,29 @@ export default useStyles = makeStyles((theme) => ({
     },
     mainContainer: {
         width: "100%",
-        height: "80vh"
-    },
-    panelContainer: {
-        height: "80vh",
-        padding: "2%",
+        height: "100%",
         display: "flex",
-        justifyContent: "space-between",
         [sizes.Wdown("xs")]: {
             flexDirection: "column",
         },
     },
+    // panelContainer: {
+    //     height: "80vh",
+    //     padding: "2%",
+    //     width: "92vw",
+    //     display: "flex",
+    //     justifyContent: "space-between",
+    //     [sizes.Wdown("xs")]: {
+    //         flexDirection: "column",
+    //     },
+    // },
     minimizerButton: {
         width: "5%",
         color: "inherit",
         [sizes.Wdown("xs")]: {
             height: "5%",
             width: "100%",
-            "& .icon":{
+            "& .icon": {
                 transform: "rotate(90deg)"
             }
         },
@@ -46,10 +51,10 @@ export default useStyles = makeStyles((theme) => ({
             height: "85%",
             width: "100%"
         },
-        
+
     },
     maximizedContainerSecurity: {
-        width: "85%",
+        width: "86%",
         height: "100%",
         transition: "250ms ease-in",
         color: "inherit",
@@ -57,7 +62,7 @@ export default useStyles = makeStyles((theme) => ({
             height: "85%",
             width: "100%"
         },
-        
+
     },
     minimizedContainerUsers: {
         width: "8%",
@@ -70,7 +75,7 @@ export default useStyles = makeStyles((theme) => ({
         },
     },
     minimizedContainerSecurity: {
-        width: "63%",
+        width: "64%",
         height: "100%",
         transition: "250ms ease-in",
         color: "inherit",
@@ -86,9 +91,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     dataContainer: {
         display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        padding: "2em 0em 2em 2em",
+        padding: "2% 0 2% 2%",
     },
     dataContainerSec: {
         display: "flex",
@@ -100,7 +103,7 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         height: "55vh",
-        overflowY: "scroll", 
+        overflowY: "scroll",
         alignItems: "flex-start",
         paddingRight: "1em"
     },
@@ -217,12 +220,12 @@ export default useStyles = makeStyles((theme) => ({
             color: "#5f5f5f"
         }
     },
-    disabled:{  
-        "& > .AuthName":{
+    disabled: {
+        "& > .AuthName": {
             transform: "translateX(122.5%)",
             transition: "350ms"
         },
-        "& > .IsActive":{
+        "& > .IsActive": {
             transform: "translateX(-80%)",
             transition: "350ms"
         }

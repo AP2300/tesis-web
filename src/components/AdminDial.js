@@ -12,7 +12,7 @@ import { PageSelector, otherPage } from "../helpers/Home";
 import { useHistory } from "react-router";
 
 const actions = [
-  { icon: <PeopleIcon />, name: 'Aministar Usuarios' },
+  { icon: <PeopleIcon />, name: 'Administar usuarios' },
   { icon: <HistoryIcon />, name: 'Historial global' },
   { icon: <LockOpenIcon />, name: 'Administrar seguridad' }
 ];
