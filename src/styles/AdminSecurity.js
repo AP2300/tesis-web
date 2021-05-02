@@ -15,24 +15,29 @@ export default useStyles = makeStyles((theme) => ({
     },
     mainContainer: {
         width: "100%",
-        height: "80vh"
-    },
-    panelContainer: {
-        height: "80vh",
-        padding: "2%",
+        height: "100%",
         display: "flex",
-        justifyContent: "space-between",
         [sizes.Wdown("xs")]: {
             flexDirection: "column",
         },
     },
+    // panelContainer: {
+    //     height: "80vh",
+    //     padding: "2%",
+    //     width: "92vw",
+    //     display: "flex",
+    //     justifyContent: "space-between",
+    //     [sizes.Wdown("xs")]: {
+    //         flexDirection: "column",
+    //     },
+    // },
     minimizerButton: {
         width: "5%",
         color: "inherit",
         [sizes.Wdown("xs")]: {
             height: "5%",
             width: "100%",
-            "& .icon":{
+            "& .icon": {
                 transform: "rotate(90deg)"
             }
         },
@@ -46,10 +51,10 @@ export default useStyles = makeStyles((theme) => ({
             height: "85%",
             width: "100%"
         },
-        
+
     },
     maximizedContainerSecurity: {
-        width: "85%",
+        width: "86%",
         height: "100%",
         transition: "250ms ease-in",
         color: "inherit",
@@ -57,7 +62,7 @@ export default useStyles = makeStyles((theme) => ({
             height: "85%",
             width: "100%"
         },
-        
+
     },
     minimizedContainerUsers: {
         width: "8%",
@@ -70,7 +75,7 @@ export default useStyles = makeStyles((theme) => ({
         },
     },
     minimizedContainerSecurity: {
-        width: "63%",
+        width: "64%",
         height: "100%",
         transition: "250ms ease-in",
         color: "inherit",
@@ -86,9 +91,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     dataContainer: {
         display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        padding: "2em 0em 2em 2em",
+        padding: "2% 0 2% 2%",
     },
     dataContainerSec: {
         display: "flex",
@@ -100,7 +103,7 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         height: "55vh",
-        overflowY: "scroll", 
+        overflowY: "scroll",
         alignItems: "flex-start",
         paddingRight: "1em"
     },
@@ -121,6 +124,19 @@ export default useStyles = makeStyles((theme) => ({
     active: {
         backgroundColor: "#0000001a"
     },
+    userSecHeader: {
+        display: "flex",
+        justifyContent: "center", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        padding: "1em 0em 0em 0em",
+    },
+    userTitle: {
+        fontSize: "calc(1em + 1vw)" 
+    },
+    userCode: {
+        fontSize: "calc(0.7em + 0.7vw)" 
+    },
     motherContainer: {
         display: "flex",
         flexDirection: "row",
@@ -139,9 +155,21 @@ export default useStyles = makeStyles((theme) => ({
         padding: "0rem 1rem",
         flexBasis: "60em"
     },
+    photoTitle: {
+        fontSize: "calc(0.8em + 0.8vw)", 
+        margin: "0.3em 0",
+        textAlign: "center"
+    },
     faceAvatar: {
         width: "9rem",
         height: "9rem"
+    },
+    photoButtonGroup: {
+        display: "flex", 
+        flexDirection: "row", 
+        alignItems: "center", 
+        justifyContent: "space-evenly", 
+        width: "100%"
     },
     fingerContainer: {
         color: "inherit",
@@ -154,9 +182,55 @@ export default useStyles = makeStyles((theme) => ({
         padding: "0rem 1rem",
         flexBasis: "100em"
     },
+    fingerTitle: {
+        fontSize: "calc(0.8em + 0.8vw)",
+        margin: "0.3em 0"
+    },
+    fingerInfoContainer: {
+        overflowY: "scroll", 
+        width: "100%"
+    },
+    fingerDataContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        flexDirection: "column"
+    },
+    fingerContainer2: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-evenly", 
+        flexDirection: "row", 
+        margin: "0.5em 0", 
+        width: "100%"
+    },
     fingerAvatar: {
         width: "7.5rem",
-        height: "7.5rem"
+        height: "7.5rem",
+        margin: "0.4em 0"
+    },
+    fingerItem: {
+        display: "flex", 
+        flexDirection: "column", 
+        width: "100%", 
+        justifyContent: "space-evenly"
+    },
+    fingerItemTitleContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly", 
+        width: "50%"
+    },
+    fingerItemTitle: {
+        fontSize: "calc(0.6em + 0.6vw)", 
+        marginTop: "0.3em"
+    },
+    fingerItemButtonGroup: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly"
     },
     AuthItem: {
         margin: "1.3%",
@@ -217,12 +291,12 @@ export default useStyles = makeStyles((theme) => ({
             color: "#5f5f5f"
         }
     },
-    disabled:{  
-        "& > .AuthName":{
+    disabled: {
+        "& > .AuthName": {
             transform: "translateX(122.5%)",
             transition: "350ms"
         },
-        "& > .IsActive":{
+        "& > .IsActive": {
             transform: "translateX(-80%)",
             transition: "350ms"
         }
@@ -244,5 +318,12 @@ export default useStyles = makeStyles((theme) => ({
     deleteButton: {
         backgroundColor: "#f4433612",
         color: "#f44336"
+    },
+    noInfoText: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "calc(1em + 1vw)",
+        height: "100%"
     }
 }));
