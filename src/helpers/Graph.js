@@ -5,15 +5,26 @@ moment().format();
 export function calcNumWeek(year, month) {
     let indexWeek = [];
     let j = 0;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         let date = String(moment(`${year}-${month + 1}-${i === 0 ? 1 : (i * 7) + j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
-        if (i !== 0) {
+
+        if (indexWeek[i - 1] === String(moment(`${year}-${month + 1}-${23}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))) {
+            date = String(moment(`${year}-${month + 1}-${30}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
+        }
+        else if (indexWeek[i - 1] === String(moment(`${year}-${month + 1}-${24}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))) {
+            if (String(moment(`${year}-${month + 1}-${31}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek')) !== "Invalid date") {
+                date = String(moment(`${year}-${month + 1}-${31}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'));
+            }
+        }
+        else if (i !== 0) {
             if (date === indexWeek[i - 1]) {
                 j++;
                 date = String(moment(`${year}-${month + 1}-${i === 0 ? 1 : (i * 7) + j}`, "YYYY MM DD hh:mm:ss").startOf('isoWeek'))
             }
         }
-        indexWeek.push(date);
+        if (date !== "Invalid date") {
+            indexWeek.push(date);
+        }
     }
     return indexWeek;
 }
@@ -32,10 +43,20 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
     let groupedResults = "";
     let result = "";
     switch (TimeStamp) {
+        case "D":
+            groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('day'));
+            result = Object.entries(groupedResults);
+            result.forEach((e) => {
+                if (moment().dayOfYear() === moment(e[0], "dd MMM DD YYYY").dayOfYear()) {
+                    graphData = e[1];
+                    // graphData = _.orderBy(e[1], (DateData) => moment(DateData.RegDate, "dd MMM DD YYYY hh:mm:ss").startOf('hour'));
+                }
+            })
+            console.log(graphData)
+            return graphData;
         case "S":
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
             result = Object.entries(groupedResults);
-
             result.forEach((e) => {
                 if (month === moment(e[0], "dd MMM DD YYYY").month() && year === moment(e[0], "dd MMM DD YYYY").year()) {
                     let dates = _.groupBy(e[1], (DateData) => moment(DateData.RegDate).startOf('isoWeek'));
@@ -73,10 +94,13 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
 
 export const GraphLabels = (TimeStamp) => {
     switch (TimeStamp) {
+        case "D":
+            return ["0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h"
+                , "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"];
         case "S":
             return ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
         case "M":
-            return ["1era Semana", "2da Semana", "3era Semana", "4ta Semana", "5ta Semana"];
+            return ["1era Semana", "2da Semana", "3era Semana", "4ta Semana", "5ta Semana", "6ta Semana"];
         case "A":
             return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
         default:
@@ -97,12 +121,41 @@ export function getYearRange() {
 
 export function ChangeGraph(TimeStamp, year, month, week, graphData) {
     let OrderResut = "";
+    let graphD = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let graphW = [0, 0, 0, 0, 0, 0, 0];
-    let graphM = [0, 0, 0, 0, 0];
+    let graphM = [0, 0, 0, 0, 0, 0];
     let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let indexWeek = calcNumWeek(year, month);
     let info = [];
+    console.log(indexWeek)
     switch (TimeStamp) {
+        case "D":
+            let hours = GraphLabels(TimeStamp);
+            graphData.forEach((d) => {
+                hours.forEach((h, i) => {
+                    if (i === moment(d.RegDate).hour()) {
+                        info.push({ hour: i, info: d })
+                        graphD[i] += 1;
+                    }
+                });
+            })
+            // graphData.forEach((d) => {
+            //     if (d[0] === indexWeek[week]) {
+            //         info = d[1];
+            //         d[1].forEach(date => {
+            //             days.forEach((day, d) => {
+            //                 if (day === moment(date.RegDate).day()) {
+            //                     graphW[d] += 1;
+            //                 }
+            //             })
+            //         })
+            //     }
+            // })
+            if (getDateAccess(graphD) === 0) {
+                return false;
+            } else return [GraphLabels(TimeStamp), graphD, info];
+
         case "S":
             const days = [1, 2, 3, 4, 5, 6, 0];
             graphData.forEach((d) => {
@@ -123,11 +176,13 @@ export function ChangeGraph(TimeStamp, year, month, week, graphData) {
 
         case "M":
             if (graphData) {
-                graphData.forEach((d, i) => {
-                    indexWeek.forEach((w) => {
+                console.log(graphData)
+                graphData.forEach((d) => {
+                    indexWeek.forEach((w, i) => {
                         if (d[0] === w) {
+                            console.log(d[0], w)
                             OrderResut = _.orderBy(d[1], (UserData) => moment(UserData.RegDate).startOf('day'));
-                            info[i] = {week: i, info: OrderResut}
+                            info.push({ week: i, info: OrderResut });
                             graphM[i] = d[1].length;
                         }
                     })
@@ -146,7 +201,7 @@ export function ChangeGraph(TimeStamp, year, month, week, graphData) {
                     graphData.forEach((y) => {
                         if (monthsShort[i] === y[0].split(" ")[1]) {
                             OrderResut = _.orderBy(y[1], (UserData) => moment(UserData.RegDate).startOf('day'));
-                            info[i] = {month: i, info: OrderResut}
+                            info[i] = { month: i, info: OrderResut }
                             graphY[i] = y[1].length;
                         }
                     })

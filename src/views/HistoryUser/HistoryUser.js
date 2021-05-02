@@ -13,6 +13,7 @@ import Chart from 'chart.js'
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SubjectIcon from '@material-ui/icons/Subject';
 import ChartComponent from '../../components/Chart';
+import GraphFormControl from '../../components/GraphFormControl';
 import DataInfo from '../../components/DataInfo';
 import { GetHistoryUserData } from "../../api/user"
 import { colors } from '../../api/constants';
@@ -125,67 +126,8 @@ export default function HistoryUser(props) {
                             Filtrar {!animations.Filter ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                         </Paper>
                         <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
-                            <div className={clsx(classes.formControl, animations.Filter && classes.show)}>
-                                <FormControl className="timestamp">
-                                    <InputLabel id="Timestamp">Escala de tiempo</InputLabel>
-                                    <Select
-                                        labelId="Timestamp"
-                                        name="Timestamp"
-                                        id="Timestamp"
-                                        value={States.TimeStamp}
-                                        onChange={handleChange}
-                                    >
-                                        <MenuItem value="S">Semanal</MenuItem>
-                                        <MenuItem value="M">Mensual</MenuItem>
-                                        <MenuItem value="A">Anual</MenuItem>
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="week">Semana</InputLabel>
-                                    <Select
-                                        labelId="week"
-                                        id="week"
-                                        name="week"
-                                        value={Dates.week}
-                                        onChange={handleChange}
-                                        disabled={States.TimeStamp === "A" || States.TimeStamp === "M" ? true : false}
-                                    >
-                                        {GraphLabels("M").map((w, i) => <MenuItem key={i} value={i}>{w}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="month">Mes</InputLabel>
-                                    <Select
-                                        labelId="month"
-                                        id="month"
-                                        name="month"
-                                        value={Dates.month}
-                                        onChange={handleChange}
-                                        disabled={States.TimeStamp === "A" ? true : false}
-                                    >
-                                        {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="year">Año</InputLabel>
-                                    <Select
-                                        labelId="year"
-                                        id="year"
-                                        name="year"
-                                        value={Dates.year}
-                                        onChange={handleChange}
-                                    >
-                                        {getYearRange().map((e, i) => <MenuItem key={i} value={e}>{String(e)}</MenuItem>)}
-                                        <MenuItem value={2022}>2022</MenuItem>
-                                        <MenuItem value={2023}>2023</MenuItem>
-                                        <MenuItem value={2024}>2024</MenuItem>
-                                        <MenuItem value={2025}>2025</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
+                            <GraphFormControl TimeStamp={States.TimeStamp} Dates={Dates} handleChange={handleChange}
+                                className={clsx(classes.formControl, animations.Filter && classes.show)} />
                         </Paper>
                     </div>
                     <div className={classes.iconContainer}>
