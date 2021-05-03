@@ -5,10 +5,26 @@ moment().format();
 
 export default function DataInfo(props) {
     const { TimeStamp, Data, classes } = props;
+    let graphD = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let graphW = [0, 0, 0, 0, 0, 0, 0];
     let graphM = [0, 0, 0, 0, 0];
     let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     switch (TimeStamp) {
+        case "D":
+            if (Data) {
+                for (let i = 0; i <= 23; i++) {
+                    Data[2].forEach((w) => {
+                        if (w.hour === i) {
+                            console.log(i);
+                            graphD[i] = w.info;
+                        }
+                    })                    
+                }
+                console.log(graphD)
+            }
+            break;
+
         case "S":
             const days = [1, 2, 3, 4, 5, 6, 0];
             if (Data) {

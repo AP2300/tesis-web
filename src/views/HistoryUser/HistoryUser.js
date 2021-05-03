@@ -17,7 +17,7 @@ import GraphFormControl from '../../components/GraphFormControl';
 import DataInfo from '../../components/DataInfo';
 import { GetHistoryUserData } from "../../api/user"
 import { colors } from '../../api/constants';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
@@ -25,8 +25,8 @@ export default function HistoryUser(props) {
     const [animations, setAnimations] = useState({ Filter: false, Minimize: false })
     const [Promises, setPromises] = useState({ isUserReady: false });
     const [Data, setData] = useState({ User: "", graph: "" });
-    const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true });
+    const [Dates, setDates] = useState({ day: moment().date() ,week: "", month: moment().month(), year: moment().year() });
+    const [States, setStates] = useState({ TimeStamp: "D", Type: "U", TypeChart: "bar", ShowGeneral: true });
     const classes = useStyles();
     const history = useHistory();
     const { User } = props;
@@ -43,7 +43,7 @@ export default function HistoryUser(props) {
         if (Data.User.length !== 0) {
             handleFilterSearch(Data.User)
         }
-    }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
+    }, [Promises.isUserReady, Dates.day, Dates.week, Dates.month, Dates.year, States.TimeStamp])
 
     function ShowFilters() {
         if (!animations.Filter) setAnimations({ ...animations, Filter: true })
@@ -79,7 +79,7 @@ export default function HistoryUser(props) {
     async function handleFilterSearch() {
         setData({
             ...Data, graph: ChangeGraph(States.TimeStamp, Dates.year, Dates.month, Dates.week,
-                FilterSearch(Data.User, Dates.month, Dates.year, States.TimeStamp))
+                FilterSearch(Data.User, Dates.month, Dates.year, Dates.day, States.TimeStamp))
         });
     }
 
@@ -109,6 +109,7 @@ export default function HistoryUser(props) {
     function handleChange(event) {
         if (event.target.name === "Timestamp") setStates({ ...States, TimeStamp: event.target.value });
         else if (event.target.name === "week") setDates({ ...Dates, week: event.target.value });
+        else if (event.target.name === "day") setDates({ ...Dates, day: event.target.value });
         else if (event.target.name === "month") setDates({ ...Dates, month: event.target.value });
         else if (event.target.name === "year") setDates({ ...Dates, year: event.target.value });
     }

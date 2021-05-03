@@ -38,7 +38,7 @@ export function setNumWeek(year, month) {
     });
 }
 
-export function FilterSearch(UserData, month, year, TimeStamp) {
+export function FilterSearch(UserData, month, year, day, TimeStamp) {
     let graphData = [];
     let groupedResults = "";
     let result = "";
@@ -47,12 +47,10 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('day'));
             result = Object.entries(groupedResults);
             result.forEach((e) => {
-                if (moment().dayOfYear() === moment(e[0], "dd MMM DD YYYY").dayOfYear()) {
+                if (moment(`${day}-${month+1}-${year}`, "DD MM YYYY").dayOfYear() === moment(e[0], "dd MMM DD YYYY").dayOfYear()) {
                     graphData = e[1];
-                    // graphData = _.orderBy(e[1], (DateData) => moment(DateData.RegDate, "dd MMM DD YYYY hh:mm:ss").startOf('hour'));
                 }
             })
-            console.log(graphData)
             return graphData;
         case "S":
             groupedResults = _.groupBy(UserData, (UserData) => moment(UserData.RegDate).startOf('month'));
@@ -92,6 +90,15 @@ export function FilterSearch(UserData, month, year, TimeStamp) {
     }
 }
 
+export const DaysInMonth = (month, year) =>{
+    let ArrayDay = [];
+    let days = moment(`${year}-${month+1}-1`, "YYYY MM").daysInMonth();
+    for (let i = 1; i <= days; i++) {
+        ArrayDay.push(i);
+    }
+    return ArrayDay;
+} 
+
 export const GraphLabels = (TimeStamp) => {
     switch (TimeStamp) {
         case "D":
@@ -128,7 +135,6 @@ export function ChangeGraph(TimeStamp, year, month, week, graphData) {
     let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let indexWeek = calcNumWeek(year, month);
     let info = [];
-    console.log(indexWeek)
     switch (TimeStamp) {
         case "D":
             let hours = GraphLabels(TimeStamp);
@@ -140,18 +146,6 @@ export function ChangeGraph(TimeStamp, year, month, week, graphData) {
                     }
                 });
             })
-            // graphData.forEach((d) => {
-            //     if (d[0] === indexWeek[week]) {
-            //         info = d[1];
-            //         d[1].forEach(date => {
-            //             days.forEach((day, d) => {
-            //                 if (day === moment(date.RegDate).day()) {
-            //                     graphW[d] += 1;
-            //                 }
-            //             })
-            //         })
-            //     }
-            // })
             if (getDateAccess(graphD) === 0) {
                 return false;
             } else return [GraphLabels(TimeStamp), graphD, info];
@@ -176,11 +170,9 @@ export function ChangeGraph(TimeStamp, year, month, week, graphData) {
 
         case "M":
             if (graphData) {
-                console.log(graphData)
                 graphData.forEach((d) => {
                     indexWeek.forEach((w, i) => {
                         if (d[0] === w) {
-                            console.log(d[0], w)
                             OrderResut = _.orderBy(d[1], (UserData) => moment(UserData.RegDate).startOf('day'));
                             info.push({ week: i, info: OrderResut });
                             graphM[i] = d[1].length;

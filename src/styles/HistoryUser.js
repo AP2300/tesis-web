@@ -42,7 +42,7 @@ export default useStyles = makeStyles((theme) => ({
         }
     },
     ExpandibleButton: {
-        minHeight: "59px",
+        height: "59px",
         minWidth: "156px",
         display: "flex",
         alignItems: "center",
@@ -88,7 +88,7 @@ export default useStyles = makeStyles((theme) => ({
         opacity: 1,
         zIndex: 1,
         [sizes.Wdown("md")]: {
-            height: "279px",
+            height: "330px",
             width: "232px",
             flexDirection: "column",
             paddingTop: "28%",
