@@ -63,7 +63,10 @@ export default function HistoryUser(props) {
                 setPromises({ ...Promises, isUserReady: true });
             }
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 

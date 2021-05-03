@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Card from '@material-ui/core/Card';
-import Alert from '@material-ui/lab/Alert';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Avatar from '@material-ui/core/Avatar';
+import { Card, CardContent, Button, Typography, Divider, Avatar } from '@material-ui/core/';
 import useStyles from "../../styles/Login";
 import { LogIn } from '../../api/session';
 import LoginLoading from './LoginLoading';
 import { GetFullUserData } from '../../api/user';
 import Notification from '../../components/Notifications';
 
-function Login() {
+function Login(props) {
     const classes = useStyles();
-    let history = useHistory();
+    const history = useHistory();
+    const location = useLocation();
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [open, setOpen] = useState(false);
@@ -37,6 +32,13 @@ function Login() {
     }, [open])
 
     useEffect(() => {
+        if(!(location.state === undefined)) {
+            if(location.state.expired) {
+                setMsg("La sesión ha expirado");
+                setOpen(true);
+                history.replace({state: { expired: false }})
+            }
+        }
         async function getData() {
             let bool = await GetFullUserData();
             console.log(bool);
