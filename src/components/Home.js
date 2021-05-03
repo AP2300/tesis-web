@@ -47,7 +47,10 @@ export default function Home() {
       setData(req.res);
       setisPromiseReady(true);
     } else {
-      history.push("/")
+      history.push({
+        pathname: '/',
+        state: { expired: true }
+      });
     }
   }
 

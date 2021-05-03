@@ -56,7 +56,10 @@ export default function History() {
             setData({ ...Data, Users: res.data.data, Search: res.data.data });
             setPromises({ ...Promises, isReady: true });
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -75,7 +78,10 @@ export default function History() {
                 }
             });
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 

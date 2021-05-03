@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import Avatar from '@material-ui/core/Avatar';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import useStyles from '../../styles/AdminSecurity';
-import PeopleIcon from '@material-ui/icons/People';
-import Fingerprint from '@material-ui/icons/Fingerprint';
-import Mood from '@material-ui/icons/Mood';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Notification from '../../components/Notifications';
+import { Paper, Button, Typography, Divider, List, Avatar, ListItem, ListItemText,  }from '@material-ui/core';
+import { People, Fingerprint, Mood, ChevronRight, ChevronLeft } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods } from '../../api/user';
-import { useHistory } from 'react-router-dom';
+import useStyles from '../../styles/AdminSecurity';
+import Notification from '../../components/Notifications';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function AdminSecurity() {
     const history = useHistory();
@@ -27,6 +21,7 @@ export default function AdminSecurity() {
     const [isPromiseReady, setIsPromiseReady] = useState(false);
     const [isSecDataReady, setIsSecDataReady] = useState(false);
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
+    const [open, setOpen] = React.useState(false);
     const classes = useStyles();
 
     useEffect(async () => {
@@ -38,6 +33,11 @@ export default function AdminSecurity() {
                 console.log(userList);
                 setIsPromiseReady(true);
                 console.log(isPromiseReady);
+            } else {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
             }
         } else {
             console.log("false")
@@ -66,8 +66,12 @@ export default function AdminSecurity() {
                 active: Update[name][0].IsActive
             }
             const res = UpdateAuthMethods(params)
-            if (!res) history.push("/")
-            else setUserData(Update)
+            if (!res) {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
+            } else setUserData(Update)
         } else {
             console.log("asdasdasd")
             setNoti({
@@ -78,6 +82,19 @@ export default function AdminSecurity() {
 
         }
     }
+
+    const handleClickOpen = (id) => {
+        setOpen({open: true, id});
+    };
+    
+    const handleClose = () => {
+        setOpen({open: false});
+    };
+
+    const handleConfirmDelete = () => {
+
+        setOpen({open: false});
+    };
 
     async function fetchUserSecurity(name, id) {
         console.log(id);
@@ -105,6 +122,11 @@ export default function AdminSecurity() {
             setActiveUser(name);
             setUserData(d);
             setIsSecDataReady(true);
+        } else {
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -112,6 +134,26 @@ export default function AdminSecurity() {
         <div className={classes.root}>
             {(noti.open) ? <Notification close={setNoti} data={noti}/> : ""}
             <Paper className={classes.mainContainer}>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Desea eliminar la foto?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancelar
+                        </Button>
+                        <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                            Confirmar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 {/* <div className={classes.panelContainer}> */}
                     <Paper className={clsx(!animations.Minimize ? [classes.maximizedContainerUsers, classes.dataContainer] : [classes.minimizedContainerUsers, classes.logo])} elevation={2}>
                         {!animations.Minimize ? (
@@ -130,10 +172,10 @@ export default function AdminSecurity() {
                                 </List>
                             </div>
                         )
-                        : <PeopleIcon fontSize="large"/>}
+                        : <People fontSize="large"/>}
                     </Paper>
                     <Button className={classes.minimizerButton} onClick={handleMinimize}>
-                        {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
+                        {animations.Minimize ? <ChevronRight className="icon" /> : <ChevronLeft className="icon" />}
                     </Button>
                     <Paper className={clsx(animations.Minimize ? classes.maximizedContainerSecurity : classes.minimizedContainerSecurity)}>
                     {(isSecDataReady && Object.keys(userData).length!=0) ? (
@@ -159,7 +201,7 @@ export default function AdminSecurity() {
                                     <Button variant="contained" className={clsx([classes.button, classes.editButton])}>
                                         Editar
                                     </Button>
-                                    <Button variant="contained" className={clsx([classes.button, classes.deleteButton])}>
+                                    <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(userData.facial[0].IDBiometrics)}>
                                         Eliminar
                                     </Button>
                                 </div>
@@ -200,7 +242,7 @@ export default function AdminSecurity() {
                                                                 <Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}}>
                                                                     Editar
                                                                 </Button>
-                                                                <Button variant="contained" className={clsx([classes.button, classes.deleteButton])}>
+                                                                <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={handleClickOpen}>
                                                                     Eliminar
                                                                 </Button>
                                                             </div>

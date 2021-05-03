@@ -65,7 +65,10 @@ export default function Profile(props) {
             setUserData(data)
             setIsPromiseReady(true)
         } else {
-            history.push("/")
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -142,7 +145,12 @@ export default function Profile(props) {
                 active: Update[index].IsActive
             }
             const res = UpdateAuthMethods(params)
-            if (!res) history.push("/")
+            if (!res) {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
+            }
             else setUserData(Update)
         } else {
             setNoti({
