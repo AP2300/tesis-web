@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, TextField, Divider, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core/';
-import { Fingerprint, AccountCircle, VpnKey } from '@material-ui/icons/';
+import { Fingerprint, AccountCircle, VpnKey, ExitToApp } from '@material-ui/icons/';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -113,14 +113,17 @@ function getSteps() {
 }
 
 
-export default function VerticalLinearStepper() {
+export default function StepperComponent() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const [formControl, setFormControl] = useState({ name: "", email: "", pass: "" , type: "usuario"})
     const steps = getSteps();
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setActiveStep((prevActiveStep) =>{
+            if(prevActiveStep ===3){
+
+            }else return prevActiveStep + 1});
     };
 
     const handleBack = () => {
@@ -133,7 +136,6 @@ export default function VerticalLinearStepper() {
     }
 
     function getStepContent(step) {
-        const classes = useStyles()
         switch (step) {
             case 0:
                 return (<Paper elevation={2} className={classes.FormContainer}>
@@ -218,7 +220,9 @@ export default function VerticalLinearStepper() {
                                         onClick={handleNext}
                                         className={classes.button}
                                     >
-                                        {activeStep === steps.length - 1 ? 'Ir a Administrar seguridad' : 'Next'}
+                                        {activeStep === steps.length - 1 ? `Ir a Administrar seguridad ` : 'Next'}
+                                        {activeStep === steps.length - 1 ? <ExitToApp/> : ""}
+                                        
                                     </Button>
                                 </div>
                             </div>
