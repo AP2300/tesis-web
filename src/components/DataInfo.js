@@ -1,62 +1,53 @@
-import React from 'react'
-import TitleContainer from '../styles/TitleContainer';
+import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import useStyles from "../styles/DataInfo";
+import { OrderData, DayofWeek, ShowTime } from '../helpers/DataInfo'
+import { GraphLabels } from '../helpers/Graph'
 const moment = require('moment');
 moment().format();
 
 export default function DataInfo(props) {
-    const { TimeStamp, Data, classes } = props;
-    let graphW = [0, 0, 0, 0, 0, 0, 0];
-    let graphM = [0, 0, 0, 0, 0];
-    let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    switch (TimeStamp) {
-        case "S":
-            const days = [1, 2, 3, 4, 5, 6, 0];
-            if (Data) {
-                days.forEach((day, i) => {
-                    Data[2].forEach(w => {
-                        if (moment(w.RegDate).day() === day) {
-                            graphW[i] = w;
-                        }
-                    })
-                })
-            }
-            console.log(graphW)
-            break;
-
-        case "M":
-            if (Data) {
-                for (let i = 0; i < 5; i++) {
-                    Data[2].forEach(w => {
-                        if (i === w.week) {
-                            graphM[i] = w.info;
-                        }
-                    })
-                }
-                console.log(graphM)
-            }
-            break;
-
-        case "A":
-            if (Data) {
-                for (let i = 0; i < 12; i++) {
-                    Data[2].forEach(w => {
-                        if (i === w.month) {
-                            graphY[i] = w.info;
-                        }
-                    })
-                }
-                console.log(graphY)
-            }
-            break;
-
-        default:
-
-            break;
+    const classes = useStyles();
+    const { TimeStamp, Data } = props;
+    const [DataUser, setDataInfo] = useState(OrderData(TimeStamp, Data));
+    useEffect(() => {
+        setDataInfo(OrderData(TimeStamp, Data));
+    }, [Data])
+    if(Data !== false){
+        return (
+            <div className={classes.Cardgrid}>
+                {GraphLabels(TimeStamp).map((DayLabel, d) => {
+                    if (DataUser[d].length !== 0) {
+                        return (
+                            <Card className={classes.Card} key={`day-${DayLabel}-${d}`}>
+                                <CardHeader title={DayLabel} key={`header-${DayLabel}-${d}`}/>
+                                <CardContent key={`content-${DayLabel}-${d}`}>
+                                    <List className={classes.List} key={`List-${DayLabel}-${d}`}>
+                                        {DataUser[d].map((info, i) => {
+                                            return (
+                                                <div key={`item-${DayLabel}-${i}`}>
+                                                    <Typography>{`Registro N° ${info.IDRecords}`}</Typography>
+                                                    <Typography>{`Dia ${DayofWeek(info.RegDate)}`}</Typography>
+                                                    <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())} `}</Typography>
+                                                    <Divider className={classes.Divider} />
+                                                </div>
+                                            );
+                                        })}
+                                    </List>
+                                </CardContent>
+                            </Card>
+                        )
+                    }
+                })}
+            </div>
+        )  
+    } else {
+        return (
+            <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
+        )
     }
-    return (
-        <div className={classes}>
+    
 
-        </div>
-    )
+    
 
 }

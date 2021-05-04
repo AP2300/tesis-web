@@ -13,6 +13,7 @@ export const updateBio = `${url}/bioUpdate`
 export const updatePass = `${url}/updateUserPass`
 export const AdminDataUpdate = `${url}/AdminUpdateData`
 export const AdminPassUpdate = `${url}/AdminUpdatePass`
+export const deleteMethod = `${url}/deleteMethod`
 
 // Constantes db
 export const colors = [

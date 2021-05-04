@@ -13,10 +13,11 @@ import Chart from 'chart.js'
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SubjectIcon from '@material-ui/icons/Subject';
 import ChartComponent from '../../components/Chart';
+import GraphFormControl from '../../components/GraphFormControl';
 import DataInfo from '../../components/DataInfo';
 import { GetHistoryUserData } from "../../api/user"
 import { colors } from '../../api/constants';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
@@ -24,8 +25,8 @@ export default function HistoryUser(props) {
     const [animations, setAnimations] = useState({ Filter: false, Minimize: false })
     const [Promises, setPromises] = useState({ isUserReady: false });
     const [Data, setData] = useState({ User: "", graph: "" });
-    const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true });
+    const [Dates, setDates] = useState({ day: moment().date() ,week: "", month: moment().month(), year: moment().year() });
+    const [States, setStates] = useState({ TimeStamp: "D", Type: "U", TypeChart: "bar", ShowGeneral: true });
     const classes = useStyles();
     const history = useHistory();
     const { User } = props;
@@ -42,7 +43,7 @@ export default function HistoryUser(props) {
         if (Data.User.length !== 0) {
             handleFilterSearch(Data.User)
         }
-    }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
+    }, [Promises.isUserReady, Dates.day, Dates.week, Dates.month, Dates.year, States.TimeStamp])
 
     function ShowFilters() {
         if (!animations.Filter) setAnimations({ ...animations, Filter: true })
@@ -62,7 +63,10 @@ export default function HistoryUser(props) {
                 setPromises({ ...Promises, isUserReady: true });
             }
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -78,7 +82,7 @@ export default function HistoryUser(props) {
     async function handleFilterSearch() {
         setData({
             ...Data, graph: ChangeGraph(States.TimeStamp, Dates.year, Dates.month, Dates.week,
-                FilterSearch(Data.User, Dates.month, Dates.year, States.TimeStamp))
+                FilterSearch(Data.User, Dates.month, Dates.year, Dates.day, States.TimeStamp))
         });
     }
 
@@ -108,6 +112,7 @@ export default function HistoryUser(props) {
     function handleChange(event) {
         if (event.target.name === "Timestamp") setStates({ ...States, TimeStamp: event.target.value });
         else if (event.target.name === "week") setDates({ ...Dates, week: event.target.value });
+        else if (event.target.name === "day") setDates({ ...Dates, day: event.target.value });
         else if (event.target.name === "month") setDates({ ...Dates, month: event.target.value });
         else if (event.target.name === "year") setDates({ ...Dates, year: event.target.value });
     }
@@ -125,67 +130,8 @@ export default function HistoryUser(props) {
                             Filtrar {!animations.Filter ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                         </Paper>
                         <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
-                            <div className={clsx(classes.formControl, animations.Filter && classes.show)}>
-                                <FormControl className="timestamp">
-                                    <InputLabel id="Timestamp">Escala de tiempo</InputLabel>
-                                    <Select
-                                        labelId="Timestamp"
-                                        name="Timestamp"
-                                        id="Timestamp"
-                                        value={States.TimeStamp}
-                                        onChange={handleChange}
-                                    >
-                                        <MenuItem value="S">Semanal</MenuItem>
-                                        <MenuItem value="M">Mensual</MenuItem>
-                                        <MenuItem value="A">Anual</MenuItem>
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="week">Semana</InputLabel>
-                                    <Select
-                                        labelId="week"
-                                        id="week"
-                                        name="week"
-                                        value={Dates.week}
-                                        onChange={handleChange}
-                                        disabled={States.TimeStamp === "A" || States.TimeStamp === "M" ? true : false}
-                                    >
-                                        {GraphLabels("M").map((w, i) => <MenuItem key={i} value={i}>{w}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="month">Mes</InputLabel>
-                                    <Select
-                                        labelId="month"
-                                        id="month"
-                                        name="month"
-                                        value={Dates.month}
-                                        onChange={handleChange}
-                                        disabled={States.TimeStamp === "A" ? true : false}
-                                    >
-                                        {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl>
-                                    <InputLabel id="year">Año</InputLabel>
-                                    <Select
-                                        labelId="year"
-                                        id="year"
-                                        name="year"
-                                        value={Dates.year}
-                                        onChange={handleChange}
-                                    >
-                                        {getYearRange().map((e, i) => <MenuItem key={i} value={e}>{String(e)}</MenuItem>)}
-                                        <MenuItem value={2022}>2022</MenuItem>
-                                        <MenuItem value={2023}>2023</MenuItem>
-                                        <MenuItem value={2024}>2024</MenuItem>
-                                        <MenuItem value={2025}>2025</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
+                            <GraphFormControl TimeStamp={States.TimeStamp} Dates={Dates} handleChange={handleChange}
+                                className={clsx(classes.formControl, animations.Filter && classes.show)} />
                         </Paper>
                     </div>
                     <div className={classes.iconContainer}>
@@ -209,8 +155,8 @@ export default function HistoryUser(props) {
                     <Button className={classes.minimizerButton} onClick={handleMinimize}>
                         {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
                     </Button>
-                    <Paper className={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} /> : <SubjectIcon />}
+                    <Paper className={clsx(animations.Minimize ? [classes.overflowContainer,classes.maximizedContainer] : classes.minimizedContainer, classes.dataContainer)}>
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <SubjectIcon />}
                     </Paper>
                 </div>
             </Paper>

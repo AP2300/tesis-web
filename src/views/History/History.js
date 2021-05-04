@@ -14,7 +14,7 @@ import ChartComponent from '../../components/Chart';
 import DataInfo from '../../components/DataInfo';
 import Chart from 'chart.js'
 import { colors } from '../../api/constants';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange } from '../../helpers/Graph';
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange, DaysInMonth } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 
@@ -23,8 +23,8 @@ export default function History() {
     const history = useHistory();
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
     const [Data, setData] = useState({ Search: [], Users: "", AllUsers: "", graph: "" });
-    const [Dates, setDates] = useState({ week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "S", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
+    const [Dates, setDates] = useState({ day: moment().date(), week: "", month: moment().month(), year: moment().year() });
+    const [States, setStates] = useState({ TimeStamp: "D", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
 
     useEffect(() => {
@@ -46,9 +46,8 @@ export default function History() {
     useEffect(() => {
         if (Data.AllUsers.length !== 0) {
             handleFilterSearch(Data.AllUsers)
-            console.log("change")
         }
-    }, [Promises.isUserReady, Dates.week, Dates.month, Dates.year, States.TimeStamp])
+    }, [Promises.isUserReady, Dates.day, Dates.week, Dates.month, Dates.year, States.TimeStamp])
 
 
     const GetHistory = async () => {
@@ -57,7 +56,10 @@ export default function History() {
             setData({ ...Data, Users: res.data.data, Search: res.data.data });
             setPromises({ ...Promises, isReady: true });
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -76,13 +78,17 @@ export default function History() {
                 }
             });
         } else {
-            history.push("/");
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setStates({ ...States, TimeStamp: event.target.value });
         else if (event.target.name === "mail") setStates({ ...States, Type: event.target.value });
+        else if (event.target.name === "day") setDates({ ...Dates, day: event.target.value });
         else if (event.target.name === "week") setDates({ ...Dates, week: event.target.value });
         else if (event.target.name === "month") setDates({ ...Dates, month: event.target.value });
         else if (event.target.name === "year") setDates({ ...Dates, year: event.target.value });
@@ -184,7 +190,7 @@ export default function History() {
         All.map(User => {
             AllGraphData = {
                 ...AllGraphData, [User.name]: ChangeGraph(States.TimeStamp, Dates.year, Dates.month, Dates.week,
-                    FilterSearch(User.Data, Dates.month, Dates.year, States.TimeStamp))
+                    FilterSearch(User.Data, Dates.month, Dates.year, Dates.day, States.TimeStamp))
             };
         });
         setData({ ...Data, graph: AllGraphData });
@@ -253,6 +259,7 @@ export default function History() {
                                             onChange={handleChange}
                                             name="timestamp"
                                         >
+                                            <MenuItem value="D">Diario</MenuItem>
                                             <MenuItem value="S">Semanal</MenuItem>
                                             <MenuItem value="M">Mensual</MenuItem>
                                             <MenuItem value="A">Anual</MenuItem>
@@ -280,6 +287,21 @@ export default function History() {
                                 </TitleContainer>
                             </div>
                             <div className={classes.innerContainer}>
+                                <TitleContainer title={"Dia"} loading={false} className={classes.box}>
+                                    <FormControl variant="filled" className={classes.formControl}>
+                                        <Select
+                                            id="week-simple-select"
+                                            value={Dates.day}
+                                            name="day"
+                                            onChange={handleChange}
+                                            disabled={States.TimeStamp === "A" || States.TimeStamp === "M" || States.TimeStamp === "S" ? true : false}
+                                        >
+                                            {DaysInMonth(Dates.month, Dates.year).map((w, i) => <MenuItem key={i} value={w}>{w}</MenuItem>)}
+                                        </Select>
+                                    </FormControl>
+                                </TitleContainer>
+                            </div>
+                            <div className={classes.innerContainer}>
                                 <TitleContainer title={"Semana"} loading={false} className={classes.box}>
                                     <FormControl variant="filled" className={classes.formControl}>
                                         <Select
@@ -287,9 +309,15 @@ export default function History() {
                                             value={Dates.week}
                                             name="week"
                                             onChange={handleChange}
-                                            disabled={States.TimeStamp === "A" || States.TimeStamp === "M" ? true : false}
+                                            disabled={States.TimeStamp === "A" || States.TimeStamp === "M" || States.TimeStamp === "D" ? true : false}
                                         >
-                                            {GraphLabels("M").map((w, i) => <MenuItem key={i} value={i}>{w}</MenuItem>)}
+                                            {GraphLabels("M").map((w, i) => {
+                                                if (calcNumWeek(Dates.year, Dates.month).length === 6) {
+                                                    return <MenuItem key={i} value={i} disabled={Dates.NumWeek}>{w}</MenuItem>
+                                                } else if (i < 5) {
+                                                    return <MenuItem key={i} value={i}>{w}</MenuItem>
+                                                }
+                                            })}
                                         </Select>
                                     </FormControl>
                                 </TitleContainer>
@@ -338,7 +366,7 @@ export default function History() {
                         {Data.graph ? <ChartComponent
                             type={States.TypeChart}
                             data={getGeneralGraph()}
-                        />  : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
+                        /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>}
                     </div>
                 </Accordion>
                 {Promises.isReady ?

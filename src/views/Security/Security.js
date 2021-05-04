@@ -78,7 +78,10 @@ export default function Security(props) {
             setState({ ...state, Security: res.data.data })
             setIsPromiseReady({ ...isPromiseReady, ReqPromise: true })
         } else {
-            history.push("/")
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
         }
     }
 
@@ -101,7 +104,12 @@ export default function Security(props) {
                 active: !formats.includes("Huella") ? 1 : 0
             }
             const res = await UpdateAuthMethods(params)
-            if (!res) history.push("/")
+            if (!res) {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
+            }
             else {
                 setFormats(newFormats)
                 GetUserSecurityData()
@@ -112,7 +120,12 @@ export default function Security(props) {
                 active: !formats.includes("Facial") ? 1 : 0
             }
             const res = await UpdateAuthMethods(params)
-            if (!res) history.push("/")
+            if (!res) {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
+            }
             else setFormats(newFormats);
         }
     };

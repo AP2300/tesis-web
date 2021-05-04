@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Line } from "react-chartjs-2";
 import { Chart } from "chart.js"
 import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
