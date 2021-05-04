@@ -27,7 +27,7 @@ export default useStyles = makeStyles((theme) => ({
             color: "#4f4f4f"
         }
     },
-    mainContainer:{
+    mainContainer: {
         width: "100%",
         height: "80vh"
     },
@@ -38,9 +38,10 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         [sizes.Wdown("md-sm")]: {
             flexDirection: "column",
+            overflowY: "scroll"
         },
     },
-    minimizerButton:{
+    minimizerButton: {
         width: "5%",
         [sizes.Wdown("md-sm")]: {
             width: "auto",
@@ -49,7 +50,7 @@ export default useStyles = makeStyles((theme) => ({
             }
         },
     },
-    UserList:{
+    UserList: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -57,22 +58,37 @@ export default useStyles = makeStyles((theme) => ({
         width: "30%",
         height: "100%",
         transition: "200ms ease-in",
-        "& .Title":{
+        "& .Title": {
             color: "#4c4c4c",
             fontSize: "2em"
         },
-        "& .divider":{
-            marginBottom: "4%"
+        "& .divider": {
+            marginBottom: "15px"
         },
-        "& .acordion":{
+        "& .acordion": {
             color: "#4c4c4c",
-            boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 0%), 0px 1px 3px 0px rgb(0 0 0 / 0%)"
+            boxShadow: " 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 0%), 0px 1px 3px 0px rgb(0 0 0 / 0%)",
+        },
+        "& .container": {
+            height: "100%",
+            "& > .lists": {
+                height: "calc(100% - 57px)",
+                overflowY: "scroll",
+                overflowX: "hidden"
+            },
+        },
+        "&  .MuiList-root.MuiList-padding": {
+            width: "100%"
+        },
+        "& .MuiAccordionDetails-root": {
+            padding: 0,
+            flexDirection: "column"
         },
         [sizes.Wdown("md-sm")]: {
             width: "auto"
         },
     },
-    UserListMinimized:{
+    UserListMinimized: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -83,79 +99,138 @@ export default useStyles = makeStyles((theme) => ({
             width: "100%"
         },
     },
-    dataContainer:{
+    dataContainer: {
         display: "flex",
-        flexDirection:"column",
+        flexDirection: "column",
         alignContent: "center",
         justifyContent: "center",
         height: "100%",
         flexGrow: 1,
+        "& .displayContainer": {
+            display: "flex",
+            flexDirection: "column",
+            height: "100%"
+        },
+        "& .addButton":{
+            minWidth: 0, 
+            color:"#2196f3", 
+            "& > .MuiButton-label .MuiSvgIcon-root ":{
+                fontSize: "3em"
+            }
+        },
         [sizes.Wdown("md-sm")]: {
-           height: "2000px"
+            minHeight: "500px",
         },
     },
-    UpperContainer:{
+    UpperContainer: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
         height: "25%",
-        "& .name":{
+        "& .name": {
             fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
-        },"& .code":{
+        }, "& .code": {
             fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
-        },"& .EmailType":{
+        }, "& .EmailType": {
             fontSize: "calc(12px + (24 - 10) * ((70vw - 303px) / (1600 - 300)))",
         },
-        "& > *":{
+        "& > *": {
             color: "#4f4f4f"
+        },
+        "& > .closeButton":{
+            display: "flex", 
+            alignSelf: "flex-end",
+            borderRadius: "2em", 
+            minWidth: "0", 
+            color: "#f44336"
         }
     },
-    BottomContainer:{
+    BottomContainer: {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-evenly",
         width: "100%",
         height: "75%",
         flexWrap: "wrap",
-        [sizes.Wdown("md-sm")]: {
-            padding: "2%",
-            overflowY: "scroll",
+        marginTop: "20px"
+    },
+    LeftContainer: {
+        display: "flex",
+        flexWrap: "wrap",
+        width: "95%",
+        minWidth: "300px",
+        minHeight: "95%",
+        [sizes.Wdown("sm")]: {
+            flexGrow: 1,
+            marginBottom: "3%"
         },
         [sizes.Wdown("lg")]: {
-            padding: "2%",
-            overflowY: "scroll",
+            flexGrow: 1,
+            marginBottom: "3%"
+        },
+        "& > .dividerV":{
+            minHeight: "335px",
+            "@media (max-width: 560px)":{  
+                display: "none"
+            }
+        },
+        "& > .pictureCont":{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            flexGrow: 1,
+            width: "40%",
+            height: "100%",
+            "& > .avatar":{
+                minWidth: "150px",
+                minHeight: "150px",
+                margin: "5%"
+            },
+        },
+        "& > .inputCont":{
+            width: "52%",
+            minWidth: "240px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            flexGrow: 1,
+            "& > .fields":{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                "& .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
+                    marginBottom: "1em",
+                    borderRadius: "2em",
+                    width: "30px",
+                }
+            }
+        },
+    },
+    textField: {
+        width: "70%",
+        "& .MuiOutlinedInput-root": {
+            borderRadius: "2rem",
+            backgroundColor: "#bdbdbd6e",
+        },
+        marginBottom: "1em",
+        ["& input"]: {
+            height: ".3em",
+        },
+        "& .MuiFormLabel-root": {
+            marginTop: "-5px",
+            overflowWrap: "break-word"
+        },
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            borderColor: "transparent"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#3f51b5"
         },
 
-    },
-    LeftContainer:{
-        display: "flex",
-        width: "45%",
-        minWidth: "300px",
-        height: "95%",
-        [sizes.Wdown("sm")]: {
-            flexGrow: 1,
-            marginBottom: "3%"
-         },
-         [sizes.Wdown("lg")]: {
-            flexGrow: 1,
-            marginBottom: "3%"
-         },
-    },
-    RightContainer:{
-        display: "flex",
-        width: "45%",
-        minWidth: "300px",
-        height: "95%",
-        [sizes.Wdown("sm")]: {
-            flexGrow: 1,
-            marginBottom: "3%"
-         },
-         [sizes.Wdown("lg")]: {
-            flexGrow: 1,
-            marginBottom: "3%"
-         },
     }
 }));
