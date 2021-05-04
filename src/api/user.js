@@ -71,6 +71,25 @@ export async function GetHistoryUserData(id) {
   }
 }
 
+export async function DeleteMethod(id) {
+  try {
+    const res = axios.delete(Cons.deleteMethod, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {id: id},
+      withCredentials: true,
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export async function GetFullUserData() {
   try {
     const res = axios.get(Cons.profile, {

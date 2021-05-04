@@ -4,106 +4,181 @@ import sizes from "./sizes";
 let useStyles = "";
 
 export default useStyles = makeStyles((theme) => ({
+    "@keyframes loading ": {
+        " 0%": { backgroundPosition: "0% 50%" },
+        "50%": { backgroundPosition: "100% 50%" },
+        "100%": { backgroundPosition: "0% 50%" }
+    },
+
+    loading: {
+        animationName: '$loading',
+        background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
+        backgroundSize: "400% 400%",
+        animationDuration: '1s',
+        animationIterationCount: 'infinite',
+        color: "transparent",
+    },
     root: {
         display: 'flex',
         flexWrap: 'wrap',
         marginLeft: "2%",
         marginRight: "2%",
         "& > *": {
-            color: "#5f5f5f"
+            color: "#4f4f4f"
         }
     },
-    mainContainer: {
+    mainContainer:{
         width: "100%",
-        height: "100%",
+        height: "80vh"
+    },
+    panelContainer: {
+        height: "80vh",
+        width: "100%",
+        padding: "2%",
         display: "flex",
-        [sizes.Wdown("xs")]: {
+        [sizes.Wdown("md-sm")]: {
             flexDirection: "column",
+            overflowY: "scroll"
         },
     },
-    // panelContainer: {
-    //     height: "80vh",
-    //     padding: "2%",
-    //     width: "92vw",
-    //     display: "flex",
-    //     justifyContent: "space-between",
-    //     [sizes.Wdown("xs")]: {
-    //         flexDirection: "column",
-    //     },
-    // },
-    minimizerButton: {
+    minimizerButton:{
         width: "5%",
-        color: "inherit",
-        [sizes.Wdown("xs")]: {
-            height: "5%",
-            width: "100%",
+        [sizes.Wdown("md-sm")]: {
+            width: "auto",
             "& .icon": {
                 transform: "rotate(90deg)"
             }
         },
     },
-    maximizedContainerUsers: {
-        width: "30%",
-        height: "100%",
-        transition: "250ms ease-in",
-        color: "inherit",
-        [sizes.Wdown("xs")]: {
-            height: "85%",
-            width: "100%"
-        },
-
-    },
-    maximizedContainerSecurity: {
-        width: "86%",
-        height: "100%",
-        transition: "250ms ease-in",
-        color: "inherit",
-        [sizes.Wdown("xs")]: {
-            height: "85%",
-            width: "100%"
-        },
-
-    },
-    minimizedContainerUsers: {
-        width: "8%",
-        height: "100%",
-        transition: "250ms ease-in",
-        color: "inherit",
-        [sizes.Wdown("xs")]: {
-            height: "8%",
-            width: "100%"
-        },
-    },
-    minimizedContainerSecurity: {
-        width: "64%",
-        height: "100%",
-        transition: "250ms ease-in",
-        color: "inherit",
-        [sizes.Wdown("xs")]: {
-            height: "8%",
-            width: "100%"
-        },
-    },
-    logo: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    dataContainer: {
-        display: "flex",
-        padding: "2% 0 2% 2%",
-    },
-    dataContainerSec: {
+    UserList:{
         display: "flex",
         flexDirection: "column",
-        alignItems: "stretch",
-        height: "100%"
+        justifyContent: "space-between",
+        padding: "0.1%",
+        width: "30%",
+        height: "100%",
+        transition: "200ms ease-in",
+        "& .Title":{
+            color: "#4c4c4c",
+            fontSize: "2em"
+        },
+        "& .divider":{
+            marginBottom: "15px"
+        },
+        "& .acordion":{
+            color: "#4c4c4c",
+            boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 0%), 0px 1px 3px 0px rgb(0 0 0 / 0%)"
+        },
+        "& .container":{
+            height: "100%",
+            "& > .lists":{
+                height: "calc(100% - 57px)",
+                overflowY: "scroll",
+                overflowX: "hidden"
+            },
+        },
+        "&  .MuiList-root.MuiList-padding":{
+            width: "100%"
+        },
+        "& .MuiAccordionDetails-root":{
+            padding: 0,
+            flexDirection: "column"
+        },
+        [sizes.Wdown("md-sm")]: {
+            width: "auto"
+        },
+    },
+    UserListMinimized:{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "7%",
+        transition: "250ms ease-out",
+        [sizes.Wdown("md-sm")]: {
+            height: "12%",
+            width: "100%"
+        },
+    },
+    dataContainer:{
+        display: "flex",
+        flexDirection:"column",
+        alignContent: "center",
+        justifyContent: "center",
+        height: "100%",
+        flexGrow: 1,
+        [sizes.Wdown("md-sm")]: {
+           minHeight: "500px"
+        },
+        [sizes.Wdown("lg")]: {
+            overflowY: "scroll"
+        },
+    },
+    UpperContainer:{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        height: "25%",
+        "& .name":{
+            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontWeight: "600"
+        },"& .code":{
+            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontWeight: "600"
+        },"& .EmailType":{
+            fontSize: "calc(12px + (24 - 10) * ((70vw - 303px) / (1600 - 300)))",
+        },
+        "& > *":{
+            color: "#4f4f4f"
+        }
+    },
+    BottomContainer:{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        width: "100%",
+        height: "75%",
+        flexWrap: "wrap",
+    },
+    LeftContainer:{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-around",
+        width: "45%",
+        minWidth: "300px",
+        height: "95%",
+        [sizes.Wdown("sm")]: {
+            flexGrow: 1,
+            marginBottom: "3%"
+         },
+         [sizes.Wdown("lg")]: {
+            flexGrow: 1,
+            marginBottom: "3%"
+         },
+    },
+    RightContainer:{
+        color: "inherit",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-around",
+        padding: "0rem 1rem",
+        width: "45%",
+        minWidth: "300px",
+        height: "95%",
+        [sizes.Wdown("sm")]: {
+            flexGrow: 1,
+            marginBottom: "3%"
+         },
+         [sizes.Wdown("lg")]: {
+            flexGrow: 1,
+            marginBottom: "3%"
+         },
     },
     List: {
         display: "flex",
         flexDirection: "column",
-        height: "55vh",
-        overflowY: "scroll",
         alignItems: "flex-start",
         paddingRight: "1em"
     },
@@ -124,36 +199,12 @@ export default useStyles = makeStyles((theme) => ({
     active: {
         backgroundColor: "#0000001a"
     },
-    userSecHeader: {
+    noInfoText: {
         display: "flex",
-        justifyContent: "center", 
-        flexDirection: "column", 
-        alignItems: "center", 
-        padding: "1em 0em 0em 0em",
-    },
-    userTitle: {
-        fontSize: "calc(1em + 1vw)" 
-    },
-    userCode: {
-        fontSize: "calc(0.7em + 0.7vw)" 
-    },
-    motherContainer: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "stretch",
-        height: "83%"
-    },
-    facialContainer: {
-        color: "inherit",
-        width: "50%",
-        margin: "1rem",
-        display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-around",
-        padding: "0rem 1rem",
-        flexBasis: "60em"
+        justifyContent: "center",
+        fontSize: "calc(1em + 1vw)",
+        height: "100%",
     },
     photoTitle: {
         fontSize: "calc(0.8em + 0.8vw)", 
@@ -171,66 +222,23 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "space-evenly", 
         width: "100%"
     },
-    fingerContainer: {
-        color: "inherit",
-        width: "50%",
-        margin: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-around",
-        padding: "0rem 1rem",
-        flexBasis: "100em"
+    button: {
+        textTransform: "none",
+        color: "inherit"
     },
-    fingerTitle: {
-        fontSize: "calc(0.8em + 0.8vw)",
-        margin: "0.3em 0"
+    editButton: {
+        backgroundColor: "#2196f312",
+        color: "#2196f3"
     },
-    fingerInfoContainer: {
-        overflowY: "scroll", 
-        width: "100%"
+    deleteButton: {
+        backgroundColor: "#f4433612",
+        color: "#f44336"
     },
-    fingerDataContainer: {
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "center", 
-        flexDirection: "column"
+    red: {
+        backgroundColor: "#f44336"
     },
-    fingerContainer2: {
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "space-evenly", 
-        flexDirection: "row", 
-        margin: "0.5em 0", 
-        width: "100%"
-    },
-    fingerAvatar: {
-        width: "7.5rem",
-        height: "7.5rem",
-        margin: "0.4em 0"
-    },
-    fingerItem: {
-        display: "flex", 
-        flexDirection: "column", 
-        width: "100%", 
-        justifyContent: "space-evenly"
-    },
-    fingerItemTitleContainer: {
-        display: "flex", 
-        alignItems: "center", 
-        flexDirection: "row", 
-        justifyContent: "space-evenly", 
-        width: "50%"
-    },
-    fingerItemTitle: {
-        fontSize: "calc(0.6em + 0.6vw)", 
-        marginTop: "0.3em"
-    },
-    fingerItemButtonGroup: {
-        display: "flex", 
-        alignItems: "center", 
-        flexDirection: "row", 
-        justifyContent: "space-evenly"
+    green: {
+        backgroundColor: "#4caf50"
     },
     AuthItem: {
         margin: "1.3%",
@@ -301,29 +309,54 @@ export default useStyles = makeStyles((theme) => ({
             transition: "350ms"
         }
     },
-    red: {
-        backgroundColor: "#f44336"
+    fingerTitle: {
+        fontSize: "calc(0.8em + 0.8vw)",
+        margin: "0.3em 0"
     },
-    green: {
-        backgroundColor: "#4caf50"
+    fingerInfoContainer: {
+        overflowY: "scroll", 
+        width: "100%"
     },
-    button: {
-        textTransform: "none",
-        color: "inherit"
+    fingerDataContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        flexDirection: "column"
     },
-    editButton: {
-        backgroundColor: "#2196f312",
-        color: "#2196f3"
+    fingerContainer2: {
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-evenly", 
+        flexDirection: "row", 
+        margin: "0.5em 0", 
+        width: "100%"
     },
-    deleteButton: {
-        backgroundColor: "#f4433612",
-        color: "#f44336"
+    fingerAvatar: {
+        width: "7.5rem",
+        height: "7.5rem",
+        margin: "0.4em 0"
     },
-    noInfoText: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "calc(1em + 1vw)",
-        height: "100%"
-    }
+    fingerItem: {
+        display: "flex", 
+        flexDirection: "column", 
+        width: "100%", 
+        justifyContent: "space-evenly"
+    },
+    fingerItemTitleContainer: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly", 
+        width: "50%"
+    },
+    fingerItemTitle: {
+        fontSize: "calc(0.6em + 0.6vw)", 
+        marginTop: "0.3em"
+    },
+    fingerItemButtonGroup: {
+        display: "flex", 
+        alignItems: "center", 
+        flexDirection: "row", 
+        justifyContent: "space-evenly"
+    },
 }));

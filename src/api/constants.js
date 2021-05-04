@@ -11,6 +11,7 @@ export const profile = `${url}/profile`
 export const changeData = `${url}/editProfile`
 export const updateBio = `${url}/bioUpdate`
 export const updatePass = `${url}/updateUserPass`
+export const deleteMethod = `${url}/deleteMethod`
 
 // Constantes db
 export const colors = [[{ color: "#2956b5b2", stop: 0 }, { color: "#7abcbab2", stop: 0.48 }, { color: "#86ed6952", stop: 1 }], 
