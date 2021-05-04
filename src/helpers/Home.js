@@ -1,3 +1,4 @@
+import { Route, Switch } from "react-router-dom"
 import Profile from "../views/Profile/Profile";
 import DashBoard from "../views/DashBoard/DashBoard";
 import History from "../views/History/History";
@@ -10,6 +11,30 @@ import AdminUser from "../views/AdminUser/AdminUser"
 export function PageSelector(userData, SearchData) {
   const location = useLocation();
   const history = useHistory()
+  const user = userData;
+  return (
+    <Switch>
+      <Route exact path="/home" render={() => <DashBoard />} />
+      <Route path="/home/profile" render={(routeprops) => <Profile {...routeprops} Data={user}/>} />
+      <Route path="/home/history" render={(routeprops) => <HistoryUser {...routeprops} User={user} />} />
+      {user.IsAdmin ? (
+        <Route path="/admin/history" render={(routeprops) => <History {...routeprops} />} />
+      ) : null}
+      <Route path="/home/security" render={(routeprops) => <Security {...routeprops} Data={user} />} />
+      {user.IsAdmin ? (
+        <Route exact path="/admin/security" render={(routeprops) => <AdminSecurity {...routeprops} />} />
+      ) : null}
+      {user.IsAdmin ? (
+      <Route path="/admin/security/:id" render={(routeprops) => <AdminSecurity {...routeprops} />} />
+      ) : null}
+      {user.IsAdmin ? (
+        <Route path="/admin/users" render={(routeprops) => <AdminUser {...routeprops} />} />
+      ) : null}
+      <Route path="/" render={() => <DashBoard />} />
+    </Switch>
+  )
+  
+  /*
   switch (location.pathname) {
 
     case "/dashboard":
@@ -38,7 +63,7 @@ export function PageSelector(userData, SearchData) {
 
     default:
       return <DashBoard />;
-  };
+  };*/
 }
 
 // export function otherPage(e) {
