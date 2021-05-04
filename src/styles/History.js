@@ -51,7 +51,10 @@ export default useStyles = makeStyles((theme) => ({
         height: "70vh",
         marginTop: "1%",
         boxShadow: "3px 2px 5px #00000038",
-        overflowY: "scroll"
+        overflowY: "scroll",
+        "& > .MuiAccordion-root.Mui-expanded": {
+            margin: 0
+        }
     },
     GeneralGraph: {
         width: "100%",
@@ -79,7 +82,7 @@ export default useStyles = makeStyles((theme) => ({
     },
     details: {
         alignItems: 'center',
-        height: "29vh",
+        height: "38vh",
         width: "100%"
     },
     column1: {
@@ -88,6 +91,7 @@ export default useStyles = makeStyles((theme) => ({
         transition: "250ms ease-in"
     },
     column: {
+        overflowX: "scroll",
         width: '80%',
         height: "100%",
         transition: "250ms ease-in"
@@ -180,6 +184,6 @@ export default useStyles = makeStyles((theme) => ({
                 width: "30%",
                 minWidth: "220px"
             }
-        }
+        },
     }
 }));

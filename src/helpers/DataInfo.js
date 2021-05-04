@@ -5,7 +5,7 @@ export const OrderData = (TimeStamp, Data) => {
     let graphD = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let graphW = [0, 0, 0, 0, 0, 0, 0];
-    let graphM = [0, 0, 0, 0, 0];
+    let graphM = [0, 0, 0, 0, 0, 0];
     let graphY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     switch (TimeStamp) {
         case "D":
@@ -26,9 +26,10 @@ export const OrderData = (TimeStamp, Data) => {
             const days = [1, 2, 3, 4, 5, 6, 0];
             if (Data) {
                 days.forEach((day, i) => {
+                    graphW[i] = [];
                     Data[2].forEach(w => {
                         if (moment(w.RegDate).day() === day) {
-                            graphW[i] = w;
+                            graphW[i] = [...graphW[i], w];
                         }
                     })
                 })
@@ -38,9 +39,11 @@ export const OrderData = (TimeStamp, Data) => {
 
         case "M":
             if (Data) {
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 6; i++) {
+                    graphM[i] = [];
                     Data[2].forEach(w => {
                         if (i === w.week) {
+                            console.log(w.info,i)
                             graphM[i] = w.info;
                         }
                     })
@@ -52,6 +55,7 @@ export const OrderData = (TimeStamp, Data) => {
         case "A":
             if (Data) {
                 for (let i = 0; i < 12; i++) {
+                    graphY[i] = [];
                     Data[2].forEach(w => {
                         if (i === w.month) {
                             graphY[i] = w.info;

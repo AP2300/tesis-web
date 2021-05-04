@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import useStyles from "../../styles/HistoryUser"
 import clsx from 'clsx';
-import {
-    Accordion, AccordionSummary, AccordionDetails, InputLabel,
-    FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select, IconButton, Button
-} from "@material-ui/core";
+import { Typography, Paper, Divider, IconButton, Button } from "@material-ui/core";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Chart from 'chart.js'

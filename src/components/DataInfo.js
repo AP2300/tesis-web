@@ -10,33 +10,39 @@ export default function DataInfo(props) {
     const classes = useStyles();
     const { TimeStamp, Data } = props;
     const [DataUser, setDataInfo] = useState(OrderData(TimeStamp, Data));
+
     useEffect(() => {
         setDataInfo(OrderData(TimeStamp, Data));
     }, [Data])
+
     if(Data !== false){
         return (
             <div className={classes.Cardgrid}>
                 {GraphLabels(TimeStamp).map((DayLabel, d) => {
-                    if (DataUser[d].length !== 0) {
-                        return (
-                            <Card className={classes.Card} key={`day-${DayLabel}-${d}`}>
-                                <CardHeader title={DayLabel} key={`header-${DayLabel}-${d}`}/>
-                                <CardContent key={`content-${DayLabel}-${d}`}>
-                                    <List className={classes.List} key={`List-${DayLabel}-${d}`}>
-                                        {DataUser[d].map((info, i) => {
-                                            return (
-                                                <div key={`item-${DayLabel}-${i}`}>
-                                                    <Typography>{`Registro N° ${info.IDRecords}`}</Typography>
-                                                    <Typography>{`Dia ${DayofWeek(info.RegDate)}`}</Typography>
-                                                    <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())} `}</Typography>
-                                                    <Divider className={classes.Divider} />
-                                                </div>
-                                            );
-                                        })}
-                                    </List>
-                                </CardContent>
-                            </Card>
-                        )
+                    if(DataUser){
+                        if(DataUser[d]){
+                            if (DataUser[d].length !== 0) {
+                                return (
+                                    <Card className={classes.Card} key={`day-${DayLabel}-${d}`}>
+                                        <CardHeader title={DayLabel} key={`header-${DayLabel}-${d}`}/>
+                                        <CardContent key={`content-${DayLabel}-${d}`}>
+                                            <List className={classes.List} key={`List-${DayLabel}-${d}`}>
+                                                {DataUser[d].map((info, i) => {
+                                                    return (
+                                                        <div key={`item-${DayLabel}-${i}`}>
+                                                            <Typography>{`Registro N° ${info.IDRecords}`}</Typography>
+                                                            <Typography>{`Dia ${DayofWeek(info.RegDate)}`}</Typography>
+                                                            <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())} `}</Typography>
+                                                            <Divider className={classes.Divider} />
+                                                        </div>
+                                                    );
+                                                })}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                )
+                            }
+                        }
                     }
                 })}
             </div>
@@ -46,8 +52,21 @@ export default function DataInfo(props) {
             <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
         )
     }
-    
-
-    
-
 }
+
+// const classes = useStyles();
+// const { TimeStamp, Data } = props;
+// const [Promises, setPromises] = useState({ isReady: false });
+// const [State, setState] = useState({ Labels: GraphLabels(TimeStamp), DataUser: OrderData(TimeStamp, Data) });
+
+// useEffect(() => {
+//     setState({ ...State, Labels: GraphLabels(TimeStamp), DataUser: OrderData(TimeStamp, Data) });
+//     setPromises({ ...Promises, isUserReady: true });
+// }, [TimeStamp])
+
+// if (Data !== false) {
+//     return (
+//         <div className={classes.Cardgrid}>
+//             {State.Labels.map((DayLabel, d) => {
+//                 console.log(State.DataUser[d], TimeStamp, d)
+//                 if (State.DataUser[d].length !== 0 && Promises.isReady) {

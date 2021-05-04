@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import sizes from "./sizes";
 
-
 let useStyles = "";
 export default useStyles = makeStyles((theme) => ({
     Card:{
@@ -25,7 +24,7 @@ export default useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         position: 'relative',
         overflow: 'auto',
-        maxHeight: 300,
+        maxHeight: "14vh",
     },
     ListSection: {
         backgroundColor: 'inherit',
@@ -44,10 +43,10 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         "&& > *": {
-            fontSize: "2em"
+            fontSize: "2em",
+            [sizes.Wdown("xs")]: {
+                margin: "12%"
+            }
         },
-        [sizes.Wdown("xs")]: {
-            margin: "12%"
-        }
     },
 }));
