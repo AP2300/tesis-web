@@ -4,7 +4,7 @@ import {
     FormControlLabel, Typography, TextField, MenuItem, FormControl,
     Paper, Divider, AccordionActions, Select, IconButton, Button
 } from "@material-ui/core";
-import { GraphLabels, getYearRange, calcNumWeek } from '../helpers/Graph'
+import { GraphLabels, getYearRange, calcNumWeek, DaysInMonth } from '../helpers/Graph'
 
 export default function GraphFormControl(props) {
     const { TimeStamp, Dates, handleChange, className } = props;
@@ -27,6 +27,19 @@ export default function GraphFormControl(props) {
             </FormControl>
 
             <FormControl>
+                <InputLabel id="day">Dia</InputLabel>
+                <Select
+                    id="week-simple-select"
+                    value={Dates.day}
+                    name="day"
+                    onChange={handleChange}
+                    disabled={TimeStamp === "A" || TimeStamp === "M" || TimeStamp === "S" ? true : false}
+                >
+                    {DaysInMonth(Dates.month, Dates.year).map((w, i) => <MenuItem key={i} value={w}>{w}</MenuItem>)}
+                </Select>
+            </FormControl>
+
+            <FormControl>
                 <InputLabel id="week">Semana</InputLabel>
                 <Select
                     labelId="week"
@@ -34,7 +47,7 @@ export default function GraphFormControl(props) {
                     name="week"
                     value={Dates.week}
                     onChange={handleChange}
-                    disabled={TimeStamp === "A" || TimeStamp === "M" ? true : false}
+                    disabled={TimeStamp === "A" || TimeStamp === "M" || TimeStamp === "D" ? true : false}
                 >
                     {GraphLabels("M").map((w, i) => {
                         if (calcNumWeek(Dates.year, Dates.month).length === 6) {
