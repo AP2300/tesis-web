@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import clsx from 'clsx';
+import useStyles from "../../styles/History";
 import {
-    Accordion, AccordionSummary, AccordionDetails, InputLabel,
-    FormControlLabel, Typography, TextField, MenuItem, FormControl,
+    Accordion, AccordionSummary, AccordionDetails, MenuItem,
+    FormControlLabel, Typography, TextField, FormControl,
     Paper, Divider, Select, IconButton, Button
 } from "@material-ui/core";
 import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
-import clsx from 'clsx';
-import useStyles from "../../styles/History";
+import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange, DaysInMonth } from '../../helpers/Graph';
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
 import ChartComponent from '../../components/Chart';
 import DataInfo from '../../components/DataInfo';
 import Chart from 'chart.js'
 import { colors } from '../../api/constants';
-import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange, DaysInMonth } from '../../helpers/Graph';
 const moment = require('moment');
 moment().format();
 

@@ -143,7 +143,7 @@ export default useStyles = makeStyles((theme) => ({
     dataContainer: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center", 
     },
     iconContainer: {
         display: "flex",
