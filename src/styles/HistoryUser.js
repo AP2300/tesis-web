@@ -113,7 +113,10 @@ export default useStyles = makeStyles((theme) => ({
         [sizes.Wdown("xs")]: {
             height: "85%",
             width: "100%"
-        },
+        }
+    },
+    overflowContainer: {
+        overflowX: "scroll"
     },
     minimizedContainer: {
         width: "8%",
@@ -175,6 +178,18 @@ export default useStyles = makeStyles((theme) => ({
         opacity: 1,
         display: "flex",
         width: "100%"
+    },
+    message: {
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        "&& > *": {
+            fontSize: "2em"
+        },
+        [sizes.Wdown("xs")]: {
+            margin: "12%"
+        }
     },
     selectedChart: {
         "& > *": {

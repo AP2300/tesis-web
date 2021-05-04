@@ -155,8 +155,8 @@ export default function HistoryUser(props) {
                     <Button className={classes.minimizerButton} onClick={handleMinimize}>
                         {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
                     </Button>
-                    <Paper className={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} /> : <SubjectIcon />}
+                    <Paper className={clsx(animations.Minimize ? [classes.overflowContainer,classes.maximizedContainer] : classes.minimizedContainer, classes.dataContainer)}>
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <SubjectIcon />}
                     </Paper>
                 </div>
             </Paper>
