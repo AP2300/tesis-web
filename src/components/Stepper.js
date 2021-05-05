@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         height: "100%",
-        overflow: "hidden"
+        padding: 0
     },
     button: {
         marginTop: theme.spacing(1),
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     Stepper: {
+        padding: "1%",
         "& .MuiStepContent-root": {
             backgroundImage: "linear-gradient( 53deg, #22f8ff 0%, #a07fff 9%, #c15fff 100%)",
             paddingRight: "0",
@@ -123,6 +124,7 @@ export default function StepperComponent() {
     const [formControl, setFormControl] = useState({ name: "", email: "", pass: "", type: 0 })
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const [loading, setLoading] = useState(false)
+
     const steps = getSteps();
 
     async function register(params) {
@@ -183,7 +185,6 @@ export default function StepperComponent() {
     function handleChange(e) {
         setFormControl({ ...formControl, [e.target.name]: e.target.value })
     }
-
 
     function getNoti() {
         if (noti.open) return < Notification close={setNoti} data={noti} />
@@ -267,14 +268,14 @@ export default function StepperComponent() {
                                         onClick={handleBack}
                                         className={classes.button}
                                     >
-                                        Back
+                                        Atras
                                     </Button>
                                     <Button
                                         variant="contained"
                                         onClick={handleNext}
                                         className={classes.button}
                                     >
-                                        {activeStep === steps.length - 1 ? `Ir a Administrar seguridad ` : 'Next'}
+                                        {activeStep === steps.length - 1 ? `Ir a Administrar seguridad ` : 'Siguiente'}
                                         {!loading ? activeStep === steps.length - 1 ? <ExitToApp /> : ""
                                             : <CircularProgress style={{ color: "inherit", width: "20px", height: "20px", marginLeft: "4px" }} />}
 

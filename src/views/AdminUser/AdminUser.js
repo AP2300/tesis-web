@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminUser';
-import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, IconButton, Button, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add } from '@material-ui/icons/';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch } from '@material-ui/core/';
+import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser } from '@material-ui/icons/';
 import Notification from '../../components/Notifications';
 import Stepper from "../../components/Stepper"
 import { GetHistoryData } from "../../api/user"
-import { AdminDataUpdate, AdminPassUpdate } from "../../api/admin"
-import { useHistory } from 'react-router';
+import { AdminDataUpdate, AdminPassUpdate, DisableEnableUser } from "../../api/admin"
 import clsx from 'clsx';
 
 export default function AdminUser() {
@@ -17,6 +15,7 @@ export default function AdminUser() {
     const [selUser, setSelUser] = useState("")
     const [FormControl, setFormControl] = useState({ name: "", email: "", pass: "" })
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
+    const [isActive, setIsActive] = useState("");
     const classes = useStyles()
 
     function handleClick() {
@@ -29,9 +28,9 @@ export default function AdminUser() {
         }, 300)
     }
 
-    function handleAdd(){
+    function handleAdd() {
         setTimeout(() => {
-            setUsers({ ...users, userAdd: true})
+            setUsers({ ...users, userAdd: !users.userAdd })
         }, 300)
     }
 
@@ -43,8 +42,10 @@ export default function AdminUser() {
     function SelectUser(e) {
         users.usersList.map((el, i) => {
             if (el.IDUser == e.currentTarget.id) {
-                setUsers({ ...users, userDisplay: el })
+                setUsers({ ...users, userDisplay: el, userAdd: false })
                 setSelUser(i)
+                setIsActive(users.usersList[i].IsActive)
+
             }
         })
     }
@@ -71,7 +72,6 @@ export default function AdminUser() {
         if (arg === "name" || arg === "email") {
             if (FormControl.name != "" || FormControl.email != "") {
                 const res = await AdminDataUpdate(params);
-                console.log(res);
                 setUsers({ ...users, usersList: [] })
                 setFormControl({ ...FormControl, name: "", email: "" })
                 if (res.data.success) setNoti({ ...noti, severity: "success", description: "Datos actualizados correctamente", open: true })
@@ -118,6 +118,16 @@ export default function AdminUser() {
     function handleChange(e) {
         setFormControl({ ...FormControl, [e.target.name]: e.target.value })
     }
+
+    const handleSwitch = () => {
+        setIsActive(!isActive)
+        setUsers({ ...users, userDisplay: { ...users.userDisplay, IsActive: Number(!users.userDisplay.IsActive) } })
+        const params = {
+            state: Number(!users.userDisplay.IsActive),
+            id: users.userDisplay.IDUser
+        }
+        DisableEnableUser(params)
+    };
 
     return (
         <div className={classes.root}>
@@ -169,7 +179,7 @@ export default function AdminUser() {
                                                         <List component="nav" aria-label="main mailbox folders" key={i}>
                                                             <ListItem button onClick={SelectUser} id={e.IDUser}>
                                                                 <ListItemIcon>
-                                                                    <People />
+                                                                    <VerifiedUser />
                                                                 </ListItemIcon>
                                                                 <ListItemText primary={e.FullName} />
                                                             </ListItem>
@@ -193,9 +203,9 @@ export default function AdminUser() {
                         {!users.userAdd ? users.userDisplay ?
                             <div className="displayContainer">
                                 <div className={classes.UpperContainer}>
-                                    <Button onClick={handleClose} className="closeButton"><Close /></Button>
+                                    <Button onClick={handleClose} className={classes.closeButton}><Close /></Button>
                                     <Typography className="name">{users.userDisplay.FullName}</Typography>
-                                    <Typography className="EmailType">{`${users.userDisplay.Email} - ${users.userDisplay.IsActive ? "activo" : "inactivo"}`}</Typography>
+                                    <Typography className="EmailType">{`${users.userDisplay.Email}`}</Typography>
                                 </div>
                                 <Divider variant="middle" />
 
@@ -204,6 +214,27 @@ export default function AdminUser() {
                                         <div className="pictureCont">
                                             <Avatar alt="Remy Sharp" src="" className="avatar" />
                                             <Divider variant="middle" flexItem style={{ height: "1px" }} />
+
+                                            <div className={classes.modifyImg}>
+                                                <Typography variant="h5">Modificar foto de perfil</Typography>
+                                            </div>
+
+                                            <Typography>
+                                                Estado del usuario
+                                            </Typography>
+                                            <Divider variant="middle" flexItem style={{ height: "1px" }}/>
+
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                                <Typography>Inactivo</Typography>
+                                                <Switch
+                                                    checked={Boolean(isActive)}
+                                                    onChange={handleSwitch}
+                                                    name="IsActive"
+                                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                                />
+                                                <Typography>Activo</Typography>
+                                            </div>
+
 
                                         </div>
                                         <Divider orientation="vertical" variant="middle" className="dividerV" />
@@ -233,12 +264,20 @@ export default function AdminUser() {
                                 </div>
                             </div>
                             : <Typography align="center" variant="h3">
-                                Seleccione un usuario  
-                                <Divider variant="middle"/>    
+                                Seleccione un usuario
+                                <Divider variant="middle" />
                                 o crea un usuario nuevo
-                                <br/>
-                                <Button className="addButton" onClick={handleAdd}><Add/></Button>
-                                </Typography> : <Stepper></Stepper>
+                                <br />
+                                <Button className="addButton" onClick={handleAdd}><Add /></Button>
+                            </Typography> :
+                            <div className={classes.StepperCont}>
+                                <div className="closeCont">
+                                <Button className={classes.closeButton} onClick={handleAdd}><Close /></Button>
+                                </div>
+                                <div className="Stepper">
+                                <Stepper></Stepper>
+                                </div>
+                            </div>
 
                         }
 

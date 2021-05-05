@@ -15,6 +15,8 @@ export const AdminDataUpdate = `${url}/AdminUpdateData`
 export const AdminPassUpdate = `${url}/AdminUpdatePass`
 export const deleteMethod = `${url}/deleteMethod`
 export const Register = `${url}/register`
+export const changeState= `${url}/changeState`
+export const Delete = `${url}/deleteUser`
 
 // Constantes db
 export const colors = [
