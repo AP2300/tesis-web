@@ -39,3 +39,21 @@ export async function AdminPassUpdate(params){
         console.error(e)
     }
 }
+
+export async function CreateUser(params){
+  try{
+    const res = axios.post(Cons.Register,params, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  }catch(e){
+    console.error(e)
+  }
+}

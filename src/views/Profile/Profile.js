@@ -38,7 +38,7 @@ export default function Profile(props) {
                 ))
             )
 
-            if(data.findIndex((item) => item.Name === "Facial") === -1) {
+            if (data.findIndex((item) => item.Name === "Facial") === -1) {
                 data.push({
                     Name: 'Facial',
                     IsActive: 0,
@@ -47,7 +47,7 @@ export default function Profile(props) {
                 })
             }
 
-            if(data.findIndex((item) => item.Name === "Huella") === -1) {
+            if (data.findIndex((item) => item.Name === "Huella") === -1) {
                 data.push({
                     Name: 'Huella',
                     IsActive: 0,
@@ -56,12 +56,12 @@ export default function Profile(props) {
                 })
             }
 
-            data.sort(function(a, b) {
+            data.sort(function (a, b) {
                 var textA = a.Name[0].toUpperCase();
                 var textB = b.Name[0].toUpperCase();
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
             });
-            
+
             setUserData(data)
             setIsPromiseReady(true)
         } else {
@@ -82,15 +82,37 @@ export default function Profile(props) {
         if (noti.open) return < Notification close={setNoti} data={noti} />
     }
 
-    function HandleClick(arg) {
+    async function HandleClick(arg) {
         const params = {
             name: FormControl.NameControl === "" ? FullName : FormControl.NameControl,
             email: FormControl.EmailControl === "" ? Email : FormControl.EmailControl
         }
         if (arg === "name" || arg === "email") {
             if (FormControl.NameControl != "" || FormControl.EmailControl != "") {
-                UpdateBasicData(params);
-                window.location.reload();
+                let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+                if (reg.test(FormControl.EmailControl)) {
+                    if(FormControl.EmailControl !== Email){
+                        UpdateBasicData(params);
+                        const res = await EndSession()
+                        if (res) {
+                            setTimeout(()=>{
+                                history.push("/")
+                            },400)
+                        }
+                    }else{
+                        setNoti({
+                            ...noti, severity: "warning",
+                            description: "Se introdujo el correo electronico actual",
+                            open: true
+                        }) 
+                    }
+                } else {
+                    setNoti({
+                        ...noti, severity: "warning",
+                        description: "Introduce un correo electronico valido",
+                        open: true
+                    })
+                }
             } else {
                 setNoti({
                     ...noti, severity: "warning",
@@ -194,7 +216,7 @@ export default function Profile(props) {
                             <div className={classes.AuthContent}>
                                 {IsPromiseReady ? UserData.map((d, index) => {
                                     if (d.Name !== "Codigo") {
-                                        if(!d.disabled) {
+                                        if (!d.disabled) {
                                             return (
                                                 <Paper onClick={() => Toggle(index)} key={index}
                                                     className={clsx(classes.AuthItem, d.IsActive && classes.disabled, d.IsActive ? classes.green : classes.red)} elevation={1}>
@@ -203,7 +225,7 @@ export default function Profile(props) {
                                                 </Paper>)
                                         } else {
                                             return (
-                                                <Paper 
+                                                <Paper
                                                     className={clsx(classes.AuthItem, d.IsActive && classes.disabled, classes.gray)} elevation={1}>
                                                     <Paper className="AuthNameDis" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
                                                     <Typography className="IsDis">{"No registrado"}</Typography>
@@ -228,19 +250,19 @@ export default function Profile(props) {
                             </div>
                             <div className={classes.textFieldContainer2}>
                                 <div className={classes.item}>
-                                    <TextField id="NameM" variant="outlined" label="Nombre nuevo" onChange={handleChange}  
+                                    <TextField id="NameM" variant="outlined" label="Nombre nuevo" onChange={handleChange}
                                         className={classes.textField} value={FormControl.Name} name="NameControl" />
                                     <Button className={classes.editButton} name="name" onClick={() => HandleClick("name")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
                                     <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange} type="email"
-                                        className={classes.textField} value={FormControl.Email} name="EmailControl" />
+                                        className={classes.textField} value={FormControl.Email} name="EmailControl" helperText="modificar el correo cerrara la sesion" />
                                     <Button className={classes.editButton} onClick={() => HandleClick("email")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="PassM" label="Contraseña nueva" variant="outlined" name="PassControl" 
+                                    <TextField id="PassM" label="Contraseña nueva" variant="outlined" name="PassControl"
                                         className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange} />
                                     <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass")}><Edit /></Button>
                                 </div>

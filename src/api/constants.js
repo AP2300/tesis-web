@@ -14,6 +14,7 @@ export const updatePass = `${url}/updateUserPass`
 export const AdminDataUpdate = `${url}/AdminUpdateData`
 export const AdminPassUpdate = `${url}/AdminUpdatePass`
 export const deleteMethod = `${url}/deleteMethod`
+export const Register = `${url}/register`
 
 // Constantes db
 export const colors = [

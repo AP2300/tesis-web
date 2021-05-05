@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, TextField, Divider, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core/';
+import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, TextField, Divider, FormControl, InputLabel, MenuItem, Select, CircularProgress } from '@material-ui/core/';
 import { Fingerprint, AccountCircle, VpnKey, ExitToApp } from '@material-ui/icons/';
+import { CreateUser } from "../api/admin"
+import Notification from './Notifications';
 import clsx from 'clsx';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,10 +78,10 @@ const useStyles = makeStyles((theme) => ({
         },
 
     },
-    FormContainer:{
+    FormContainer: {
         padding: "4%"
     },
-    formControl:{
+    formControl: {
         display: "flex",
         width: "100%",
         justifyContent: "center"
@@ -115,24 +118,75 @@ function getSteps() {
 
 export default function StepperComponent() {
     const classes = useStyles();
+    const history = useHistory()
     const [activeStep, setActiveStep] = useState(0);
-    const [formControl, setFormControl] = useState({ name: "", email: "", pass: "" , type: "usuario"})
+    const [formControl, setFormControl] = useState({ name: "", email: "", pass: "", type: 0 })
+    const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
+    const [loading, setLoading] = useState(false)
     const steps = getSteps();
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) =>{
-            if(prevActiveStep ===3){
+    async function register(params) {
+        const res = await CreateUser(params)
 
-            }else return prevActiveStep + 1});
+        if (res.data.success) {
+            history.push(`/admin/security/${res.data.data.Inserted}`)
+        } else if (res.data.success === false) {
+            setNoti({ ...noti, severity: "error", open: true, description: `hubo un error creando el usuario, ${res.data.msg}` })
+            setActiveStep(0)
+            setLoading(false)
+        } else {
+            setNoti({ ...noti, severity: "error", open: true, description: "hubo un error creando el usuario, intentelo de nuevo" })
+            setActiveStep(0)
+            setLoading(false)
+
+
+        }
+
+    }
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => {
+            if (prevActiveStep === 2) {
+                let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+                if (formControl.name !== "" && formControl.email !== "" && formControl.pass !== "") {
+                    if (reg.test(formControl.email)) {
+                        setLoading(true)
+                        const params = {
+                            name: formControl.name,
+                            email: formControl.email,
+                            pass: formControl.pass,
+                            type: formControl.type
+                        }
+                        register(params)
+                    } else {
+                        setNoti({ ...noti, severity: "warning", open: true, description: "Ingrese un correo electronico valido" })
+                        return prevActiveStep - 2
+                    }
+                } else {
+                    setNoti({ ...noti, severity: "warning", open: true, description: "Debe llenar todos los campos para continuar" })
+                    return prevActiveStep
+                }
+                return prevActiveStep
+            } else {
+                return prevActiveStep + 1
+            }
+        });
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        setActiveStep((prevActiveStep) => {
+            setLoading(false)
+            return prevActiveStep - 1
+        });
     };
-
 
     function handleChange(e) {
         setFormControl({ ...formControl, [e.target.name]: e.target.value })
+    }
+
+
+    function getNoti() {
+        if (noti.open) return < Notification close={setNoti} data={noti} />
     }
 
     function getStepContent(step) {
@@ -158,13 +212,13 @@ export default function StepperComponent() {
                             name="type"
                             onChange={handleChange}
                         >
-                            <MenuItem value={"usuario"}>Usuario</MenuItem>
-                            <MenuItem value={"admin"}>Administrador</MenuItem>
+                            <MenuItem value={0}>Usuario</MenuItem>
+                            <MenuItem value={1}>Administrador</MenuItem>
                         </Select>
                     </FormControl>
                 </Paper>)
             case 2:
-                return "";
+                return "El usuario ha sido creado, pero deben agregarse metodos de autenticacion para activarlo";
             default:
                 return 'Unknown step';
         }
@@ -205,7 +259,7 @@ export default function StepperComponent() {
                     <Step key={label}>
                         <StepLabel StepIconComponent={StepIcons} >{label}</StepLabel>
                         <StepContent>
-                            <Typography>{getStepContent(index)}</Typography>
+                            <div>{getStepContent(index)}</div>
                             <div className={classes.actionsContainer}>
                                 <div>
                                     <Button
@@ -221,8 +275,9 @@ export default function StepperComponent() {
                                         className={classes.button}
                                     >
                                         {activeStep === steps.length - 1 ? `Ir a Administrar seguridad ` : 'Next'}
-                                        {activeStep === steps.length - 1 ? <ExitToApp/> : ""}
-                                        
+                                        {!loading ? activeStep === steps.length - 1 ? <ExitToApp /> : ""
+                                            : <CircularProgress style={{ color: "inherit", width: "20px", height: "20px", marginLeft: "4px" }} />}
+
                                     </Button>
                                 </div>
                             </div>
@@ -230,6 +285,7 @@ export default function StepperComponent() {
                     </Step>
                 ))}
             </Stepper>
+            {getNoti()}
         </div>
     );
 }
