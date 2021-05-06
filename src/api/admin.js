@@ -76,9 +76,9 @@ export async function DisableEnableUser(params) {
   }
 }
 
-export async function DeleteUser(id) {
+export async function DeleteUser(data) {
   try {
-    const res = axios.post(Cons.Delete, id, {
+    const res = axios.post(Cons.Delete, data, {
       headers: {
         'Content-Type': 'application/json',
       },

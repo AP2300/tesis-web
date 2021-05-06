@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminUser';
-import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser } from '@material-ui/icons/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch, Chip } from '@material-ui/core/';
+import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, ReportProblemRounded } from '@material-ui/icons/';
+import Alert from '@material-ui/lab/Alert';
 import Notification from '../../components/Notifications';
 import Stepper from "../../components/Stepper"
+import Modal from "../../components/Modal"
 import { GetHistoryData } from "../../api/user"
-import { AdminDataUpdate, AdminPassUpdate, DisableEnableUser } from "../../api/admin"
+import { AdminDataUpdate, AdminPassUpdate, DisableEnableUser, DeleteUser } from "../../api/admin"
+import { GetSecurityUserData } from "../../api/user"
 import clsx from 'clsx';
 
 export default function AdminUser() {
     const [UsersPanel, setUsersPanel] = useState(true)
-    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false })
-    const [promises, setPromises] = useState({ users: false })
+    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false, isActivatable: false })
+    const [promises, setPromises] = useState({ users: false, userDisplay: false })
     const [selUser, setSelUser] = useState("")
     const [FormControl, setFormControl] = useState({ name: "", email: "", pass: "" })
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const [isActive, setIsActive] = useState("");
+    const [modal, setModal] = useState(false)
     const classes = useStyles()
 
     function handleClick() {
@@ -34,18 +38,31 @@ export default function AdminUser() {
         }, 300)
     }
 
+    function handleDelete() {
+        setModal(true)
+    }
+
+    function DeleteFunc() {
+        DeleteUser({ id: users.userDisplay.IDUser })
+        let newUserList = [...users.usersList]
+        newUserList.splice(selUser, 1)
+        setUsers({ ...users, userDisplay: "", usersList: newUserList })
+    }
+
     useEffect(() => {
         if (users.usersList.length === 0) GetUsers()
     }, [users.usersList])
 
 
-    function SelectUser(e) {
-        users.usersList.map((el, i) => {
+    async function SelectUser(e) {
+        setPromises({ ...promises, userDisplay: false })
+        users.usersList.map(async (el, i) => {
             if (el.IDUser == e.currentTarget.id) {
-                setUsers({ ...users, userDisplay: el, userAdd: false })
+                const res = await GetSecurityUserData(e.currentTarget.id)
+                setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length === 0 ? false : true })
                 setSelUser(i)
                 setIsActive(users.usersList[i].IsActive)
-
+                setPromises({ ...promises, userDisplay: true })
             }
         })
     }
@@ -119,14 +136,19 @@ export default function AdminUser() {
         setFormControl({ ...FormControl, [e.target.name]: e.target.value })
     }
 
-    const handleSwitch = () => {
+    const handleSwitch = async () => {
         setIsActive(!isActive)
-        setUsers({ ...users, userDisplay: { ...users.userDisplay, IsActive: Number(!users.userDisplay.IsActive) } })
         const params = {
             state: Number(!users.userDisplay.IsActive),
             id: users.userDisplay.IDUser
         }
-        DisableEnableUser(params)
+
+        const res = await DisableEnableUser(params)
+        if (res.data.success) {
+            setUsers({ ...users, usersList: [], userDisplay: { ...users.userDisplay, IsActive: Number(!users.userDisplay.IsActive) } })
+            setPromises({ ...promises, users: false })
+        }
+
     };
 
     return (
@@ -148,7 +170,7 @@ export default function AdminUser() {
                                             <Typography className={classes.heading}>Usuarios</Typography>
                                         </AccordionSummary>
                                         <AccordionDetails>
-                                            {promises.users && users.usersList.map((e, i) => {
+                                            {promises.users ? users.usersList.map((e, i) => {
                                                 if (!e.IsAdmin) {
                                                     return (
                                                         <List component="nav" aria-label="main mailbox folders" key={i} >
@@ -161,7 +183,14 @@ export default function AdminUser() {
                                                         </List>
                                                     )
                                                 }
-                                            })}
+                                            }) : <List component="nav" aria-label="main mailbox folders" className={classes.loading}>
+                                                <ListItem button >
+                                                    <ListItemIcon>
+                                                    </ListItemIcon>
+                                                    <ListItemText />
+                                                </ListItem>
+                                            </List>
+                                            }
                                         </AccordionDetails>
                                     </Accordion>
                                     <Accordion className="acordion">
@@ -173,7 +202,7 @@ export default function AdminUser() {
                                             <Typography className={classes.heading}>Administradores</Typography>
                                         </AccordionSummary>
                                         <AccordionDetails>
-                                            {promises.users && users.usersList.map((e, i) => {
+                                            {promises.users ? users.usersList.map((e, i) => {
                                                 if (e.IsAdmin) {
                                                     return (
                                                         <List component="nav" aria-label="main mailbox folders" key={i}>
@@ -186,7 +215,14 @@ export default function AdminUser() {
                                                         </List>
                                                     )
                                                 }
-                                            })}
+                                            })
+                                                : <List component="nav" aria-label="main mailbox folders" className={classes.loading}>
+                                                    <ListItem button >
+                                                        <ListItemIcon>
+                                                        </ListItemIcon>
+                                                        <ListItemText />
+                                                    </ListItem>
+                                                </List>}
                                         </AccordionDetails>
                                     </Accordion>
                                 </div>
@@ -203,13 +239,20 @@ export default function AdminUser() {
                         {!users.userAdd ? users.userDisplay ?
                             <div className="displayContainer">
                                 <div className={classes.UpperContainer}>
-                                    <Button onClick={handleClose} className={classes.closeButton}><Close /></Button>
-                                    <Typography className="name">{users.userDisplay.FullName}</Typography>
-                                    <Typography className="EmailType">{`${users.userDisplay.Email}`}</Typography>
+                                    <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", width: "100%" }}>
+                                        <Button onClick={handleClose} className={classes.closeButton}><Close /></Button>
+                                        {/* {!users.userDisplay.IsAdmin ? */}
+                                        <Button onClick={handleDelete} className={classes.closeButton}><Delete /></Button>
+                                        {/* : ""} */}
+                                    </div>
+                                    {promises.userDisplay ? <Typography className="name">{users.userDisplay.FullName}</Typography>
+                                        : <Typography className={classes.loading} style={{ width: "18vw", height: "5vh" }}></Typography>}
+                                    {promises.userDisplay ? <Typography className="EmailType">{`${users.userDisplay.Email}`}</Typography>
+                                        : <Typography className={classes.loading} style={{ width: "25vw", height: "5vh" }}></Typography>}
                                 </div>
                                 <Divider variant="middle" />
 
-                                <div className={classes.BottomContainer}>
+                                {promises.userDisplay ? <div className={classes.BottomContainer}>
                                     <Paper elevation={2} className={classes.LeftContainer}>
                                         <div className="pictureCont">
                                             <Avatar alt="Remy Sharp" src="" className="avatar" />
@@ -222,9 +265,16 @@ export default function AdminUser() {
                                             <Typography>
                                                 Estado del usuario
                                             </Typography>
-                                            <Divider variant="middle" flexItem style={{ height: "1px" }}/>
+                                            <Divider variant="middle" flexItem style={{ height: "1px" }} />
 
-                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            {/* {!users.userDisplay.IsAdmin ?  */}
+
+                                                {!users.isActivatable ? 
+                                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap:"wrap" }}>
+                                                <Alert severity="warning" style={{margin:"2% 5% 2% 5%"}}>El usuario no tiene metodos de autenticacion, no es activable</Alert>
+                                                </div>
+                                                :                                             
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap:"wrap" }}>
                                                 <Typography>Inactivo</Typography>
                                                 <Switch
                                                     checked={Boolean(isActive)}
@@ -233,7 +283,9 @@ export default function AdminUser() {
                                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                                 />
                                                 <Typography>Activo</Typography>
-                                            </div>
+                                                </div>}
+
+                                            {/* : ""} */}
 
 
                                         </div>
@@ -261,7 +313,7 @@ export default function AdminUser() {
                                             </div>
                                         </div>
                                     </Paper>
-                                </div>
+                                </div> : <div className={classes.loading} style={{ width: "100%", height: "75%", marginTop: "2%" }} />}
                             </div>
                             : <Typography align="center" variant="h3">
                                 Seleccione un usuario
@@ -272,10 +324,10 @@ export default function AdminUser() {
                             </Typography> :
                             <div className={classes.StepperCont}>
                                 <div className="closeCont">
-                                <Button className={classes.closeButton} onClick={handleAdd}><Close /></Button>
+                                    <Button className={classes.closeButton} onClick={handleAdd}><Close /></Button>
                                 </div>
                                 <div className="Stepper">
-                                <Stepper></Stepper>
+                                    <Stepper></Stepper>
                                 </div>
                             </div>
 
@@ -285,6 +337,10 @@ export default function AdminUser() {
                 </div>
             </Paper>
             {getNoti()}
+
+            <Modal IsOpen={modal} close={setModal} okFunction={DeleteFunc} title={`Deseas eliminar a ${users.userDisplay ? users.userDisplay.FullName : ""}?`}>
+                <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
+            </Modal>
         </div>
     )
 }

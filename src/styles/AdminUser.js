@@ -264,5 +264,17 @@ export default useStyles = makeStyles((theme) => ({
             width: "100%",
             overflowY: "scroll"
         }
-    }
+    },
+    chip:{
+        display: "flex",
+        backgroundColor: "#ff9800",
+        color: "whitesmoke",
+        fontWeight: "600",
+        padding: "1%",
+        width: "20vw",
+        height: "10vh",
+         "& > *":{
+            color: "whitesmoke",
+         }
+    },
 }));

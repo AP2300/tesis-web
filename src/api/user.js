@@ -111,7 +111,6 @@ export async function GetFullUserData() {
 
 export async function GetSecurityUserData(id) {
   try {
-    console.log(id)
     const res = axios.get(Cons.profile, {
       headers: {
         'Content-Type': 'application/json',
