@@ -33,9 +33,9 @@ export default function Home() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
-  const [Data, setData] = useState("")
-  const [activeWindow, setActiveWindow] = useState(SelectPage(location))
-  const [SearchData, setSearchData] = useState("")
+  const [Data, setData] = useState("");
+  const [activeWindow, setActiveWindow] = useState(SelectPage(location));
+  const [SearchData, setSearchData] = useState("");
 
   useEffect(() => {
     if (Data === "") getData();
@@ -69,8 +69,8 @@ export default function Home() {
 
   function ChangePage(e) {
     let route = "";
-    if(typeof e === 'object') route = e.target.outerText; 
-    else route = e; 
+    if (typeof e === 'object') route = e.target.outerText;
+    else route = e;
     let path = otherPage(route);
     if (path) {
       setActiveWindow(route);
@@ -107,12 +107,17 @@ export default function Home() {
           >
             <MenuIcon className={classes.userWelcome} />
           </IconButton >
-            <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
-              {activeWindow == "Panel Principal" ?
-                (isPromiseReady ? `Bienvenido, ${Data.FullName}` : "f") : activeWindow
-              }
-            </Typography>
-            {Data.IsAdmin && <AdminDial ChangePage={ChangePage} />}
+          <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
+            {activeWindow == "Panel Principal" ?
+              (isPromiseReady ?
+                <span>
+                  Bienvenido, <span style={{ fontWeight: "600" }}>{Data.FullName}</span>
+                </span>
+                : "f") : activeWindow
+            }
+
+          </Typography>
+          {Data.IsAdmin && <AdminDial ChangePage={ChangePage} />}
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}

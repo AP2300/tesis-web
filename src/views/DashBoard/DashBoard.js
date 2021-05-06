@@ -71,14 +71,14 @@ export default function DashBoard() {
 
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
+      <Paper elevation={2} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
         <Typography > Esta semana</Typography>
         <Typography className={classes.number}>{getDateAccess(generateGraphData(graphData))}</Typography>
         <Typography >Accesos</Typography>
       </Paper>
-      <Paper elevation={0} className={clsx(!isPromiseReady && classes.loading)} >
+      <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
       </Paper>
-      <Paper elevation={0} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading, classes.buttonBox)}>
+      <Paper elevation={2} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading, classes.buttonBox)}>
         <Button onClick={handleClick} className={clsx( typeChart === "bar" ?classes.selectedChart: "")}>
           <i className="fas fa-chart-bar"></i>
         </Button>
@@ -87,7 +87,7 @@ export default function DashBoard() {
         </Button>
       </Paper>
 
-      <Paper elevation={0} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
+      <Paper elevation={2} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
         {graphData !== "" ? isPromiseReady ? <ChartComponent
           type={typeChart}
           data={getDataGraph()}

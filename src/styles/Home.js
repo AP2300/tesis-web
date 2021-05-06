@@ -12,9 +12,12 @@ export default useStyles = makeStyles((theme) => ({
     display: 'flex',
     width: "100vw",
     height: "100vh",
+    "& .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters": {
+      backgroundColor: "#0569b9"
+    }
   },
-  toolbar:{
-    width:"100%",
+  toolbar: {
+    width: "100%",
     display: "flex",
     alignItems: "center"
   },
@@ -38,10 +41,15 @@ export default useStyles = makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    "& > .MuiIconButton-label .MuiSvgIcon-root": {
+      fontSize: "2em !important"
+
+    }
   },
   hide: {
-    display: 'none',
+    marginLeft: "-65px",
+    opacity: '0'
   },
   drawer: {
     minWidth: drawerWidth,
@@ -70,7 +78,8 @@ export default useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: '-' + drawerWidth,
-    overflow: "hidden"
+    overflow: "hidden",
+    backgroundColor: "#f7f7f7"
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -80,8 +89,8 @@ export default useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   userWelcome: {
-    fontSize: "5vmin",
-    color: "#000000a6"
+    fontSize: "4vmin",
+    color: "whitesmoke"
   },
   userBadge: {
     display: 'flex',
@@ -107,8 +116,7 @@ export default useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     height: "82.3vh",
-    justifyContent: "space-evenly",
-    paddingRight: "1em"
+    paddingTop: "2rem",
   },
   List1: {
     display: "flex",
@@ -119,13 +127,15 @@ export default useStyles = makeStyles((theme) => ({
     paddingRight: "1em",
   },
   ListItem: {
-    width: "80%",
-    padding: "1rem 1rem",
+    width: "100%",
+    padding: "5%",
     color: "#000000a6",
     display: "flex",
     flexDirection: "row",
-    borderRadius: "1rem",
-    fontSize: "2.2vmin"
+    fontSize: "2.2vmin",
+    "&:hover": {
+      color: "#0569b9"
+    }
   },
   LogOut: {
     width: "80%",
@@ -140,7 +150,8 @@ export default useStyles = makeStyles((theme) => ({
     fontSize: "5vh"
   },
   ListIcons: {
-    fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`,
+    fontSize: `calc(19px + (30 - 19) * ((120vw - 320px) / (1600 - 300)))`,
+    color: "#0569b9"
   },
   LogOuIcon: {
     fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`,
@@ -164,6 +175,9 @@ export default useStyles = makeStyles((theme) => ({
     width: "9em"
   },
   active: {
-    backgroundColor: "#0000001a"
+    paddingLeft: "20%",
+    color: "#0569b9",
+    transform: "scale(1.2)",
+    transition: "200ms ease-in"
   },
 }));

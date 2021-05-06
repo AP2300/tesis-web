@@ -16,7 +16,6 @@ export default makeStyles((theme) => ({
       margin: "2%",
       width: "29%",
       height: theme.spacing(16),
-      boxShadow: "3px 3px 4px 1px #00000052",
 
     },
     "& GraphBox": {
@@ -24,8 +23,7 @@ export default makeStyles((theme) => ({
     justifyContent: "center"
   },
   borderBoxL: {
-    borderTopLeftRadius: "1rem",
-    borderBottomLeftRadius: "1rem",
+
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -42,8 +40,7 @@ export default makeStyles((theme) => ({
     fontSize: `calc(30px + (55 - 30) * ((40vw - 320px) / (1600 - 300)))`
   },
   borderBoxR: {
-    borderTopRightRadius: "1rem",
-    borderBottomRightRadius: "1rem",
+
   },
   GraphBox: {
     margin: theme.spacing(2),
