@@ -20,7 +20,7 @@ function Login(props) {
 
     const btn = {
         textTransform: "none",
-        borderRadius: "40px",
+        borderRadius: "5px",
         marginTop: "0.5rem",
         padding: "0.55rem 1.5rem",
     }
