@@ -20,18 +20,17 @@ export default useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         flexWrap: "wrap"
     },
+    header: {
+        height: "25%",
+    },
+    content: {
+        height: "75%",
+    },
     List: {
         backgroundColor: theme.palette.background.paper,
         position: 'relative',
-        overflow: 'auto',
-        maxHeight: "14vh",
-    },
-    ListSection: {
-        backgroundColor: 'inherit',
-    },
-    ul: {
-        backgroundColor: 'inherit',
-        padding: 0,
+        overflowY: 'scroll',
+        height: "100%"
     },
     Divider: {
         marginTop: "1%",

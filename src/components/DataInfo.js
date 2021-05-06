@@ -24,8 +24,8 @@ export default function DataInfo(props) {
                             if (DataUser[d].length !== 0) {
                                 return (
                                     <Card className={classes.Card} key={`day-${DayLabel}-${d}`}>
-                                        <CardHeader title={DayLabel} key={`header-${DayLabel}-${d}`}/>
-                                        <CardContent key={`content-${DayLabel}-${d}`}>
+                                        <CardHeader className={classes.header} title={DayLabel} key={`header-${DayLabel}-${d}`}/>
+                                        <CardContent className={classes.content} key={`content-${DayLabel}-${d}`}>
                                             <List className={classes.List} key={`List-${DayLabel}-${d}`}>
                                                 {DataUser[d].map((info, i) => {
                                                     return (
@@ -53,20 +53,3 @@ export default function DataInfo(props) {
         )
     }
 }
-
-// const classes = useStyles();
-// const { TimeStamp, Data } = props;
-// const [Promises, setPromises] = useState({ isReady: false });
-// const [State, setState] = useState({ Labels: GraphLabels(TimeStamp), DataUser: OrderData(TimeStamp, Data) });
-
-// useEffect(() => {
-//     setState({ ...State, Labels: GraphLabels(TimeStamp), DataUser: OrderData(TimeStamp, Data) });
-//     setPromises({ ...Promises, isUserReady: true });
-// }, [TimeStamp])
-
-// if (Data !== false) {
-//     return (
-//         <div className={classes.Cardgrid}>
-//             {State.Labels.map((DayLabel, d) => {
-//                 console.log(State.DataUser[d], TimeStamp, d)
-//                 if (State.DataUser[d].length !== 0 && Promises.isReady) {

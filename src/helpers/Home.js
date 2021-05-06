@@ -15,7 +15,7 @@ export function PageSelector(userData, SearchData) {
   return (
     <Switch>
       <Route exact path="/home" render={() => <DashBoard />} />
-      <Route path="/home/profile" render={(routeprops) => <Profile {...routeprops} Data={user}/>} />
+      <Route path="/home/profile" render={(routeprops) => <Profile {...routeprops} Data={user} />} />
       <Route path="/home/history" render={(routeprops) => <HistoryUser {...routeprops} User={user} />} />
       {user.IsAdmin ? (
         <Route path="/admin/history" render={(routeprops) => <History {...routeprops} />} />
@@ -25,7 +25,7 @@ export function PageSelector(userData, SearchData) {
         <Route exact path="/admin/security" render={(routeprops) => <AdminSecurity {...routeprops} />} />
       ) : null}
       {user.IsAdmin ? (
-      <Route path="/admin/security/:id" render={(routeprops) => <AdminSecurity {...routeprops} />} />
+        <Route path="/admin/security/:id" render={(routeprops) => <AdminSecurity {...routeprops} />} />
       ) : null}
       {user.IsAdmin ? (
         <Route path="/admin/users" render={(routeprops) => <AdminUser {...routeprops} />} />
@@ -33,37 +33,34 @@ export function PageSelector(userData, SearchData) {
       <Route path="/" render={() => <DashBoard />} />
     </Switch>
   )
-  
-  /*
-  switch (location.pathname) {
+}
 
-    case "/dashboard":
-      return <DashBoard />;
+export function SelectPage(location) {
+  switch (location.pathname) {
+    case "/home":
+      return "Panel Principal";
 
     case "/home/profile":
-      return <Profile Data={userData} />;
+      return "Panel Personal";
 
     case "/home/history":
-      return <HistoryUser User={userData} />
+      return "Historial";
 
     case "/admin/history":
-      if (userData.IsAdmin) return <History />
-      else return history.push("/home")
+      return "Historial global";
 
     case "/home/security":
-      return <Security Data={userData} />
+      return "Seguridad";
 
     case "/admin/security":
-      if (userData.IsAdmin) return <AdminSecurity />;
-      else return history.push("/home")
+      return "Administrar seguridad";
 
     case "/admin/users":
-      if (userData.IsAdmin) return <AdminUser />;
-      else return history.push("/home")
+      return "Administar usuarios";
 
     default:
-      return <DashBoard />;
-  };*/
+      return "Panel Principal";
+  };
 }
 
 // export function otherPage(e) {

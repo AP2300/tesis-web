@@ -23,17 +23,18 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import useStyles from "../styles/Home";
 import { GetUserData } from "../api/user";
 import { EndSession } from "../api/session";
-import { PageSelector, otherPage } from "../helpers/Home";
-import { useHistory } from 'react-router';
+import { PageSelector, otherPage, SelectPage } from "../helpers/Home";
+import { useHistory, useLocation } from 'react-router';
 import AdminDial from './AdminDial';
 
 export default function Home() {
+  const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("")
-  const [activeWindow, setActiveWindow] = useState("Panel Principal")
+  const [activeWindow, setActiveWindow] = useState(SelectPage(location))
   const [SearchData, setSearchData] = useState("")
 
   useEffect(() => {

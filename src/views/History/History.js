@@ -230,7 +230,7 @@ export default function History() {
                         control={<IconButton
                             className={clsx(States.TypeChart === "line" ? classes.BtnActive : "")}
                             onClick={() => { setStates({ ...States, TypeChart: "line" }) }} >
-                            <i className="fas fa-chart-line"></i></IconButton>}
+                            <i className="fas fa-chart-area"></i></IconButton>}
                     />
                     <FormControlLabel
                         className={clsx(States.ShowGeneral ? classes.BtnActive : "")}
