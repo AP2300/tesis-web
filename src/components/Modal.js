@@ -5,11 +5,10 @@ import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton"
-import { Close, Done, Backup, AddAPhoto} from '@material-ui/icons/';
+import { Close, Done, Backup, AddAPhoto, Delete } from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    console.log("props");
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -50,6 +49,12 @@ export default function ModalComponent(props) {
         props.close(false)
     };
 
+    const handleDeletePicture = () =>{
+        props.deletePicture()
+        setOpen(false);
+        props.close(false)
+    }
+
     return (
         <div>
             <Modal
@@ -82,6 +87,10 @@ export default function ModalComponent(props) {
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar
                                 </IconButton>
+                                {props.deletePicture &&
+                                    <IconButton className={classes.continue} onClick={handleDeletePicture}>
+                                        <Delete /> Eliminar foto actual
+                                    </IconButton>}
                                 <IconButton className={classes.continue} onClick={handleOK}>
                                     <Done /> Continuar
                                 </IconButton>

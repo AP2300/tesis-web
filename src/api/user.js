@@ -208,3 +208,21 @@ export async function UpdateProfPicture(data) {
     console.error(e)
   }
 }
+
+export async function DeletePicture(params){
+  try{
+    const res = axios.post(Cons.DeleteProf, params ,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  }catch(e){
+    console.error(e)
+  }
+}
