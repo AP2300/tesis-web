@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
-import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Dialog, DialogActions, DialogContent, DialogContentText} from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint } from '@material-ui/icons/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Dialog, DialogActions, DialogContent, DialogContentText, Chip} from '@material-ui/core/';
+import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add } from '@material-ui/icons/';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod } from '../../api/user';
 import Notification from '../../components/Notifications';
-import { useHistory, useLocation } from 'react-router';
+import Modal from '../../components/Modal';
+import { useHistory } from 'react-router';
+import { DropzoneArea } from 'material-ui-dropzone';
 import clsx from 'clsx';
 
 export default function AdminUserSecurity(props) {
@@ -16,7 +18,9 @@ export default function AdminUserSecurity(props) {
     const [isSecDataReady, setIsSecDataReady] = useState(false);
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const [open, setOpen] = useState({open: false});
-    const [UsersPanel, setUsersPanel] = useState(true)
+    const [openEdit, setOpenEdit] = useState({open: false, data: ""});
+    const [UsersPanel, setUsersPanel] = useState(true);
+    const [isFileAdded, setIsFileAdded] = useState(false);
     const classes = useStyles();
 
     useEffect(async () => {
@@ -62,7 +66,7 @@ export default function AdminUserSecurity(props) {
         let testDict = []
         for (let key in Update) {
             console.log(key)
-            if(key !== "email" && key !== "isActive" && key !== "IDUser") testDict.push(Update[key][0])
+            if(key !== "email" && key !== "isActive" && key !== "IDUser" && Update[key][0] !== undefined) testDict.push(Update[key][0])
         }
         console.log(testDict)
         const IsToUpdate = testDict.some(el => el.IsActive && el.Name != "Codigo")
@@ -82,7 +86,7 @@ export default function AdminUserSecurity(props) {
             console.log("asdasdasd")
             setNoti({
                 severity: "warning",
-                description: "No puedes desactivar tu último metodo de autenticacion activo",
+                description: "No puedes desactivar el último metodo de autenticacion activo",
                 open: true
             })
 
@@ -117,6 +121,10 @@ export default function AdminUserSecurity(props) {
         }
     };
 
+    function handleClickOpenAdd() {
+
+    }
+
     async function fetchUserSecurity(name, id) {
         console.log(id);
         console.log(name)
@@ -127,13 +135,20 @@ export default function AdminUserSecurity(props) {
         const IDUser = userList.filter(user => user.IDUser === id)[0].IDUser;
         console.log(email, isActive)
         if(data) {
-            if(data.data.data.length!=0) {
+            if(data.data.data.length>0) {
                 console.log(data.data.data);
                 const codigo = data.data.data.filter((d) => d.Name == "Codigo")
                 const huella = data.data.data.filter((d) => d.Name == "Huella")
                 const facial = data.data.data.filter((d) => d.Name == "Facial")
                 d = {IDUser, isActive, email, codigo, huella, facial}
                 console.log(d);
+                if(huella.length == 0 && facial.length == 0) {
+                    setNoti({
+                        ...noti, severity: "warning",
+                        description: "No hay métodos de autenticación configurados",
+                        open: true
+                    })
+                }
             } else {
                 d = {}
                 console.log(d);
@@ -154,30 +169,43 @@ export default function AdminUserSecurity(props) {
         }
     }
 
+    const handleClickOpenEdit = (data) => {
+        setOpenEdit({open: true, data});
+    };
+
+    function handleEditUpload() {
+        
+    }
+
+    function handleCloseEdit() {
+        setOpenEdit({open: false, data: ""})
+    }
+
+    function handleEditTakePhoto() {
+
+    }
+
     return (
         <div className={classes.root}>
             {(noti.open) ? <Notification close={setNoti} data={noti}/> : ""}
             <Paper elevation={2} className={classes.mainContainer}>
-                <Dialog
-                    open={open.open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Desea eliminar la foto?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancelar
-                        </Button>
-                        <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-                            Confirmar
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Modal IsOpen={open.open} close={handleClose} okFunction={handleConfirmDelete} title="Desea eliminar la foto?">
+                    <Typography align="center">Lorem ipsum</Typography>
+                </Modal>
+                <Modal defaultButtons={false} IsOpen={openEdit.open} close={handleCloseEdit} uploadPhotoFunction={handleEditUpload} takePhotoFunction={handleEditTakePhoto} disableUploadPhoto={!isFileAdded} title="Editar">
+                    {openEdit.data.Name == "Huella" ? (
+                        <div>
+                            <Typography align="center">Dedo {openEdit.data.fingerName}</Typography>
+                            <DropzoneArea dropzoneText={"Modificar foto"} onAdd={() => setIsFileAdded(true)} onDelete={() => setIsFileAdded(false)}/>
+                        </div>
+                    ) :  openEdit.data.Name == "Facial" ? (
+                        <div>
+                            <Typography align="center">Ingrese la nueva foto facial </Typography>
+                            <DropzoneArea dropzoneText={"Modificar foto"}/>
+                        </div>
+                    ) : (null)}
+                    
+                </Modal>
                 <div className={classes.panelContainer}>
                     <Paper className={clsx(UsersPanel ? classes.UserList : classes.UserListMinimized)}>
                         {UsersPanel ?
@@ -198,9 +226,18 @@ export default function AdminUserSecurity(props) {
                                                 {isPromiseReady ? userList.map((data, index) => {
                                                     if(!data.IsAdmin) {
                                                         return (
+                                                            <List component="nav" aria-label="main mailbox folders" key={index} >
+                                                                <ListItem button key={index} onClick={() => {fetchUserSecurity(data.FullName, data.IDUser)}} id={data.IDUser}>
+                                                                    <ListItemIcon>
+                                                                        <People />
+                                                                    </ListItemIcon>
+                                                                    <ListItemText primary={data.FullName} />
+                                                                </ListItem>
+                                                            </List>
+                                                            /*
                                                             <ListItem button key={index} onClick={() => {fetchUserSecurity(data.FullName, data.IDUser)}} className={clsx(classes.ListItem, activeUser === data.FullName ? classes.active : "")}>
                                                                 <ListItemText primary={data.FullName} classes={{ primary: classes.listItemText }}/>
-                                                            </ListItem>
+                                                            </ListItem>*/
                                                         )
                                                     }
                                                 }) : "cargando"} 
@@ -220,9 +257,18 @@ export default function AdminUserSecurity(props) {
                                                 {isPromiseReady ? userList.map((data, index) => {
                                                     if(data.IsAdmin) {
                                                         return (
+                                                            <List component="nav" aria-label="main mailbox folders" key={index}>
+                                                                <ListItem button key={index} onClick={() => {fetchUserSecurity(data.FullName, data.IDUser)}} id={data.IDUser}>
+                                                                    <ListItemIcon>
+                                                                        <VerifiedUser />
+                                                                    </ListItemIcon>
+                                                                    <ListItemText primary={data.FullName} />
+                                                                </ListItem>
+                                                            </List>
+                                                            /*
                                                             <ListItem button key={index} onClick={() => {fetchUserSecurity(data.FullName, data.IDUser)}} className={clsx(classes.ListItem, activeUser === data.FullName ? classes.active : "")}>
                                                                 <ListItemText primary={data.FullName} classes={{ primary: classes.listItemText }}/>
-                                                            </ListItem>
+                                                            </ListItem>*/
                                                         )
                                                     }
                                                 }) : "cargando"} 
@@ -255,7 +301,7 @@ export default function AdminUserSecurity(props) {
                                         
                                         <Avatar className={classes.faceAvatar} src={`http://localhost:3001${userData.facial[0].data}`}/>
                                         <div className={classes.photoButtonGroup}>
-                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])}>
+                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={() => handleClickOpenEdit(userData.facial[0])}>
                                                 Editar
                                             </Button>
                                             <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(userData.facial[0].IDBiometrics, userData.IDUser)}>
@@ -276,13 +322,21 @@ export default function AdminUserSecurity(props) {
                                         </Paper>
                                     </Paper>
                                 ) : (
-                                    <Paper elevation={2} className={classes.LeftContainer}>
+                                    <Paper elevation={2} className={clsx(classes.LeftContainer, classes.noPhoto)}>
                                         <Typography variant="h5" className={classes.photoTitle}>
                                             Foto para reconocimiento facial
                                         </Typography>
-                                        <Typography variant="h5" className={classes.photoTitle}>
-                                            No hay foto configurada
-                                        </Typography>
+                                        <div className={classes.noPhotoContent}>
+                                            <Chip
+                                                className={classes.chip}
+                                                icon={<ReportProblemRounded />}
+                                                label="No hay foto configurada"
+                                            />
+                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd}>
+                                                    <Add/>
+                                                    Agregar foto
+                                            </Button>
+                                        </div>
                                     </Paper>
                                 ) }
                                 
@@ -308,7 +362,7 @@ export default function AdminUserSecurity(props) {
                                                                     </div>
                                                                     
                                                                     <div className={classes.fingerItemButtonGroup}>
-                                                                        <Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}}>
+                                                                        <Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}} onClick={() => handleClickOpenEdit(data)}>
                                                                             Editar
                                                                         </Button>
                                                                         <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(data.IDBiometrics, userData.IDUser)}>
@@ -319,6 +373,12 @@ export default function AdminUserSecurity(props) {
                                                                 </div>                                                 
                                                         </div>
                                                         <Divider orientation="horizontal" variant={"middle"} style={{width: "80%"}} />
+                                                        {(userData.huella.length === (index+1)) ? (
+                                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{margin: "1em 0"}}>
+                                                                <Add/>
+                                                                Agregar foto
+                                                            </Button>  
+                                                        ) : null}
                                                     </div>
                                                 )
                                             })}
@@ -341,14 +401,22 @@ export default function AdminUserSecurity(props) {
                                     </Paper>
                                     ) 
                                     : (
-                                        <Paper elevation={2} className={classes.RightContainer}>
+                                        <Paper elevation={2} className={clsx(classes.RightContainer, classes.noPhoto)}>
                                             <Typography variant="h5" className={classes.fingerTitle}>
                                                 Huellas dactilares
                                             </Typography>
                                             <Divider orientation="horizontal" variant={"middle"} style={{width: "95%"}}/>
-                                            <Typography variant="h5" className={classes.fingerTitle}>
-                                                No hay huellas dactilares configuradas
-                                            </Typography>
+                                            <div className={classes.noPhotoContent}>
+                                                <Chip
+                                                    className={clsx(classes.chip)}
+                                                    icon={<ReportProblemRounded />}
+                                                    label="No hay huellas dactilares configuradas"
+                                                />
+                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd}>
+                                                        <Add/>
+                                                        Agregar foto
+                                                </Button>  
+                                            </div>                                   
                                         </Paper>
                                     )
                                 }
