@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as Cons from "./constants";
+const FormData = require('form-data');
 
 export async function GetUserData() {
   try {
@@ -77,7 +78,7 @@ export async function DeleteMethod(id) {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: {id: id},
+      data: { id: id },
       withCredentials: true,
     })
     if ((await res).status === 200) {
@@ -127,7 +128,7 @@ export async function GetSecurityUserData(id) {
     }
   } catch (e) {
     console.error(e)
-    if(e.response.status == 401) return false
+    if (e.response.status == 401) return false
   }
 }
 
@@ -167,8 +168,8 @@ export async function UpdateAuthMethods(params) {
   }
 }
 
-export async function UpdateUserPassword(params){
-  try{
+export async function UpdateUserPassword(params) {
+  try {
     const res = axios.post(Cons.updatePass, params, {
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +181,28 @@ export async function UpdateUserPassword(params){
     } else {
       return false
     }
-  }catch(e){
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function UpdateProfPicture(data) {
+  const form = new FormData();
+  form.append("picture", data.img)
+  form.append("id", data.id)
+  try {
+    const res = axios.post(Cons.UpdateProf, form, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
     console.error(e)
   }
 }

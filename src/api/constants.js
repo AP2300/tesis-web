@@ -1,4 +1,4 @@
-const url = " http://localhost:3001";
+export const url = " http://localhost:3001";
 
 // Rutas
 export const LogOut = `${url}/logOut`;
@@ -17,6 +17,7 @@ export const deleteMethod = `${url}/deleteMethod`
 export const Register = `${url}/register`
 export const changeState= `${url}/changeState`
 export const Delete = `${url}/deleteUser`
+export const UpdateProf = `${url}/updateProfile`
 
 // Constantes db
 export const colors = [

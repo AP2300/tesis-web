@@ -1,31 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
-import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
-import HistoryIcon from '@material-ui/icons/History';
-import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import { Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText, Paper, Avatar } from "@material-ui/core/"
+import {AccountBoxTwoTone, History, LockTwoTone, ExitToApp, Dashboard, Menu, ChevronLeft} from '@material-ui/icons/';
 import useStyles from "../styles/Home";
 import { GetUserData } from "../api/user";
 import { EndSession } from "../api/session";
 import { PageSelector, otherPage, SelectPage } from "../helpers/Home";
 import { useHistory, useLocation } from 'react-router';
 import AdminDial from './AdminDial';
+import * as Cons from "./../api/constants"
 
 export default function Home() {
   const location = useLocation();
@@ -57,10 +40,10 @@ export default function Home() {
 
 
   const items = [
-    { text: 'Panel Principal', icon: <DashboardIcon className={classes.ListIcons} /> },
-    { text: 'Panel Personal', icon: <AccountBoxTwoToneIcon className={classes.ListIcons} /> },
-    { text: 'Historial', icon: <HistoryIcon className={classes.ListIcons} /> },
-    { text: 'Seguridad', icon: <LockTwoToneIcon className={classes.ListIcons} /> },
+    { text: 'Panel Principal', icon: <Dashboard className={classes.ListIcons} /> },
+    { text: 'Panel Personal', icon: <AccountBoxTwoTone className={classes.ListIcons} /> },
+    { text: 'Historial', icon: <History className={classes.ListIcons} /> },
+    { text: 'Seguridad', icon: <LockTwoTone className={classes.ListIcons} /> },
   ];
 
   const handleDrawerOpen = () => {
@@ -105,7 +88,7 @@ export default function Home() {
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
           >
-            <MenuIcon className={classes.userWelcome} />
+            <Menu className={classes.userWelcome} />
           </IconButton >
           <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
             {activeWindow == "Panel Principal" ?
@@ -113,11 +96,12 @@ export default function Home() {
                 <span>
                   Bienvenido, <span style={{ fontWeight: "600" }}>{Data.FullName}</span>
                 </span>
-                : "f") : activeWindow
+                : "f")
+              : activeWindow
             }
 
           </Typography>
-          {Data.IsAdmin && <AdminDial ChangePage={ChangePage} />}
+          {Data.IsAdmin ? <AdminDial ChangePage={ChangePage} /> : ""}
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}
@@ -127,11 +111,11 @@ export default function Home() {
       >
         <div className={classes.drawerHeader}>
           <Paper elevation={0} className={classes.userBadge} >
-            <Avatar src="/broken-image.jpg" className={classes.Avatar} />
+            <Avatar src={`${Cons.url}/${Data.Picture}`} className={classes.Avatar} />
             <Typography className={clsx(classes.typography, !isPromiseReady && classes.loading)}>{isPromiseReady ? Data.FullName : "f"}</Typography>
           </Paper>
           <IconButton onClick={handleDrawerClose} >
-            <ChevronLeftIcon className={classes.icon} />
+            <ChevronLeft className={classes.icon} />
           </IconButton>
         </div>
         <Divider variant="middle" />
@@ -146,7 +130,7 @@ export default function Home() {
         <Divider variant="middle" />
         <List className={classes.List1}>
           <ListItem button className={classes.LogOut} onClick={CloseSession} >
-            <ListItemIcon fontSize="inherit" ><ExitToAppIcon className={classes.LogOuIcon} /></ListItemIcon>
+            <ListItemIcon fontSize="inherit" ><ExitToApp className={classes.LogOuIcon} /></ListItemIcon>
             <ListItemText primary={"Cerrar Sesion"} classes={{ primary: classes.listItemText }} />
           </ListItem>
         </List>

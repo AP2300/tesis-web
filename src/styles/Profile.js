@@ -8,13 +8,13 @@ export default useStyles = makeStyles((theme) => ({
         " 0%": { backgroundPosition: "0% 50%" },
         "50%": { backgroundPosition: "100% 50%" },
         "100%": { backgroundPosition: "0% 50%" }
-      },
+    },
     root: {
         display: 'flex',
         flexWrap: 'wrap',
         marginLeft: "2%",
         marginRight: "2%",
-        "& > *":{
+        "& > *": {
             color: "#5f5f5f"
         }
     },
@@ -43,7 +43,7 @@ export default useStyles = makeStyles((theme) => ({
         "& .activeSince": {
             display: "flex",
             alignSelf: "baseline",
-            "& > *":{
+            "& > *": {
                 fontWeight: "600",
             }
         }
@@ -67,7 +67,7 @@ export default useStyles = makeStyles((theme) => ({
         maxWidth: "195px",
         minWidth: "50px",
         maxHeight: "190px",
-        minHeight: "171px",
+        minHeight: "181px",
     },
     mainInfo: {
         display: "flex",
@@ -85,15 +85,14 @@ export default useStyles = makeStyles((theme) => ({
     },
     modifyImg: {
         backgroundColor: "#bdbdbd54",
-        marginLeft: "21%",
-        marginRight: "21%",
-        padding: "4%",
+        marginLeft: "18%",
+        marginRight: "18%",
         borderRadius: "0.4em",
         display: "flex",
         alignItems: "center",
-        border: "3px dashed #b3b3b3",
         justifyContent: "center",
         "& > *": {
+            width: "100%",
             textAlign: "center",
             fontSize: "calc(18px + (24 - 18) * ((20vw - 303px) / (1600 - 300)))"
         }
@@ -236,12 +235,12 @@ export default useStyles = makeStyles((theme) => ({
             color: "#5f5f5f"
         }
     },
-    disabled:{  
-        "& > .AuthName":{
+    disabled: {
+        "& > .AuthName": {
             transform: "translateX(122.5%)",
             transition: "350ms"
         },
-        "& > .IsActive":{
+        "& > .IsActive": {
             transform: "translateX(-80%)",
             transition: "350ms"
         }
@@ -270,36 +269,36 @@ export default useStyles = makeStyles((theme) => ({
         animationDuration: '1s',
         animationIterationCount: 'infinite',
         color: "transparent",
-      },
-      Noti:{
-          width: "70vw",
-          maxWidth: "500px",
-          height: "9vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontWeight:"600",
-          padding: "2%",
-          backgroundColor: "#ff9800",
-          cursor: "default",
-          color: "#fff",
-          "& > .icon":{
-              marginRight: "2.5%",
-              "& > *":{
+    },
+    Noti: {
+        width: "70vw",
+        maxWidth: "500px",
+        height: "9vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: "600",
+        padding: "2%",
+        backgroundColor: "#ff9800",
+        cursor: "default",
+        color: "#fff",
+        "& > .icon": {
+            marginRight: "2.5%",
+            "& > *": {
                 fontSize: "3em"
-              } 
-          },
-          "& > .closeIcon":{
-              marginLeft: "4%",
-          }
-      },
-      Modal:{
-          marginTop: "9%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-      },
-      unSet: {
+            }
+        },
+        "& > .closeIcon": {
+            marginLeft: "4%",
+        }
+    },
+    Modal: {
+        marginTop: "9%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    unSet: {
 
-      }
+    }
 }));
