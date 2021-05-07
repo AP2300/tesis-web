@@ -58,10 +58,17 @@ export default function AdminUser() {
     async function EditPhoto() {
         const params = {
             img: users.selPicture[0],
-            id: users.userDisplay.IDUser
+            id: users.userDisplay.IDUser,
+            actualPicture: users.userDisplay.Picture
         }
         const res = await UpdateProfPicture(params)
-        if (res.data.success) GetUsers()
+        if (res.data.success){
+            setNoti({noti, severity: "success", description: "Foto actualizada correctamente", open: true})
+            GetUsers()
+        }else{
+            setNoti({noti, severity: "error", description: "Error actualizando la foto, intentelo de nuevo", open: true})
+            
+        }
     }
 
     useEffect(() => {
@@ -364,7 +371,9 @@ export default function AdminUser() {
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
                 title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
-                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} />
+                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
+                    onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
+                    acceptedFiles={['image/*']}/>
             </Modal>}
         </div>
     )

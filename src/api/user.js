@@ -190,6 +190,8 @@ export async function UpdateProfPicture(data) {
   const form = new FormData();
   form.append("picture", data.img)
   form.append("id", data.id)
+  form.append("actualPicture", data.actualPicture)
+  
   try {
     const res = axios.post(Cons.UpdateProf, form, {
       headers: {

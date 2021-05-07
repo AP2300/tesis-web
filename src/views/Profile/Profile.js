@@ -198,10 +198,17 @@ export default function Profile(props) {
     async function EditPhoto() {
         const params={
             img:FormControl.selPicture[0],
-            id: IDUser
+            id: IDUser,
+            actualPicture: Picture
         }
         const res = await UpdateProfPicture(params)
-        window.location.reload()
+        if(res.data.success){
+            setNoti({noti, severity: "success", description: "Foto actualizada correctamente", open: true})
+            window.location.reload()
+        }else{
+            setNoti({noti, severity: "success", description: "Foto actualizada correctamente", open: true})
+        }
+
     }
 
     return (
@@ -301,7 +308,9 @@ export default function Profile(props) {
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
                 title={`Modifica tu foto de perfil`}>
                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
-                    onAdd={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} onDrop={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} />
+                    onAdd={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} 
+                    onDrop={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} 
+                    acceptedFiles={['image/*']}/>
             </Modal>}
         </div>
     );
