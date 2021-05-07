@@ -117,11 +117,11 @@ function getSteps() {
 }
 
 
-export default function StepperComponent() {
+export default function StepperComponent(props) {
     const classes = useStyles();
     const history = useHistory()
     const [activeStep, setActiveStep] = useState(0);
-    const [formControl, setFormControl] = useState({ name: "", email: "", pass: "", type: 0 })
+    const [formControl, setFormControl] = useState({ name: "", email: "", pass: "", type: 0, registeredID: "" })
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const [loading, setLoading] = useState(false)
 
@@ -131,7 +131,9 @@ export default function StepperComponent() {
         const res = await CreateUser(params)
 
         if (res.data.success) {
-            history.push(`/admin/security/${res.data.data.Inserted}`)
+            setFormControl({ ...formControl, registeredID: res.data.data.Inserted })
+            setLoading(false)
+            props.reload()
         } else if (res.data.success === false) {
             setNoti({ ...noti, severity: "error", open: true, description: `hubo un error creando el usuario, ${res.data.msg}` })
             setActiveStep(0)
@@ -140,15 +142,13 @@ export default function StepperComponent() {
             setNoti({ ...noti, severity: "error", open: true, description: "hubo un error creando el usuario, intentelo de nuevo" })
             setActiveStep(0)
             setLoading(false)
-
-
         }
-
     }
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => {
-            if (prevActiveStep === 2) {
+            console.log(activeStep);
+            if (activeStep === 1) {
                 let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
                 if (formControl.name !== "" && formControl.email !== "" && formControl.pass !== "") {
                     if (reg.test(formControl.email)) {
@@ -160,6 +160,10 @@ export default function StepperComponent() {
                             type: formControl.type
                         }
                         register(params)
+                        return prevActiveStep + 1
+                    } else if (activeStep === 2) {
+                        history.push(`/admin/security/${formContorl.registeredID}`)
+                        setFormControl({ ...formControl, registeredID: "" })
                     } else {
                         setNoti({ ...noti, severity: "warning", open: true, description: "Ingrese un correo electronico valido" })
                         return prevActiveStep - 2

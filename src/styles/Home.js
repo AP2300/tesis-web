@@ -48,7 +48,7 @@ export default useStyles = makeStyles((theme) => ({
     }
   },
   hide: {
-    marginLeft: "-65px",
+    marginLeft: "-8%",
     opacity: '0'
   },
   drawer: {
@@ -177,7 +177,7 @@ export default useStyles = makeStyles((theme) => ({
   active: {
     paddingLeft: "20%",
     color: "#0569b9",
-    transform: "scale(1.2)",
+    transform: "scale(1.1)",
     transition: "200ms ease-in"
   },
 }));

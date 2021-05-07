@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminUser';
 import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch, Chip } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, ReportProblemRounded } from '@material-ui/icons/';
+import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, ReportProblemRounded, OpenInNew } from '@material-ui/icons/';
 import Alert from '@material-ui/lab/Alert';
 import Notification from '../../components/Notifications';
 import Stepper from "../../components/Stepper"
 import Modal from "../../components/Modal"
-import { GetHistoryData } from "../../api/user"
+import { DropzoneArea } from 'material-ui-dropzone';
+import { GetHistoryData, GetSecurityUserData, UpdateProfPicture } from "../../api/user"
 import { AdminDataUpdate, AdminPassUpdate, DisableEnableUser, DeleteUser } from "../../api/admin"
-import { GetSecurityUserData } from "../../api/user"
 import clsx from 'clsx';
+import * as Cons from "../../api/constants";
 
 export default function AdminUser() {
     const [UsersPanel, setUsersPanel] = useState(true)
-    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false, isActivatable: false })
+    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false, isActivatable: false, selPicture: {} })
     const [promises, setPromises] = useState({ users: false, userDisplay: false })
     const [selUser, setSelUser] = useState("")
     const [FormControl, setFormControl] = useState({ name: "", email: "", pass: "" })
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
     const [isActive, setIsActive] = useState("");
     const [modal, setModal] = useState(false)
+    const [editModal, setEditModal] = useState(false)
     const classes = useStyles()
 
     function handleClick() {
@@ -42,11 +44,24 @@ export default function AdminUser() {
         setModal(true)
     }
 
+    function handleEditPhoto() {
+        setEditModal(true)
+    }
+
     function DeleteFunc() {
         DeleteUser({ id: users.userDisplay.IDUser })
         let newUserList = [...users.usersList]
         newUserList.splice(selUser, 1)
         setUsers({ ...users, userDisplay: "", usersList: newUserList })
+    }
+
+    async function EditPhoto() {
+        const params = {
+            img: users.selPicture[0],
+            id: users.userDisplay.IDUser
+        }
+        const res = await UpdateProfPicture(params)
+        if (res.data.success) GetUsers()
     }
 
     useEffect(() => {
@@ -91,7 +106,10 @@ export default function AdminUser() {
                 const res = await AdminDataUpdate(params);
                 setUsers({ ...users, usersList: [] })
                 setFormControl({ ...FormControl, name: "", email: "" })
-                if (res.data.success) setNoti({ ...noti, severity: "success", description: "Datos actualizados correctamente", open: true })
+                if (res.data.success) {
+                    setNoti({ ...noti, severity: "success", description: "Datos actualizados correctamente", open: true })
+                    setPromises({ ...promises, users: false })
+                }
                 else setNoti({ ...noti, severity: "error", description: "Error al actualizar los datos", open: true })
             } else {
                 setNoti({
@@ -255,13 +273,11 @@ export default function AdminUser() {
                                 {promises.userDisplay ? <div className={classes.BottomContainer}>
                                     <Paper elevation={2} className={classes.LeftContainer}>
                                         <div className="pictureCont">
-                                            <Avatar alt="Remy Sharp" src="" className="avatar" />
+                                            <Avatar alt="" src={`${Cons.url}/${users.userDisplay.Picture}`} className="avatar" />
                                             <Divider variant="middle" flexItem style={{ height: "1px" }} />
-
-                                            <div className={classes.modifyImg}>
-                                                <Typography variant="h5">Modificar foto de perfil</Typography>
-                                            </div>
-
+                                            <br />
+                                            <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
+                                            <br />
                                             <Typography>
                                                 Estado del usuario
                                             </Typography>
@@ -269,20 +285,20 @@ export default function AdminUser() {
 
                                             {/* {!users.userDisplay.IsAdmin ?  */}
 
-                                                {!users.isActivatable ? 
-                                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap:"wrap" }}>
-                                                <Alert severity="warning" style={{margin:"2% 5% 2% 5%"}}>El usuario no tiene metodos de autenticacion, no es activable</Alert>
+                                            {!users.isActivatable ?
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
+                                                    <Alert severity="warning" style={{ margin: "2% 5% 2% 5%" }}>El usuario no tiene metodos de autenticacion, no es activable</Alert>
                                                 </div>
-                                                :                                             
-                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap:"wrap" }}>
-                                                <Typography>Inactivo</Typography>
-                                                <Switch
-                                                    checked={Boolean(isActive)}
-                                                    onChange={handleSwitch}
-                                                    name="IsActive"
-                                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                                />
-                                                <Typography>Activo</Typography>
+                                                :
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
+                                                    <Typography>Inactivo</Typography>
+                                                    <Switch
+                                                        checked={Boolean(isActive)}
+                                                        onChange={handleSwitch}
+                                                        name="IsActive"
+                                                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                                    />
+                                                    <Typography>Activo</Typography>
                                                 </div>}
 
                                             {/* : ""} */}
@@ -327,7 +343,10 @@ export default function AdminUser() {
                                     <Button className={classes.closeButton} onClick={handleAdd}><Close /></Button>
                                 </div>
                                 <div className="Stepper">
-                                    <Stepper></Stepper>
+                                    <Stepper reload={() => {
+                                        setUsers({ ...users, usersList: [] })
+                                        setPromises({ ...promises, users: false })
+                                    }}></Stepper>
                                 </div>
                             </div>
 
@@ -338,9 +357,15 @@ export default function AdminUser() {
             </Paper>
             {getNoti()}
 
-            <Modal IsOpen={modal} close={setModal} okFunction={DeleteFunc} title={`Deseas eliminar a ${users.userDisplay ? users.userDisplay.FullName : ""}?`}>
+            {modal && <Modal IsOpen={modal} close={setModal} okFunction={DeleteFunc} title={`Deseas eliminar a ${users.userDisplay ? users.userDisplay.FullName : ""}?`}>
                 <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
-            </Modal>
+            </Modal>}
+
+            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
+                title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
+                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
+                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} />
+            </Modal>}
         </div>
     )
 }

@@ -111,10 +111,10 @@ export default useStyles = makeStyles((theme) => ({
             flexDirection: "column",
             height: "100%"
         },
-        "& .addButton":{
-            minWidth: 0, 
-            color:"#2196f3", 
-            "& > .MuiButton-label .MuiSvgIcon-root ":{
+        "& .addButton": {
+            minWidth: 0,
+            color: "#2196f3",
+            "& > .MuiButton-label .MuiSvgIcon-root ": {
                 fontSize: "3em"
             }
         },
@@ -164,26 +164,26 @@ export default useStyles = makeStyles((theme) => ({
             flexGrow: 1,
             marginBottom: "3%"
         },
-        "& > .dividerV":{
+        "& > .dividerV": {
             minHeight: "335px",
-            "@media (max-width: 560px)":{  
+            "@media (max-width: 560px)": {
                 display: "none"
             }
         },
-        "& > .pictureCont":{
+        "& > .pictureCont": {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             flexGrow: 1,
             width: "40%",
             height: "100%",
-            "& > .avatar":{
+            "& > .avatar": {
                 minWidth: "120px",
                 minHeight: "120px",
                 margin: "5%"
             },
         },
-        "& > .inputCont":{
+        "& > .inputCont": {
             width: "52%",
             minWidth: "240px",
             display: "flex",
@@ -191,12 +191,12 @@ export default useStyles = makeStyles((theme) => ({
             justifyContent: "space-evenly",
             flexDirection: "column",
             flexGrow: 1,
-            "& > .fields":{
+            "& > .fields": {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-                "& .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
+                "& .MuiButtonBase-root.MuiButton-root.MuiButton-text": {
                     marginBottom: "1em",
                     borderRadius: "2em",
                     width: "30px",
@@ -226,46 +226,29 @@ export default useStyles = makeStyles((theme) => ({
         },
 
     },
-    closeButton:{
-        display: "flex", 
+    closeButton: {
+        display: "flex",
         alignSelf: "flex-end",
-        borderRadius: "2em", 
-        minWidth: "0", 
+        borderRadius: "2em",
+        minWidth: "0",
         color: "#f44336"
     },
-    modifyImg: {
-        marginTop: "4%",
-        marginBottom: "4%",
-        backgroundColor: "#bdbdbd54",
-        marginLeft: "21%",
-        marginRight: "21%",
-        padding: "4%",
-        borderRadius: "0.4em",
-        display: "flex",
-        alignItems: "center",
-        border: "3px dashed #b3b3b3",
-        justifyContent: "center",
-        "& > *": {
-            textAlign: "center",
-            fontSize: "calc(18px + (24 - 18) * ((20vw - 303px) / (1600 - 300)))"
-        }
-    },
-    StepperCont:{
+    StepperCont: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         height: "100%",
-        "& > .closeCont":{
+        "& > .closeCont": {
             height: "10%",
             alignSelf: "flex-end"
         },
-        "& > .Stepper":{
+        "& > .Stepper": {
             height: "90%",
             width: "100%",
             overflowY: "scroll"
         }
     },
-    chip:{
+    chip: {
         display: "flex",
         backgroundColor: "#ff9800",
         color: "whitesmoke",
@@ -273,8 +256,8 @@ export default useStyles = makeStyles((theme) => ({
         padding: "1%",
         width: "20vw",
         height: "10vh",
-         "& > *":{
+        "& > *": {
             color: "whitesmoke",
-         }
+        }
     },
 }));

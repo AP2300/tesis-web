@@ -9,6 +9,7 @@ import { Close, Done} from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
+    console.log("props");
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 

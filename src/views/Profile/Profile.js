@@ -4,24 +4,27 @@ import Modal from "../../components/Modal"
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import { Paper, Avatar, Divider, Typography, TextField, Button, Snackbar, Slide, IconButton } from '@material-ui/core/';
-import { Dialpad, Edit, Fingerprint, Mood, Close, ReportProblemRounded, Done } from '@material-ui/icons/';
-import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword } from "../../api/user"
+import { Dialpad, Edit, Fingerprint, Mood, OpenInNew } from '@material-ui/icons/';
+import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword, UpdateProfPicture } from "../../api/user"
 import useStyles from "../../styles/Profile"
 import { useHistory } from 'react-router';
 import { EndSession } from '../../api/session';
 import Notification from '../../components/Notifications';
+import * as Cons from "../../api/constants"
+import { DropzoneArea } from 'material-ui-dropzone';
 var moment = require('moment');
 moment().format();
 
 
 export default function Profile(props) {
-    const { FullName, Email, RegDate } = props.Data
+    const { FullName, Email, RegDate, Picture, IDUser } = props.Data
     const history = useHistory()
     const classes = useStyles();
-    const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "" })
+    const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "", selPicture: ""})
     const [UserData, setUserData] = useState("")
     const [IsPromiseReady, setIsPromiseReady] = useState(false)
     const [modal, setModal] = useState(false)
+    const [editModal, setEditModal] = useState(false)
     const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
 
     useEffect(() => {
@@ -188,12 +191,25 @@ export default function Profile(props) {
         setFormControl({ ...FormControl, [e.target.name]: e.target.value })
     }
 
+    function handleEditPhoto() {
+        setEditModal(true)
+    }
+
+    async function EditPhoto() {
+        const params={
+            img:FormControl.selPicture[0],
+            id: IDUser
+        }
+        const res = await UpdateProfPicture(params)
+        window.location.reload()
+    }
+
     return (
         <div className={classes.root}>
             <Paper className={classes.mainContainer}>
                 <div className={classes.upperContainer}>
                     <div className={classes.leftUpperContainer}>
-                        <Avatar src="" className={classes.img} />
+                        <Avatar src={`${Cons.url}/${Picture}`} className={classes.img} />
                         <Typography className={clsx("activeSince", IsPromiseReady ? "" : classes.loading)}>Activo desde:{IsPromiseReady ?
                             `${moment(RegDate).date()}` + `-${moment(RegDate).month() + 1}` + `-${moment(RegDate).year()}` : ""}</Typography>
                     </div>
@@ -205,7 +221,7 @@ export default function Profile(props) {
                                 {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - Tipo Usuario</Typography>
                         </div>
                         <div className={classes.modifyImg}>
-                            <Typography variant="h5">Modificar foto de perfil</Typography>
+                        <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
                         </div>
                     </div>
                 </div>
@@ -274,13 +290,19 @@ export default function Profile(props) {
                 </div>
             </Paper>
             {getNoti()}
-            <Modal IsOpen={modal} close={setModal} PassConfirm={setFormControl} okFunction={UpdatePassword} title="Comprueba que eres tú">
+            {modal && <Modal IsOpen={modal} close={setModal} PassConfirm={setFormControl} okFunction={UpdatePassword} title="Comprueba que eres tú">
                 <div className={classes.Modal}>
                     <TextField id="Pass" label="Contraseña anterior" variant="outlined" value={FormControl.PassControlConfirm}
                         className={classes.textField} onChange={handleChange} name="PassControlConfirm" type="password" />
                 </div>
                 <Alert severity="warning" variant="filled">Completar esta acción cerrara la sesión</Alert>
-            </Modal>
+            </Modal>}
+
+            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
+                title={`Modifica tu foto de perfil`}>
+                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
+                    onAdd={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} onDrop={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} />
+            </Modal>}
         </div>
     );
 }
