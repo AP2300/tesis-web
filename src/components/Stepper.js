@@ -162,7 +162,7 @@ export default function StepperComponent(props) {
                         register(params)
                         return prevActiveStep + 1
                     } else if (activeStep === 2) {
-                        history.push(`/admin/security/${formContorl.registeredID}`)
+                        history.push(`/admin/security/${formControl.registeredID}`)
                         setFormControl({ ...formControl, registeredID: "" })
                     } else {
                         setNoti({ ...noti, severity: "warning", open: true, description: "Ingrese un correo electronico valido" })
