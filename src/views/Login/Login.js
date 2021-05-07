@@ -82,7 +82,7 @@ function Login(props) {
     }
 
     return (
-        <div>
+        <div style={{backgroundColor: "transparent"}}>
             {open && (
                 <Notification className={classes.alert} close={() => setOpen(false)} data={{severity: "error", open: open,  description: msg}}/>
                 )}

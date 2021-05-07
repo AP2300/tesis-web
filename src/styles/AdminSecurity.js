@@ -106,12 +106,24 @@ export default useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         height: "100%",
         flexGrow: 1,
+        overflowY: "scroll",
         [sizes.Wdown("md-sm")]: {
            minHeight: "500px"
         },
         [sizes.Wdown("lg")]: {
             overflowY: "scroll"
         },
+    },
+    chip:{
+        display: "flex",
+        backgroundColor: "#ff9800",
+        color: "whitesmoke",
+        fontWeight: "600",
+        padding: "1%",
+        margin: "1em 0em",
+        "& > *":{
+        color: "whitesmoke",
+        }
     },
     UpperContainer:{
         display: "flex",
@@ -139,6 +151,7 @@ export default useStyles = makeStyles((theme) => ({
         width: "100%",
         height: "75%",
         flexWrap: "wrap",
+        overflow: "visible"
     },
     LeftContainer:{
         display: "flex",
@@ -170,11 +183,21 @@ export default useStyles = makeStyles((theme) => ({
         [sizes.Wdown("sm")]: {
             flexGrow: 1,
             marginBottom: "3%"
-         },
-         [sizes.Wdown("lg")]: {
+        },
+        [sizes.Wdown("lg")]: {
             flexGrow: 1,
             marginBottom: "3%"
-         },
+        },
+    },
+    noPhoto: {
+        justifyContent: "flex-start",
+    },
+    noPhotoContent: {
+        display: "inherit",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%"
     },
     List: {
         display: "flex",
@@ -347,7 +370,7 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center", 
         flexDirection: "row", 
         justifyContent: "space-evenly", 
-        width: "50%"
+        width: "60%"
     },
     fingerItemTitle: {
         fontSize: "calc(0.6em + 0.6vw)", 

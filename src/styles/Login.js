@@ -108,5 +108,11 @@ export default useStyles = makeStyles((theme) => ({
         marginTop: "80rem",
         padding: "0.55rem 1.5rem",
     }
+    },
+    background: {
+        backgroundImage: "url('./1398625.jpg')"
+    },
+    "body": {
+        margin: 0
     }
 }));
