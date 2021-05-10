@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import useStyles from "../../styles/HistoryUser"
 import clsx from 'clsx';
-import { Typography, Paper, Divider, IconButton, Button, Subject } from "@material-ui/core";
-import {ChevronRight, ChevronLeft, BarChart} from '@material-ui/icons/';
+import { Typography, Paper, Divider, IconButton, Button } from "@material-ui/core";
+import {ChevronRight, ChevronLeft, BarChart, Subject} from '@material-ui/icons/';
 import Chart from 'chart.js'
 import ChartComponent from '../../components/Chart';
 import GraphFormControl from '../../components/GraphFormControl';
@@ -149,7 +149,7 @@ export default function HistoryUser(props) {
                         {animations.Minimize ? <ChevronRight className="icon" /> : <ChevronLeft className="icon" />}
                     </Button>
                     <Paper className={clsx(animations.Minimize ? [classes.overflowContainer,classes.maximizedContainer] : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <SubjectIcon />}
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <Subject />}
                     </Paper>
                 </div>
             </Paper>

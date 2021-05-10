@@ -14,7 +14,7 @@ function Login(props) {
     const location = useLocation();
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [isLoading, setisLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
@@ -25,11 +25,6 @@ function Login(props) {
         padding: "0.55rem 1.5rem",
     }
 
-    useEffect(() => {
-        if (open) {
-            setTimeout(() => { setOpen(false) }, 5000);
-        }
-    }, [open])
 
     useEffect(() => {
         if(!(location.state === undefined)) {
@@ -71,20 +66,28 @@ function Login(props) {
     const goLogIn = async (params) => {
         const response = await LogIn(params);
         console.log(response);
-        if (response.data.success) {
+        if (response.data.success && response.data.isActive) {
+            console.log("gola");
             history.push("/home");
         } else {
-            setisLoading(false);
-            setMsg("Los datos ingresados son inválidos, intente nuevamente");
-            console.log(msg);
-            setOpen(true);
+            if(!response.data.isActive && response.data.success){
+                setisLoading(false);
+                setMsg("El usuario no esta activo, contacte a un administrador");
+                console.log(msg);
+                setOpen(true);
+            }else{
+                setisLoading(false);
+                setMsg("Los datos ingresados son inválidos, intente nuevamente");
+                console.log(msg);
+                setOpen(true);
+            }
         }
     }
 
     return (
         <div style={{backgroundColor: "transparent"}}>
             {open && (
-                <Notification className={classes.alert} close={() => setOpen(false)} data={{severity: "error", open: open,  description: msg}}/>
+                <Notification close={() => setOpen(false)} data={{severity: "error", open: open,  description: msg}}/>
                 )}
             <div className={classes.login}>
                 <Card className={classes.root}>
