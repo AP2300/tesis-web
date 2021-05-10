@@ -18,7 +18,6 @@ export default function Home() {
   const [isPromiseReady, setisPromiseReady] = useState(false);
   const [Data, setData] = useState("");
   const [activeWindow, setActiveWindow] = useState(SelectPage(location));
-  const [SearchData, setSearchData] = useState("");
 
   useEffect(() => {
     if (Data === "") getData();
@@ -91,7 +90,7 @@ export default function Home() {
             <Menu className={classes.userWelcome} />
           </IconButton >
           <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
-            {activeWindow == "Panel Principal" ?
+            {activeWindow === "Panel Principal" ?
               (isPromiseReady ?
                 <span>
                   Bienvenido, <span style={{ fontWeight: "600" }}>{Data.FullName}</span>
@@ -141,7 +140,7 @@ export default function Home() {
         })}
       >
         <div className={classes.drawerHeader} />
-        {PageSelector(Data, SearchData)}
+        {PageSelector(Data)}
       </main>
     </div>
   );

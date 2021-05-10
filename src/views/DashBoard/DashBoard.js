@@ -8,7 +8,6 @@ import { GetGraphData } from '../../api/user';
 import { generateGraphData, getDateAccess, setGradientColor } from '../../helpers/Graph'
 import ChartComponent from "../../components/Chart";
 import { colors } from '../../api/constants';
-var _ = require('lodash');
 var moment = require('moment');
 moment().format();
 

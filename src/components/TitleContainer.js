@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {Paper} from "@material-ui/core";
 import useStyles from '../styles/TitleContainer';
 import clsx from 'clsx';

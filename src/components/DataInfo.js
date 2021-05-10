@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Divider, List, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import useStyles from "../styles/DataInfo";
 import { OrderData, DayofWeek, ShowTime } from '../helpers/DataInfo'
@@ -27,16 +27,14 @@ export default function DataInfo(props) {
                                         <CardHeader className={classes.header} title={DayLabel} key={`header-${DayLabel}-${d}`}/>
                                         <CardContent className={classes.content} key={`content-${DayLabel}-${d}`}>
                                             <List className={classes.List} key={`List-${DayLabel}-${d}`}>
-                                                {DataUser[d].map((info, i) => {
-                                                    return (
+                                                {DataUser[d].map((info, i) => 
                                                         <div key={`item-${DayLabel}-${i}`}>
                                                             <Typography>{`Registro N° ${info.IDRecords}`}</Typography>
                                                             <Typography>{`Dia ${DayofWeek(info.RegDate)}`}</Typography>
                                                             <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())} `}</Typography>
                                                             <Divider className={classes.Divider} />
                                                         </div>
-                                                    );
-                                                })}
+                                                )}
                                             </List>
                                         </CardContent>
                                     </Card>

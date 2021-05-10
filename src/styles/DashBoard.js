@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-let useStyles = "";
+
 
 export default makeStyles((theme) => ({
   "@keyframes loading ": {

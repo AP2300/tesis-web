@@ -8,8 +8,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import HistoryIcon from '@material-ui/icons/History';
 import PeopleIcon from '@material-ui/icons/People';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-import { PageSelector, otherPage } from "../helpers/Home";
-import { useHistory } from "react-router";
 
 const actions = [
   { icon: <PeopleIcon />, name: 'Administar usuarios' },
@@ -18,7 +16,6 @@ const actions = [
 ];
 
 export default function AdminDial(props) {
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles((theme) => ({
     root: {

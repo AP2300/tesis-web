@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useStyles from '../../styles/Security';
-import { Paper, Avatar, Divider, Typography, List, ListItem, Chip, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader, Switch } from '@material-ui/core/';
-import { Dialpad, Edit, Fingerprint, Mood, Close, ReportProblemRounded, Done } from '@material-ui/icons/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, Chip, ListItemIcon, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core/';
+import { Fingerprint, Mood, ReportProblemRounded } from '@material-ui/icons/';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab/';
 import TitleContainer from '../../components/TitleContainer';
 import { GetFullUserData, UpdateAuthMethods } from "../../api/user"

@@ -68,7 +68,6 @@ export const OrderData = (TimeStamp, Data) => {
 
         default:
             return false;
-            break;
     }
 }
 
@@ -115,7 +114,6 @@ export const ShowTime = (type,data) => {
             else {
                 return data;
             }
-            break;
 
         case "m":
             if(data === 0){
@@ -123,7 +121,6 @@ export const ShowTime = (type,data) => {
             } else {
                 return data;
             }
-            break;
 
         default:
             return "no data";

@@ -128,7 +128,7 @@ export async function GetSecurityUserData(id) {
     }
   } catch (e) {
     console.error(e)
-    if (e.response.status == 401) return false
+    if (e.response.status === 401) return false
   }
 }
 

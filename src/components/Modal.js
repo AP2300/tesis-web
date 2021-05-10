@@ -9,13 +9,16 @@ import { Close, Done, Backup, AddAPhoto, Delete } from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const {defaultButtons= true, disableUploadPhoto=false} = props
+    const { defaultButtons = true, disableUploadPhoto = false } = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
-    useEffect(async () => {
-        const IsOpen = await props.IsOpen
-        if (IsOpen) handleOpen()
+    useEffect(() => {
+        async function waitForProps() {
+            const IsOpen = await props.IsOpen
+            if (IsOpen) handleOpen()
+        }
+        waitForProps()
     }, [props])
 
     const handleOpen = () => {
@@ -45,7 +48,7 @@ export default function ModalComponent(props) {
         props.close(false)
     };
 
-    const handleDeletePicture = () =>{
+    const handleDeletePicture = () => {
         props.deletePicture()
         setOpen(false);
         props.close(false)

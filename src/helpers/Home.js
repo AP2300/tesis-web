@@ -8,9 +8,7 @@ import HistoryUser from "../views/HistoryUser/HistoryUser";
 import AdminSecurity from "../views/AdminSecurity/AdminSecurity";
 import AdminUser from "../views/AdminUser/AdminUser"
 
-export function PageSelector(userData, SearchData) {
-  const location = useLocation();
-  const history = useHistory()
+export function PageSelector(userData) {
   const user = userData;
   return (
     <Switch>

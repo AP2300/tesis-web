@@ -91,7 +91,7 @@ export default function Profile(props) {
             email: FormControl.EmailControl === "" ? Email : FormControl.EmailControl
         }
         if (arg === "name" || arg === "email") {
-            if (FormControl.NameControl != "" || FormControl.EmailControl != "") {
+            if (FormControl.NameControl !== "" || FormControl.EmailControl !== "") {
                 let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
                 if (reg.test(FormControl.EmailControl)) {
                     if (FormControl.EmailControl !== Email) {
@@ -163,7 +163,7 @@ export default function Profile(props) {
     function Toggle(index) {
         let Update = JSON.parse(JSON.stringify(UserData))
         Update[index].IsActive = Number(!Update[index].IsActive)
-        const IsToUpdate = Update.some(el => el.IsActive && el.Name != "Codigo")
+        const IsToUpdate = Update.some(el => el.IsActive && el.Name !== "Codigo")
         if (IsToUpdate) {
             const params = {
                 id: Update[index].IDSecurity,
@@ -243,7 +243,7 @@ export default function Profile(props) {
                     <div className={classes.leftUpperContainer}>
                         <Avatar src={`${Cons.url}/${Picture}`} className={classes.img} />
                         <Typography className={clsx("activeSince", IsPromiseReady ? "" : classes.loading)}>Activo desde:{IsPromiseReady ?
-                            `${moment(RegDate).date()}` + `-${moment(RegDate).month() + 1}` + `-${moment(RegDate).year()}` : ""}</Typography>
+                            `${moment(RegDate).date()} / ${moment(RegDate).month() + 1} / ${moment(RegDate).year()}` : ""}</Typography>
                     </div>
                     <div className={classes.rightUpperContainer}>
                         <div className={classes.mainInfo}>
