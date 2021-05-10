@@ -209,6 +209,49 @@ export async function UpdateProfPicture(data) {
   }
 }
 
+export async function setFinger(data) {
+  const form = new FormData();
+  form.append("finger", data.finger)
+  form.append("id", data.id)
+  form.append("fingerName", data.fingerName)
+  try {
+    const res = await axios.post(Cons.setFinger, form, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function setFace(data) {
+  const form = new FormData();
+  form.append("face", data.face)
+  form.append("id", data.id)
+  try {
+    const res = await axios.post(Cons.setFace, form, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export async function DeletePicture(params){
   try{
     const res = axios.post(Cons.DeleteProf, params ,{

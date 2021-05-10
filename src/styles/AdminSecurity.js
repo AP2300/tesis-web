@@ -370,7 +370,8 @@ export default useStyles = makeStyles((theme) => ({
         alignItems: "center", 
         flexDirection: "row", 
         justifyContent: "space-evenly", 
-        width: "60%"
+        width: "100%",
+        /*width: "60%"*/
     },
     fingerItemTitle: {
         fontSize: "calc(0.6em + 0.6vw)", 
@@ -382,4 +383,9 @@ export default useStyles = makeStyles((theme) => ({
         flexDirection: "row", 
         justifyContent: "space-evenly"
     },
+    formControl: {
+        width: "50%",
+        margin: theme.spacing(1),
+        minWidth: 120,
+    }
 }));
