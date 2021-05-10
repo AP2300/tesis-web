@@ -18,6 +18,8 @@ export const Register = `${url}/register`
 export const changeState= `${url}/changeState`
 export const Delete = `${url}/deleteUser`
 export const UpdateProf = `${url}/updateProfile`
+export const setFinger = `${url}/setFinger`
+export const setFace = `${url}/setFace`
 
 // Constantes db
 export const colors = [
