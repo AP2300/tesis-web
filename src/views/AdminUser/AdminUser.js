@@ -61,16 +61,16 @@ export default function AdminUser() {
             id: users.userDisplay.IDUser,
             actualPicture: users.userDisplay.Picture
         }
-        if(users.selPicture !== ""){
+        if (users.selPicture !== "") {
             const res = await UpdateProfPicture(params)
-            if (res.data.success){
-                setNoti({...noti, severity: "success", description: "Foto actualizada correctamente", open: true})
+            if (res.data.success) {
+                setNoti({ ...noti, severity: "success", description: "Foto actualizada correctamente", open: true })
                 GetUsers()
-            }else{
-                setNoti({...noti, severity: "error", description: "Error actualizando la foto, intentelo de nuevo", open: true})   
+            } else {
+                setNoti({ ...noti, severity: "error", description: "Error actualizando la foto, intentelo de nuevo", open: true })
             }
-        }else{
-            setNoti({...noti, severity: "warning", description: "No se cargo una foto", open: true})   
+        } else {
+            setNoti({ ...noti, severity: "warning", description: "No se cargo una foto", open: true })
         }
     }
 
@@ -102,7 +102,7 @@ export default function AdminUser() {
         users.usersList.map(async (el, i) => {
             if (el.IDUser == e.currentTarget.id) {
                 const res = await GetSecurityUserData(e.currentTarget.id)
-                setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length === 0 ? false : true })
+                setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
                 setSelUser(i)
                 setIsActive(users.usersList[i].IsActive)
                 setPromises({ ...promises, userDisplay: true })
@@ -392,9 +392,9 @@ export default function AdminUser() {
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
-                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
-                    onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
-                    acceptedFiles={['image/*']}/>
+                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
+                    onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
+                    acceptedFiles={['image/*']} />
             </Modal>}
         </div>
     )
