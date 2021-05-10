@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography, TextField, Divider, FormControl, InputLabel, MenuItem, Select, CircularProgress } from '@material-ui/core/';
+import { makeStyles } from '@material-ui/core/styles';
+import { Stepper, Step, StepLabel, StepContent, Button, Paper, TextField, Divider, FormControl, InputLabel, MenuItem, Select, CircularProgress } from '@material-ui/core/';
 import { Fingerprint, AccountCircle, VpnKey, ExitToApp } from '@material-ui/icons/';
 import { CreateUser } from "../api/admin"
 import Notification from './Notifications';

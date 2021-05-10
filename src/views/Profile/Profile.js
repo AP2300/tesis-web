@@ -3,7 +3,7 @@ import TitleContainer from "../../components/TitleContainer"
 import Modal from "../../components/Modal"
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
-import { Paper, Avatar, Divider, Typography, TextField, Button, Snackbar, Slide, IconButton } from '@material-ui/core/';
+import { Paper, Avatar, Divider, Typography, TextField, Button} from '@material-ui/core/';
 import { Dialpad, Edit, Fingerprint, Mood, OpenInNew } from '@material-ui/icons/';
 import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword, UpdateProfPicture, DeletePicture } from "../../api/user"
 import useStyles from "../../styles/Profile"

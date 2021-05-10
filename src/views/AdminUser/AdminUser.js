@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminUser';
-import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch, Chip } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, ReportProblemRounded, OpenInNew } from '@material-ui/icons/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch } from '@material-ui/core/';
+import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, OpenInNew } from '@material-ui/icons/';
 import Alert from '@material-ui/lab/Alert';
 import Notification from '../../components/Notifications';
 import Stepper from "../../components/Stepper"
