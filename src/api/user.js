@@ -26,7 +26,7 @@ export async function GetGraphData() {
       withCredentials: true
     })
     if ((await res).status === 200) {
-      return (await res).data.data
+      return [(await res).data.data,(await res).data.history]
     } else {
       return false
     }
@@ -211,8 +211,9 @@ export async function UpdateProfPicture(data) {
 
 export async function setFinger(data) {
   const form = new FormData();
-  form.append("finger", data.img)
+  form.append("finger", data.finger)
   form.append("id", data.id)
+  form.append("fingerName", data.fingerName)
   try {
     const res = await axios.post(Cons.setFinger, form, {
       headers: {
