@@ -26,7 +26,7 @@ export async function GetGraphData() {
       withCredentials: true
     })
     if ((await res).status === 200) {
-      return (await res).data.data
+      return [(await res).data.data,(await res).data.history]
     } else {
       return false
     }

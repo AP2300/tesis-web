@@ -36,8 +36,15 @@ export default makeStyles((theme) => ({
 
     }
   },
+  BoxText: {
+    textAlign: "center",
+  },
   number: {
-    fontSize: `calc(30px + (55 - 30) * ((40vw - 320px) / (1600 - 300)))`
+    fontSize: `calc(40px + (75 - 40) * ((40vw - 320px) / (1600 - 300)))`
+  },
+  date: {
+    textAlign: "center",
+    fontSize: `calc(20px + (35 - 20) * ((40vw - 320px) / (1600 - 300)))`
   },
   borderBoxR: {
 

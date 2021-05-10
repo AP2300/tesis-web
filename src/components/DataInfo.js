@@ -15,16 +15,16 @@ export default function DataInfo(props) {
         setDataInfo(OrderData(TimeStamp, Data));
     }, [Data])
 
-    if(Data !== false){
+    if (Data !== false) {
         return (
             <div className={classes.Cardgrid}>
                 {GraphLabels(TimeStamp).map((DayLabel, d) => {
-                    if(DataUser){
-                        if(DataUser[d]){
+                    if (DataUser) {
+                        if (DataUser[d]) {
                             if (DataUser[d].length !== 0) {
                                 return (
                                     <Card className={classes.Card} key={`day-${DayLabel}-${d}`}>
-                                        <CardHeader className={classes.header} title={DayLabel} key={`header-${DayLabel}-${d}`}/>
+                                        <CardHeader className={classes.header} title={DayLabel} key={`header-${DayLabel}-${d}`} />
                                         <CardContent className={classes.content} key={`content-${DayLabel}-${d}`}>
                                             <List className={classes.List} key={`List-${DayLabel}-${d}`}>
                                                 {DataUser[d].map((info, i) => {
@@ -32,7 +32,8 @@ export default function DataInfo(props) {
                                                         <div key={`item-${DayLabel}-${i}`}>
                                                             <Typography>{`Registro N° ${info.IDRecords}`}</Typography>
                                                             <Typography>{`Dia ${DayofWeek(info.RegDate)}`}</Typography>
-                                                            <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())} `}</Typography>
+                                                            <Typography>{`Hora de Entrada:  ${ShowTime('h', moment(info.RegDate).hour())}:${ShowTime('m', moment(info.RegDate).minute())}
+                                                             ${ShowTime('am/pm', moment(info.RegDate).hour())}`}</Typography>
                                                             <Divider className={classes.Divider} />
                                                         </div>
                                                     );
@@ -46,7 +47,7 @@ export default function DataInfo(props) {
                     }
                 })}
             </div>
-        )  
+        )
     } else {
         return (
             <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>

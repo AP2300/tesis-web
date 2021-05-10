@@ -43,7 +43,7 @@ export const OrderData = (TimeStamp, Data) => {
                     graphM[i] = [];
                     Data[2].forEach(w => {
                         if (i === w.week) {
-                            console.log(w.info,i)
+                            console.log(w.info, i)
                             graphM[i] = w.info;
                         }
                     })
@@ -101,14 +101,14 @@ export const DayofWeek = (Date) => {
     }
 }
 
-export const ShowTime = (type,data) => {
+export const ShowTime = (type, data) => {
     let value = "00";
     switch (type) {
         case "h":
-            if(data === 0){
-                return "01";
+            if (data === 0) {
+                return "12";
             }
-            else if( data > 12){
+            else if (data > 12) {
                 value = data - 12;
                 return value;
             }
@@ -118,10 +118,18 @@ export const ShowTime = (type,data) => {
             break;
 
         case "m":
-            if(data === 0){
+            if (data === 0) {
                 return value;
             } else {
                 return data;
+            }
+            break;
+
+        case "am/pm":
+            if (data < 12) {
+                return "am";
+            } else if(data >= 12) {
+                return "pm";
             }
             break;
 

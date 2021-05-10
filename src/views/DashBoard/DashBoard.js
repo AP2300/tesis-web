@@ -1,45 +1,50 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import { Chart } from "chart.js"
 import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
-import { Typography, Button, Divider } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
 import { generateGraphData, getDateAccess, setGradientColor } from '../../helpers/Graph'
+import { ShowTime, DayofWeek } from '../../helpers/DataInfo'
 import ChartComponent from "../../components/Chart";
 import { colors } from '../../api/constants';
 var _ = require('lodash');
 var moment = require('moment');
 moment().format();
 
-export default function DashBoard() {
+export default function DashBoard(props) {
+  const history = useHistory();
   const classes = useStyles();
-  const [graphData, setgraphData] = useState("")
-  const [isPromiseReady, setIsPromiseReady] = useState(false)
-  const [typeChart, setTypeChart] = useState("line")
+  const [Data, setData] = useState({ graph: "", lastEntry: "" });
+  const [isPromiseReady, setIsPromiseReady] = useState(false);
+  const [typeChart, setTypeChart] = useState("line");
+  const { UserData } = props;
 
   useEffect(() => {
-    if (graphData === "") getData()
+    if (Data.graph === "") getData();
   }, [])
 
-  function handleClick(e){
-    if(typeChart === "line") setTypeChart("bar")
-    else setTypeChart("line")
+  function handleClick(e) {
+    if (e.currentTarget.name === "line") setTypeChart("line")
+    else setTypeChart("bar")
   }
 
   const getData = async () => {
     const data = await GetGraphData();
     let dates = "";
     if (data) {
-      data.forEach((e) => {
+      let LastEntry = OrderLastEntry(data[1]);
+      data[0].forEach((e) => {
         if (String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]) {
           dates = e;
         }
         setIsPromiseReady(true)
-        setgraphData(dates);
+        setData({ ...Data, graph: dates, lastEntry: LastEntry });
       });
     } else {
-      setgraphData("")
+      setData({ ...Data, graph: "" })
       setIsPromiseReady(true)
     }
   }
@@ -54,6 +59,25 @@ export default function DashBoard() {
     }, 200)
   }
 
+  function OrderLastEntry(data) {
+    let LastEntry = "2019-01-01T00:00:00.000Z";
+    data.forEach((e) => {
+      if (moment(e.RegDate).isSameOrAfter(LastEntry)) {
+        LastEntry = e.RegDate;
+      }
+    });
+    return LastEntry;
+  }
+
+  function getLastEntry(date) {
+    return (
+      <div className={classes.borderBoxL}>
+        <Typography className={classes.date}>{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()} 
+            ${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
+      </div>
+    )
+  }
+
   function getDataGraph() {
     return canvas => {
       let num = Math.floor(Math.random() * (colors.length - 1)) + 1;
@@ -61,7 +85,7 @@ export default function DashBoard() {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
         datasets: [{
           label: "accesos",
-          data: generateGraphData(graphData),
+          data: generateGraphData(Data.graph),
           backgroundColor: setGradientColor(canvas, colors[num]),
           borderColor: setGradientColor(canvas, colors[num])
         }]
@@ -72,23 +96,24 @@ export default function DashBoard() {
   return (
     <div className={classes.root}>
       <Paper elevation={2} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
-        <Typography > Esta semana</Typography>
-        <Typography className={classes.number}>{getDateAccess(generateGraphData(graphData))}</Typography>
-        <Typography >Accesos</Typography>
+        <Typography className={classes.BoxText} >Esta semana accedio</Typography>
+        <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>
       </Paper>
-      <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
+      <Paper elevation={2} className={clsx(c, !isPromiseReady && classes.loading)} >
+        <Typography className={classes.BoxText}>Su Ultimo Acceso fue </Typography>
+        {isPromiseReady ? getLastEntry(Data.lastEntry) : "..."}
       </Paper>
       <Paper elevation={2} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading, classes.buttonBox)}>
-        <Button onClick={handleClick} className={clsx( typeChart === "bar" ?classes.selectedChart: "")}>
+        <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
           <i className="fas fa-chart-bar"></i>
         </Button>
-        <Button onClick={handleClick} className={clsx( typeChart === "line" ?classes.selectedChart: "")}>
+        <Button name="line" onClick={handleClick} className={clsx(typeChart === "line" ? classes.selectedChart : "")}>
           <i className="fas fa-chart-area"></i>
         </Button>
       </Paper>
 
       <Paper elevation={2} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
-        {graphData !== "" ? isPromiseReady ? <ChartComponent
+        {Data.graph !== "" ? isPromiseReady ? <ChartComponent
           type={typeChart}
           data={getDataGraph()}
         /> : "" : <div className={classes.message}><Typography >No hay accesos la ultima semana</Typography></div>}
