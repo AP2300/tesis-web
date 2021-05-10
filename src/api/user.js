@@ -211,8 +211,9 @@ export async function UpdateProfPicture(data) {
 
 export async function setFinger(data) {
   const form = new FormData();
-  form.append("finger", data.img)
+  form.append("finger", data.finger)
   form.append("id", data.id)
+  form.append("fingerName", data.fingerName)
   try {
     const res = await axios.post(Cons.setFinger, form, {
       headers: {
