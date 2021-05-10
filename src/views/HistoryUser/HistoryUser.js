@@ -3,11 +3,8 @@ import { useHistory } from 'react-router';
 import useStyles from "../../styles/HistoryUser"
 import clsx from 'clsx';
 import { Typography, Paper, Divider, IconButton, Button } from "@material-ui/core";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import {ChevronRight, ChevronLeft, BarChart, Subject} from '@material-ui/icons/';
 import Chart from 'chart.js'
-import BarChartIcon from '@material-ui/icons/BarChart';
-import SubjectIcon from '@material-ui/icons/Subject';
 import ChartComponent from '../../components/Chart';
 import GraphFormControl from '../../components/GraphFormControl';
 import DataInfo from '../../components/DataInfo';
@@ -123,7 +120,7 @@ export default function HistoryUser(props) {
                 <div className={classes.ButtonDiv}>
                     <div className="AFC">
                         <Paper elevation={3} className={classes.ExpandibleButton} onClick={ShowFilters}>
-                            Filtrar {!animations.Filter ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                            Filtrar {!animations.Filter ? <ChevronRight/> : <ChevronLeft/>}
                         </Paper>
                         <Paper className={clsx(classes.ExpandibleContainer, animations.Filter && classes.ExpandedContainer)} elevation={3}>
                             <GraphFormControl TimeStamp={States.TimeStamp} Dates={Dates} handleChange={handleChange}
@@ -146,13 +143,13 @@ export default function HistoryUser(props) {
                             type={States.TypeChart}
                             data={getDataGraph()}
                         /> : <div className={classes.message}><Typography>No hay accesos para esta Fecha</Typography></div>
-                            : <BarChartIcon />}
+                            : <BarChart />}
                     </Paper>
                     <Button className={classes.minimizerButton} onClick={handleMinimize}>
-                        {animations.Minimize ? <ChevronRightIcon className="icon" /> : <ChevronLeftIcon className="icon" />}
+                        {animations.Minimize ? <ChevronRight className="icon" /> : <ChevronLeft className="icon" />}
                     </Button>
                     <Paper className={clsx(animations.Minimize ? [classes.overflowContainer,classes.maximizedContainer] : classes.minimizedContainer, classes.dataContainer)}>
-                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <SubjectIcon />}
+                        {animations.Minimize ? <DataInfo TimeStamp={States.TimeStamp} Data={Data.graph} classes={clsx(animations.Minimize ? classes.maximizedContainer : classes.minimizedContainer, classes.dataContainer)} /> : <Subject />}
                     </Paper>
                 </div>
             </Paper>

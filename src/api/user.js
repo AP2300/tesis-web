@@ -190,6 +190,8 @@ export async function UpdateProfPicture(data) {
   const form = new FormData();
   form.append("picture", data.img)
   form.append("id", data.id)
+  form.append("actualPicture", data.actualPicture)
+  
   try {
     const res = axios.post(Cons.UpdateProf, form, {
       headers: {
@@ -245,6 +247,24 @@ export async function setFace(data) {
       return false
     }
   } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function DeletePicture(params){
+  try{
+    const res = axios.post(Cons.DeleteProf, params ,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  }catch(e){
     console.error(e)
   }
 }

@@ -29,10 +29,12 @@ export default useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         width: "100%",
+        fontFamily: theme.typography.fontFamily,
+        fontWeight: "400",
         "& .icon": {
             marginRight: "2.5%",
             "& > *": {
-                fontSize: "3em"
+                fontSize: "3em",
             }
         },
         "& > .closeIcon": {

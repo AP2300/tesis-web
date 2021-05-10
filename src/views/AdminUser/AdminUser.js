@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminUser';
-import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch, Chip } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, ReportProblemRounded, OpenInNew } from '@material-ui/icons/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, TextField, ListItemIcon, ListItemText, Button, Accordion, AccordionSummary, AccordionDetails, Switch } from '@material-ui/core/';
+import { ChevronLeft, ChevronRight, People, Edit, Close, ExpandMore, Add, VerifiedUser, Delete, OpenInNew } from '@material-ui/icons/';
 import Alert from '@material-ui/lab/Alert';
 import Notification from '../../components/Notifications';
 import Stepper from "../../components/Stepper"
 import Modal from "../../components/Modal"
 import { DropzoneArea } from 'material-ui-dropzone';
-import { GetHistoryData, GetSecurityUserData, UpdateProfPicture } from "../../api/user"
+import { GetHistoryData, GetSecurityUserData, UpdateProfPicture, DeletePicture } from "../../api/user"
 import { AdminDataUpdate, AdminPassUpdate, DisableEnableUser, DeleteUser } from "../../api/admin"
 import clsx from 'clsx';
 import * as Cons from "../../api/constants";
 
 export default function AdminUser() {
     const [UsersPanel, setUsersPanel] = useState(true)
-    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false, isActivatable: false, selPicture: {} })
+    const [users, setUsers] = useState({ usersList: [], userDisplay: "", userAdd: false, isActivatable: false, selPicture: "" })
     const [promises, setPromises] = useState({ users: false, userDisplay: false })
     const [selUser, setSelUser] = useState("")
     const [FormControl, setFormControl] = useState({ name: "", email: "", pass: "" })
@@ -58,10 +58,38 @@ export default function AdminUser() {
     async function EditPhoto() {
         const params = {
             img: users.selPicture[0],
-            id: users.userDisplay.IDUser
+            id: users.userDisplay.IDUser,
+            actualPicture: users.userDisplay.Picture
         }
-        const res = await UpdateProfPicture(params)
-        if (res.data.success) GetUsers()
+        if(users.selPicture !== ""){
+            const res = await UpdateProfPicture(params)
+            if (res.data.success){
+                setNoti({...noti, severity: "success", description: "Foto actualizada correctamente", open: true})
+                GetUsers()
+            }else{
+                setNoti({...noti, severity: "error", description: "Error actualizando la foto, intentelo de nuevo", open: true})   
+            }
+        }else{
+            setNoti({...noti, severity: "warning", description: "No se cargo una foto", open: true})   
+        }
+    }
+
+    async function DeletePhoto() {
+        const params = {
+            id: users.userDisplay.IDUser,
+            actualPicture: users.userDisplay.Picture
+        }
+        if (users.userDisplay.Picture !== "null") {
+            const res = await DeletePicture(params)
+            if (res.data.success) {
+                setNoti({ ...noti, severity: "success", description: "Foto eliminada correctamente", open: true })
+                GetUsers()
+            } else {
+                setNoti({ ...noti, severity: "error", description: "Error al eliminar la foto, intentelo de nuevo", open: true })
+            }
+        } else {
+            setNoti({ ...noti, severity: "warning", description: "No hay ninguna foto cargada", open: true })
+        }
     }
 
     useEffect(() => {
@@ -361,10 +389,12 @@ export default function AdminUser() {
                 <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
             </Modal>}
 
-            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
+            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
-                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} />
+                    onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
+                    onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })} 
+                    acceptedFiles={['image/*']}/>
             </Modal>}
         </div>
     )

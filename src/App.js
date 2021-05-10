@@ -1,8 +1,6 @@
 import { Route, Switch } from "react-router-dom"
 import Home from './components/Home';
 import Login from './views/Login/Login';
-import AdminDial from "./components/AdminDial"
-// import Profile from './views/Profile'
 
 function App() {
   return (

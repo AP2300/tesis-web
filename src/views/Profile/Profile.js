@@ -3,9 +3,9 @@ import TitleContainer from "../../components/TitleContainer"
 import Modal from "../../components/Modal"
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
-import { Paper, Avatar, Divider, Typography, TextField, Button, Snackbar, Slide, IconButton } from '@material-ui/core/';
+import { Paper, Avatar, Divider, Typography, TextField, Button} from '@material-ui/core/';
 import { Dialpad, Edit, Fingerprint, Mood, OpenInNew } from '@material-ui/icons/';
-import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword, UpdateProfPicture } from "../../api/user"
+import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword, UpdateProfPicture, DeletePicture } from "../../api/user"
 import useStyles from "../../styles/Profile"
 import { useHistory } from 'react-router';
 import { EndSession } from '../../api/session';
@@ -20,7 +20,7 @@ export default function Profile(props) {
     const { FullName, Email, RegDate, Picture, IDUser } = props.Data
     const history = useHistory()
     const classes = useStyles();
-    const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "", selPicture: ""})
+    const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "", selPicture: "" })
     const [UserData, setUserData] = useState("")
     const [IsPromiseReady, setIsPromiseReady] = useState(false)
     const [modal, setModal] = useState(false)
@@ -94,20 +94,20 @@ export default function Profile(props) {
             if (FormControl.NameControl != "" || FormControl.EmailControl != "") {
                 let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
                 if (reg.test(FormControl.EmailControl)) {
-                    if(FormControl.EmailControl !== Email){
+                    if (FormControl.EmailControl !== Email) {
                         UpdateBasicData(params);
                         const res = await EndSession()
                         if (res) {
-                            setTimeout(()=>{
+                            setTimeout(() => {
                                 history.push("/")
-                            },400)
+                            }, 400)
                         }
-                    }else{
+                    } else {
                         setNoti({
                             ...noti, severity: "warning",
                             description: "Se introdujo el correo electronico actual",
                             open: true
-                        }) 
+                        })
                     }
                 } else {
                     setNoti({
@@ -196,12 +196,44 @@ export default function Profile(props) {
     }
 
     async function EditPhoto() {
-        const params={
-            img:FormControl.selPicture[0],
-            id: IDUser
+        const params = {
+            img: FormControl.selPicture[0],
+            id: IDUser,
+            actualPicture: Picture
         }
-        const res = await UpdateProfPicture(params)
-        window.location.reload()
+        if (FormControl.selPicture !== "") {
+            const res = await UpdateProfPicture(params)
+            if (res.data.success) {
+                setNoti({ ...noti, severity: "success", description: "Foto actualizada correctamente", open: true })
+                setTimeout(() => {
+                    window.location.reload()
+                }, 300)
+            } else {
+                setNoti({ ...noti, severity: "error", description: "Error al actualizar la foto, intentelo de nuevo", open: true })
+            }
+        } else {
+            setNoti({ ...noti, severity: "warning", description: "No se cargo una foto", open: true })
+        }
+
+    }
+
+    async function DeletePhoto() {
+        const params = {
+            id: IDUser,
+            actualPicture: Picture
+        }
+        if (Picture !== "null") {
+            const res = await DeletePicture(params)
+            console.log(res);
+            if (res.data.success) {
+                setNoti({ ...noti, severity: "success", description: "Foto eliminada correctamente", open: true })
+                window.location.reload()
+            } else {
+                setNoti({ ...noti, severity: "error", description: "Error al eliminar la foto, intentelo de nuevo", open: true })
+            }
+        } else {
+            setNoti({ ...noti, severity: "warning", description: "No hay ninguna foto cargada", open: true })
+        }
     }
 
     return (
@@ -221,7 +253,7 @@ export default function Profile(props) {
                                 {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - Tipo Usuario</Typography>
                         </div>
                         <div className={classes.modifyImg}>
-                        <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
+                            <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
                         </div>
                     </div>
                 </div>
@@ -298,10 +330,12 @@ export default function Profile(props) {
                 <Alert severity="warning" variant="filled">Completar esta acción cerrara la sesión</Alert>
             </Modal>}
 
-            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto}
+            {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modifica tu foto de perfil`}>
                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
-                    onAdd={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} onDrop={(fileObjs) => setFormControl({...FormControl, selPicture:fileObjs})} />
+                    onAdd={(fileObjs) => setFormControl({ ...FormControl, selPicture: fileObjs })}
+                    onDrop={(fileObjs) => setFormControl({ ...FormControl, selPicture: fileObjs })}
+                    acceptedFiles={['image/*']} />
             </Modal>}
         </div>
     );

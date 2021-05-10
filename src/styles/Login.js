@@ -62,14 +62,6 @@ export default useStyles = makeStyles((theme) => ({
         margin: "auto",
         marginBottom: "1rem"
     },
-    alert: {
-        position: "fixed",
-        top: 0,
-        zIndex: 50,
-        width: "25rem",
-        left: "50%",
-        marginLeft: "-12.5rem" 
-    },
     textField: {
         width: "80%",
         "& .MuiOutlinedInput-root": {

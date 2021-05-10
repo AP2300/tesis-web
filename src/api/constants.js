@@ -20,6 +20,7 @@ export const Delete = `${url}/deleteUser`
 export const UpdateProf = `${url}/updateProfile`
 export const setFinger = `${url}/setFinger`
 export const setFace = `${url}/setFace`
+export const DeleteProf = `${url}/deleteProfile`
 
 // Constantes db
 export const colors = [
