@@ -14,7 +14,7 @@ function Login(props) {
     const location = useLocation();
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [isLoading, setisLoading] = useState(false);
     const [msg, setMsg] = useState("");
 

@@ -9,13 +9,9 @@ import { Close, Done, Backup, AddAPhoto, Delete } from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
+    const {defaultButtons= true, disableUploadPhoto=false} = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
-
-    ModalComponent.defaultProps = {
-        defaultButtons: true,
-        disableUploadPhoto: false
-    }
 
     useEffect(async () => {
         const IsOpen = await props.IsOpen
@@ -73,16 +69,13 @@ export default function ModalComponent(props) {
                     <div className={classes.paper}>
                         <div className={classes.title}>
                             <Typography variant="h5" align="center">{props.title}</Typography>
-
                         </div>
-
-
 
                         <Divider />
                         {props.children}
                         <br />
                         <Divider />
-                        {props.defaultButtons ? (
+                        {defaultButtons ? (
                             <div className={classes.bottom}>
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar

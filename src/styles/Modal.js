@@ -36,6 +36,6 @@ export default useStyles = makeStyles((theme) => ({
         paddingTop: "3%",
         paddingBottom: "3%",
         display: "flex",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     },
 }));

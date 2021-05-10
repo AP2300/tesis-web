@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import { Chart } from "chart.js"
 import useStyles from "../../styles/DashBoard";
 import clsx from 'clsx';
-import { Typography, Button, Divider } from '@material-ui/core';
+import { Typography, Button} from '@material-ui/core';
 import { GetGraphData } from '../../api/user';
 import { generateGraphData, getDateAccess, setGradientColor } from '../../helpers/Graph'
 import ChartComponent from "../../components/Chart";
