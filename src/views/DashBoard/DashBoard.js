@@ -98,7 +98,7 @@ export default function DashBoard(props) {
         <Typography className={classes.BoxText} >Esta semana accedio</Typography>
         <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>
       </Paper>
-      <Paper elevation={2} className={clsx(c, !isPromiseReady && classes.loading)} >
+      <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
         <Typography className={classes.BoxText}>Su Ultimo Acceso fue </Typography>
         {isPromiseReady ? getLastEntry(Data.lastEntry) : "..."}
       </Paper>
