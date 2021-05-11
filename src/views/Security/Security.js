@@ -6,6 +6,7 @@ import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab/';
 import TitleContainer from '../../components/TitleContainer';
 import { GetFullUserData, UpdateAuthMethods } from "../../api/user"
 import { useHistory } from 'react-router';
+import * as Cons from "../../api/constants";
 import clsx from 'clsx';
 
 export default function Security(props) {
@@ -52,6 +53,7 @@ export default function Security(props) {
             SetSideButton()
             getFingerStatus()
             state.Security.forEach(e => { if (e.Name === "Codigo") setState({ ...state, Code: e.data }) })
+            console.log(state)
         }
     }, [state.Security])
 
@@ -148,7 +150,7 @@ export default function Security(props) {
                             icon={<ReportProblemRounded />}
                             label="El reconocimiento facial esta desactivado"
                         />}
-                        <Avatar src="" className={classes.img} />
+                        <Avatar src={`${Cons.url}${state.Security ? state.Security.filter((el) => el.Name == "Facial")[0].data : ""}`} className={classes.img} />
                     </div>
                 </Paper>
                 <div className={classes.rightContainer}>
