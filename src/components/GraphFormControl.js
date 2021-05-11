@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    Accordion, AccordionSummary, AccordionDetails, InputLabel,
-    FormControlLabel, Typography, TextField, MenuItem, FormControl,
-    Paper, Divider, AccordionActions, Select, IconButton, Button
-} from "@material-ui/core";
+import { InputLabel, MenuItem, FormControl, Select } from "@material-ui/core";
 import { GraphLabels, getYearRange, calcNumWeek, DaysInMonth } from '../helpers/Graph'
 
 export default function GraphFormControl(props) {

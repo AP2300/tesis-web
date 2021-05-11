@@ -1,9 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import sizes from "./sizes";
 
-let useStyles = "";
-
-export default useStyles = makeStyles((theme) => ({
+export default makeStyles(() => ({
     "@keyframes loading ": {
         " 0%": { backgroundPosition: "0% 50%" },
         "50%": { backgroundPosition: "100% 50%" },
@@ -211,7 +209,7 @@ export default useStyles = makeStyles((theme) => ({
             backgroundColor: "#bdbdbd6e",
         },
         marginBottom: "1em",
-        ["& input"]: {
+        "& input": {
             height: ".3em",
         },
         "& .MuiFormLabel-root": {

@@ -8,13 +8,11 @@ import HistoryUser from "../views/HistoryUser/HistoryUser";
 import AdminSecurity from "../views/AdminSecurity/AdminSecurity";
 import AdminUser from "../views/AdminUser/AdminUser"
 
-export function PageSelector(userData, SearchData) {
-  const location = useLocation();
-  const history = useHistory()
+export function PageSelector(userData) {
   const user = userData;
   return (
     <Switch>
-      <Route exact path="/home" render={() => <DashBoard />} />
+      <Route exact path="/home" render={() => <DashBoard UserData={user} />} />
       <Route path="/home/profile" render={(routeprops) => <Profile {...routeprops} Data={user} />} />
       <Route path="/home/history" render={(routeprops) => <HistoryUser {...routeprops} User={user} />} />
       {user.IsAdmin ? (
@@ -30,7 +28,7 @@ export function PageSelector(userData, SearchData) {
       {user.IsAdmin ? (
         <Route path="/admin/users" render={(routeprops) => <AdminUser {...routeprops} />} />
       ) : null}
-      <Route path="/" render={() => <DashBoard />} />
+      <Route path="/" render={() => <DashBoard UserData={user} />} />
     </Switch>
   )
 }

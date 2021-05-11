@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: "#bdbdbd6e",
         },
         marginBottom: "1em",
-        ["& input"]: {
+        "& input": {
             height: ".3em",
         },
         "& .MuiFormLabel-root": {

@@ -173,9 +173,9 @@ export default function History() {
         let reg = new RegExp(`\\b${Textfield}`, 'i');
         let newSearchArr = []
         Data.Users.forEach(e => {
-            if (reg.test(e.FullName) && Textfield !== ""
-                || reg.test(e.Email) && Textfield !== ""
-                || reg.test(e.IDUser) && Textfield !== "") {
+            if ((reg.test(e.FullName) && Textfield !== "")
+                || (reg.test(e.Email) && Textfield !== "")
+                || (reg.test(e.IDUser) && Textfield !== "")) {
                 newSearchArr.push(e)
             } else if (Textfield === "") {
                 setData({ ...Data, Search: Data.Users });

@@ -16,11 +16,14 @@ export default function Notification(props) {
         Transition: Slide,
     });
 
-    useEffect(async () => {
-        const res = await props.data
-        if (res) {
-            handleOpen(SlideTransition)
+    useEffect(() => {
+        async function waitForProps() {
+            const res = await props.data
+            if (res) {
+                handleOpen(SlideTransition)
+            }
         }
+        waitForProps()
     }, [props])
 
     function handleOpen(Transition) {

@@ -26,7 +26,7 @@ export async function GetGraphData() {
       withCredentials: true
     })
     if ((await res).status === 200) {
-      return (await res).data.data
+      return [(await res).data.data,(await res).data.history]
     } else {
       return false
     }
@@ -128,7 +128,7 @@ export async function GetSecurityUserData(id) {
     }
   } catch (e) {
     console.error(e)
-    if (e.response.status == 401) return false
+    if (e.response.status === 401) return false
   }
 }
 

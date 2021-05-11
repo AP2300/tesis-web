@@ -24,6 +24,11 @@ export default function AdminUser() {
     const [editModal, setEditModal] = useState(false)
     const classes = useStyles()
 
+    useEffect(() => {
+        if (users.usersList.length === 0) GetUsers()
+    }, [users.usersList])
+
+
     function handleClick() {
         setUsersPanel(!UsersPanel)
     }
@@ -92,15 +97,10 @@ export default function AdminUser() {
         }
     }
 
-    useEffect(() => {
-        if (users.usersList.length === 0) GetUsers()
-    }, [users.usersList])
-
-
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
         users.usersList.map(async (el, i) => {
-            if (el.IDUser == e.currentTarget.id) {
+            if (el.IDUser === e.currentTarget.id) {
                 const res = await GetSecurityUserData(e.currentTarget.id)
                 setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
                 setSelUser(i)
@@ -130,7 +130,7 @@ export default function AdminUser() {
             pass: FormControl.pass
         }
         if (arg === "name" || arg === "email") {
-            if (FormControl.name != "" || FormControl.email != "") {
+            if (FormControl.name !== "" || FormControl.email !== "") {
                 const res = await AdminDataUpdate(params);
                 setUsers({ ...users, usersList: [] })
                 setFormControl({ ...FormControl, name: "", email: "" })
