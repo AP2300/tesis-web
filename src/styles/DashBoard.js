@@ -23,7 +23,6 @@ export default makeStyles((theme) => ({
     justifyContent: "center"
   },
   borderBoxL: {
-
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -38,16 +37,28 @@ export default makeStyles((theme) => ({
   },
   BoxText: {
     textAlign: "center",
+    fontSize: "calc(14px + (30 - 14) * ((40vw - 320px) / (1600 - 300)))"
   },
   number: {
     fontSize: `calc(40px + (75 - 40) * ((40vw - 320px) / (1600 - 300)))`
   },
   date: {
-    textAlign: "center",
-    fontSize: `calc(20px + (35 - 20) * ((40vw - 320px) / (1600 - 300)))`
+    fontSize: `calc(17px + (35 - 17) * ((90vw - 320px) / (1600 - 300)))`
   },
   borderBoxR: {
 
+  },
+  centerBox:{
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > *":{
+      color: "#000000a6",
+      fontWeight: "600"
+    }
   },
   GraphBox: {
     margin: theme.spacing(2),

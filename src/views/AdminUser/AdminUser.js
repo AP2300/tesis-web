@@ -392,7 +392,7 @@ export default function AdminUser() {
 
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
-                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
+                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false}
                     onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
                     onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
                     acceptedFiles={['image/*']} />
