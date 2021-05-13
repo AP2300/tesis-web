@@ -3,10 +3,12 @@ import Profile from "../views/Profile/Profile";
 import DashBoard from "../views/DashBoard/DashBoard";
 import History from "../views/History/History";
 import Security from "../views/Security/Security"
-import { useHistory, useLocation } from "react-router";
 import HistoryUser from "../views/HistoryUser/HistoryUser";
 import AdminSecurity from "../views/AdminSecurity/AdminSecurity";
 import AdminUser from "../views/AdminUser/AdminUser"
+import LoadingComp from "../components/Loading";
+
+
 
 export function PageSelector(userData) {
   const user = userData;
@@ -15,19 +17,12 @@ export function PageSelector(userData) {
       <Route exact path="/home" render={() => <DashBoard UserData={user} />} />
       <Route path="/home/profile" render={(routeprops) => <Profile {...routeprops} Data={user} />} />
       <Route path="/home/history" render={(routeprops) => <HistoryUser {...routeprops} User={user} />} />
-      {user.IsAdmin ? (
-        <Route path="/admin/history" render={(routeprops) => <History {...routeprops} />} />
-      ) : null}
       <Route path="/home/security" render={(routeprops) => <Security {...routeprops} Data={user} />} />
-      {user.IsAdmin ? (
-        <Route exact path="/admin/security" render={(routeprops) => <AdminSecurity {...routeprops} />} />
-      ) : null}
-      {user.IsAdmin ? (
-        <Route path="/admin/security/:id" render={(routeprops) => <AdminSecurity {...routeprops} />} />
-      ) : null}
-      {user.IsAdmin ? (
-        <Route path="/admin/users" render={(routeprops) => <AdminUser {...routeprops} />} />
-      ) : null}
+
+      <Route path="/admin/history" render={(routeprops) =>{return(user.IsAdmin ? <History {...routeprops} />: <LoadingComp/>)}} />
+      <Route exact path="/admin/security" render={(routeprops) => {return(user.IsAdmin ? <AdminSecurity {...routeprops} />: <LoadingComp/>)}} />
+      <Route path="/admin/security/:id" render={(routeprops) =>{ return(user.IsAdmin ? <AdminSecurity {...routeprops} />: <LoadingComp/>)}} />
+      <Route path="/admin/users" render={(routeprops) => {return(user.IsAdmin ? <AdminUser {...routeprops} />: <LoadingComp/>)}} />
       <Route path="/" render={() => <DashBoard UserData={user} />} />
     </Switch>
   )

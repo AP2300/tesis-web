@@ -9,8 +9,8 @@ export default makeStyles((theme) => ({
         height: "60%"
     },
     text: {
-        marginTop: "60px",
-
+        marginTop: "60px", 
+        color: "#4f4f4f"
     }
 }));
 

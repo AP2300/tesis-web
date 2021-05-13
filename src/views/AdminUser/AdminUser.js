@@ -100,7 +100,7 @@ export default function AdminUser() {
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
         users.usersList.map(async (el, i) => {
-            if (el.IDUser === e.currentTarget.id) {
+                if (el.IDUser === Number(e.currentTarget.id)) {
                 const res = await GetSecurityUserData(e.currentTarget.id)
                 setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
                 setSelUser(i)
@@ -113,6 +113,7 @@ export default function AdminUser() {
     const GetUsers = async () => {
         const res = await GetHistoryData()
         if (res) {
+            console.log(res);
             setUsers({ ...users, usersList: res.data.data, userDisplay: res.data.data[selUser] })
             setPromises({ ...promises, users: true })
         }
