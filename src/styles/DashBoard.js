@@ -73,7 +73,8 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     "&& > *": {
-      fontSize: "3em"
+      fontSize: "3em",
+      color: "#000000a6"
     }
   },
   loading: {

@@ -33,14 +33,16 @@ export default function DashBoard(props) {
   const getData = async () => {
     const data = await GetGraphData();
     let dates = "";
-    if (data) {
+    if (data[0].length > 0) {
+      console.log(data);
       let LastEntry = OrderLastEntry(data[1]);
       data[0].forEach((e) => {
         if (String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]) {
           dates = e;
         }
+        console.log("putabida");
         setIsPromiseReady(true)
-        setData({ ...Data, graph: dates, lastEntry: LastEntry });
+        setData({ ...Data, graph: dates, lastEntry: LastEntry })
       });
     } else {
       setData({ ...Data, graph: "" })
@@ -97,13 +99,13 @@ export default function DashBoard(props) {
   return (
     <div className={classes.root}>
       <Paper elevation={2} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
-        <Typography className={classes.BoxText} >Esta semana accedio</Typography>
-        <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>
+        {isPromiseReady ? <Typography className={classes.BoxText} >Esta semana accedio</Typography>: ""}
+        {isPromiseReady ? <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>: ""}
       </Paper>
       <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
         {isPromiseReady ? getLastEntry() : ""}
       </Paper>
-      <Paper elevation={2} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading, classes.buttonBox)}>
+      <Paper elevation={2} className={clsx(classes.borderBoxR, classes.buttonBox)}>
         <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
           <i className="fas fa-chart-bar"></i>
         </Button>
@@ -113,10 +115,10 @@ export default function DashBoard(props) {
       </Paper>
 
       <Paper elevation={2} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
-        {Data.graph !== "" ? isPromiseReady ? <ChartComponent
+        {isPromiseReady ?Data.graph !== "" ?  <ChartComponent
           type={typeChart}
           data={getDataGraph()}
-        /> : "" : <div className={classes.message}><Typography >No hay accesos la ultima semana</Typography></div>}
+        /> : <div className={classes.message}><Typography>No hay accesos la ultima semana</Typography></div> : "" }
       </Paper>
     </div>
   );
