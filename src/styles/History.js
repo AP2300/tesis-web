@@ -181,6 +181,11 @@ export default makeStyles((theme) => ({
                 display: "flex",
                 width: "30%",
                 minWidth: "220px"
+            },
+            "&  .UserIcon": {
+                display: "flex",
+                width: "5%",
+                minWidth: "36.5px"
             }
         },
     }

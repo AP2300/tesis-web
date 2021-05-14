@@ -7,7 +7,7 @@ import {
     FormControlLabel, Typography, TextField, FormControl,
     Paper, Divider, Select, IconButton, Button
 } from "@material-ui/core";
-import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart } from "@material-ui/icons";
+import { ExpandMore, FilterList, ChevronLeft, ChevronRight, Subject, BarChart, VerifiedUser, People } from "@material-ui/icons";
 import { FilterSearch, ChangeGraph, calcNumWeek, setGradientColor, GraphLabels, getYearRange, DaysInMonth } from '../../helpers/Graph';
 import { GetHistoryData, GetHistoryUserData } from "../../api/user"
 import TitleContainer from '../../components/TitleContainer';
@@ -24,7 +24,7 @@ export default function History() {
     const [Promises, setPromises] = useState({ isReady: false, isUserReady: false });
     const [Data, setData] = useState({ Search: [], Users: "", AllUsers: "", graph: "" });
     const [Dates, setDates] = useState({ day: moment().date(), week: "", month: moment().month(), year: moment().year() });
-    const [States, setStates] = useState({ TimeStamp: "D", Type: "U", TypeChart: "bar", ShowGeneral: true, showChart: true });
+    const [States, setStates] = useState({ TimeStamp: "D", Type: "T", TypeChart: "bar", ShowGeneral: true, showChart: true });
     const [Textfield, setTextfield] = useState("");
 
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function History() {
 
     useEffect(() => {
         if (Data.Users !== "") FuzzySearch()
-    }, [Textfield])
+    }, [Textfield,States.Type])
 
     useEffect(() => {
         if (Data.AllUsers.length !== 0) {
@@ -87,7 +87,7 @@ export default function History() {
 
     const handleChange = (event) => {
         if (event.target.name === "timestamp") setStates({ ...States, TimeStamp: event.target.value });
-        else if (event.target.name === "mail") setStates({ ...States, Type: event.target.value });
+        else if (event.target.name === "typeUser") setStates({ ...States, Type: event.target.value });
         else if (event.target.name === "day") setDates({ ...Dates, day: event.target.value });
         else if (event.target.name === "week") setDates({ ...Dates, week: event.target.value });
         else if (event.target.name === "month") setDates({ ...Dates, month: event.target.value });
@@ -171,13 +171,20 @@ export default function History() {
     function FuzzySearch() {
         Textfield.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&");
         let reg = new RegExp(`\\b${Textfield}`, 'i');
-        let newSearchArr = []
+        let newSearchArr = [];
         Data.Users.forEach(e => {
+            if(Textfield === "" && States.Type === "A" && e.IsAdmin){
+                newSearchArr.push(e);
+            } else if(Textfield === "" && States.Type === "U" && !e.IsAdmin){
+                newSearchArr.push(e);
+            }
             if ((reg.test(e.FullName) && Textfield !== "")
                 || (reg.test(e.Email) && Textfield !== "")
                 || (reg.test(e.IDUser) && Textfield !== "")) {
-                newSearchArr.push(e)
-            } else if (Textfield === "") {
+                if(States.Type === "T" || (States.Type === "U" && !e.IsAdmin) || (States.Type === "A" && e.IsAdmin)){
+                    newSearchArr.push(e)
+                }
+            } else if (Textfield === "" && States.Type === "T") {
                 setData({ ...Data, Search: Data.Users });
             } else {
                 setData({ ...Data, Search: newSearchArr });
@@ -276,11 +283,10 @@ export default function History() {
                                             value={States.Type}
                                             displayEmpty
                                             onChange={handleChange}
-                                            name="mail"
+                                            name="typeUser"
                                         >
-                                            <MenuItem value="U" >
-                                                <em>Usuario</em>
-                                            </MenuItem>
+                                            <MenuItem value="T">Todos</MenuItem>
+                                            <MenuItem value="U"><em>Usuario</em></MenuItem>
                                             <MenuItem value="A">Administrador</MenuItem>
                                         </Select>
                                     </FormControl>
@@ -378,6 +384,9 @@ export default function History() {
                                     expandIcon={<ExpandMore />}
                                     aria-controls="panel1c-content"
                                 >
+                                    <div className="UserIcon">
+                                        {el.IsAdmin ? <VerifiedUser /> : <People /> }
+                                    </div>
                                     <div className="UserInfo">
                                         <Typography className={classes.heading}>{el.FullName}</Typography>
                                     </div>
