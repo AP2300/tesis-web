@@ -21,6 +21,7 @@ export const UpdateProf = `${url}/updateProfile`
 export const setFinger = `${url}/setFinger`
 export const setFace = `${url}/setFace`
 export const DeleteProf = `${url}/deleteProfile`
+export const CheckSession = `${url}/checkSession`
 
 // Constantes db
 export const colors = [

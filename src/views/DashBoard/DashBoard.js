@@ -33,20 +33,25 @@ export default function DashBoard(props) {
   const getData = async () => {
     const data = await GetGraphData();
     let dates = "";
-    if (data[0].length > 0) {
-      let LastEntry = OrderLastEntry(data[1]);
-      data[0].forEach((e) => {
-        if (String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]) {
-          dates = e;
-        }
-        console.log("putabida");
+    if (data) {
+      if (data[0].length > 0) {
+        let LastEntry = OrderLastEntry(data[1]);
+        data[0].forEach((e) => {
+          if (String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]) {
+            dates = e;
+          }
+          console.log("putabida");
+          setIsPromiseReady(true)
+          setData({ ...Data, graph: dates, lastEntry: LastEntry })
+        });
+      } else {
+        setData({ ...Data, graph: "", lastEntry: false })
         setIsPromiseReady(true)
-        setData({ ...Data, graph: dates, lastEntry: LastEntry })
-      });
+      }
     } else {
-      setData({ ...Data, graph: "", lastEntry: false })
-      setIsPromiseReady(true)
+      history.push("/")
     }
+
   }
 
   window.addEventListener("click", beforePrintHandler);
@@ -81,7 +86,7 @@ export default function DashBoard(props) {
     } else {
       return (
         <div className={classes.centerBox}>
-          <Typography align="center" style={{fontSize: "calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))"}}>Usted no ha accedido aun al sistema</Typography>
+          <Typography align="center" style={{ fontSize: "calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))" }}>Usted no ha accedido aun al sistema</Typography>
         </div>);
     }
   }

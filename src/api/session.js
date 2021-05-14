@@ -13,8 +13,6 @@ export async function EndSession() {
     } catch (e) {
         console.error(e)
     }
-
-
 }
 
 export async function LogIn(params) {
@@ -29,5 +27,19 @@ export async function LogIn(params) {
         return res;
     } catch (e) {
         console.error(e)
+    }
+}
+
+export async function CheckSession() {
+    try {
+        const res = axios.get(Cons.CheckSession, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        })
+        return res;
+    }catch(e){
+        console.error(e);
     }
 }

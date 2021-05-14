@@ -4,7 +4,7 @@ import { Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, IconBu
 import {AccountBoxTwoTone, History, LockTwoTone, ExitToApp, Dashboard, Menu, ChevronLeft} from '@material-ui/icons/';
 import useStyles from "../styles/Home";
 import { GetUserData } from "../api/user";
-import { EndSession } from "../api/session";
+import { EndSession, CheckSession} from "../api/session";
 import { PageSelector, otherPage, SelectPage } from "../helpers/Home";
 import { useHistory, useLocation } from 'react-router';
 import AdminDial from './AdminDial';
@@ -20,8 +20,16 @@ export default function Home() {
   const [activeWindow, setActiveWindow] = useState(SelectPage(location));
 
   useEffect(() => {
-    if (Data === "") getData();
+    const interval = setInterval(async () => {
+      const res = await CheckSession()
+      console.log(res);
+      if(res.data.session === "vencida") history.push("/")
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
+  useEffect(() => {
+    if (Data === "") getData();
   }, [Data])
 
   const getData = async () => {

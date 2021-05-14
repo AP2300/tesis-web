@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
     }
   },
   hide: {
-    marginLeft: "-15%",
+    marginLeft: "-72px",
     opacity: '0'
   },
   drawer: {
