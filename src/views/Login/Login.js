@@ -67,18 +67,19 @@ function Login(props) {
         const response = await LogIn(params);
         console.log(response);
         if (response.data.success && response.data.isActive) {
-            console.log("gola");
             history.push("/home");
         } else {
             if(!response.data.isActive && response.data.success){
                 setisLoading(false);
                 setMsg("El usuario no esta activo, contacte a un administrador");
-                console.log(msg);
                 setOpen(true);
-            }else{
+            }else if(response.data.session && !response.data.success){
+                setisLoading(false);
+                setMsg("El usuario ya tiene una sesion activa, Espere 5 Minutos");
+                setOpen(true);
+            } else{
                 setisLoading(false);
                 setMsg("Los datos ingresados son inválidos, intente nuevamente");
-                console.log(msg);
                 setOpen(true);
             }
         }
