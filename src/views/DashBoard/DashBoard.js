@@ -34,7 +34,6 @@ export default function DashBoard(props) {
     const data = await GetGraphData();
     let dates = "";
     if (data[0].length > 0) {
-      console.log(data);
       let LastEntry = OrderLastEntry(data[1]);
       data[0].forEach((e) => {
         if (String(moment(moment()._d, "DD MM YYYY hh:mm:ss").startOf('isoWeek')) === e[0]) {
@@ -45,7 +44,7 @@ export default function DashBoard(props) {
         setData({ ...Data, graph: dates, lastEntry: LastEntry })
       });
     } else {
-      setData({ ...Data, graph: "" })
+      setData({ ...Data, graph: "", lastEntry: false })
       setIsPromiseReady(true)
     }
   }
@@ -71,14 +70,20 @@ export default function DashBoard(props) {
   }
 
   function getLastEntry(date) {
-    return (
-      <div className={classes.centerBox}>
-        <Typography className={classes.BoxText}>Su último acceso fue </Typography>
-        <Typography className={classes.date} align="center">{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()}`}
-        </Typography>
-        <Typography className={classes.date} align="center">{`${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
-      </div>
-    )
+    if (date !== false) {
+      return (
+        <div className={classes.centerBox}>
+          <Typography className={classes.BoxText}>Su último acceso fue </Typography>
+          <Typography className={classes.date} align="center">{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()}`}
+          </Typography>
+          <Typography className={classes.date} align="center">{`${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
+        </div>)
+    } else {
+      return (
+        <div className={classes.centerBox}>
+          <Typography align="center" style={{fontSize: "calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))"}}>Usted no ha accedido aun al sistema</Typography>
+        </div>);
+    }
   }
 
   function getDataGraph() {
@@ -103,7 +108,7 @@ export default function DashBoard(props) {
         {isPromiseReady ? <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography> : ""}
       </Paper>
       <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
-        {isPromiseReady ? getLastEntry() : ""}
+        {isPromiseReady ? getLastEntry(Data.lastEntry) : ""}
       </Paper>
       <Paper elevation={2} className={clsx(classes.borderBoxR, classes.buttonBox)}>
         <Typography align="center" className="title">

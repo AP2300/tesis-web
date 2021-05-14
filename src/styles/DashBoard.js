@@ -43,7 +43,7 @@ export default makeStyles((theme) => ({
     fontSize: `calc(40px + (75 - 40) * ((40vw - 320px) / (1600 - 300)))`
   },
   date: {
-    fontSize: `calc(17px + (35 - 17) * ((90vw - 320px) / (1600 - 300)))`
+    fontSize: `calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))`
   },
   borderBoxR: {
 
