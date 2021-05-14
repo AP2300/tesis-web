@@ -53,7 +53,7 @@ export default makeStyles(() => ({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "0.1%",
-        width: "30%",
+        minWidth: "30%",
         height: "100%",
         transition: "200ms ease-in",
         "& .Title": {

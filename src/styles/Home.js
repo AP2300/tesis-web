@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
     }
   },
   hide: {
-    marginLeft: "-8%",
+    marginLeft: "-15%",
     opacity: '0'
   },
   drawer: {
@@ -59,7 +59,7 @@ export default makeStyles((theme) => ({
     minWidth: drawerWidth,
     backgroundColor: "whitesmoke",
     height: "100vh",
-
+    overflow: "hidden"
   },
   drawerHeader: {
     display: 'flex',
@@ -174,7 +174,7 @@ export default makeStyles((theme) => ({
     width: "9em"
   },
   active: {
-    paddingLeft: "20%",
+    paddingLeft: "15%",
     color: "#0569b9",
     transform: "scale(1.1)",
     transition: "200ms ease-in"

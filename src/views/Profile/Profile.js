@@ -332,7 +332,7 @@ export default function Profile(props) {
 
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modifica tu foto de perfil`}>
-                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
+                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false}
                     onAdd={(fileObjs) => setFormControl({ ...FormControl, selPicture: fileObjs })}
                     onDrop={(fileObjs) => setFormControl({ ...FormControl, selPicture: fileObjs })}
                     acceptedFiles={['image/*']} />

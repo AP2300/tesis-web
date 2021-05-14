@@ -197,7 +197,7 @@ export default function History() {
     }
 
     return (
-        <div >
+        <div>
             <Accordion className={classes.Acordion}  >
                 <AccordionSummary className={classes.margins}
                     expandIcon={<FilterList />}

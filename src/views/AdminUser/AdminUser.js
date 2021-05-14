@@ -100,7 +100,7 @@ export default function AdminUser() {
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
         users.usersList.map(async (el, i) => {
-            if (el.IDUser === e.currentTarget.id) {
+                if (el.IDUser === Number(e.currentTarget.id)) {
                 const res = await GetSecurityUserData(e.currentTarget.id)
                 setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
                 setSelUser(i)
@@ -113,6 +113,7 @@ export default function AdminUser() {
     const GetUsers = async () => {
         const res = await GetHistoryData()
         if (res) {
+            console.log(res);
             setUsers({ ...users, usersList: res.data.data, userDisplay: res.data.data[selUser] })
             setPromises({ ...promises, users: true })
         }
@@ -391,7 +392,7 @@ export default function AdminUser() {
 
             {editModal && <Modal IsOpen={editModal} close={setEditModal} okFunction={EditPhoto} deletePicture={DeletePhoto}
                 title={`Modificando foto de perfil de ${users.userDisplay ? users.userDisplay.FullName : ""}`}>
-                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o has click para seleccionar un archivo" showAlerts={false}
+                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false}
                     onAdd={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
                     onDrop={(fileObjs) => setUsers({ ...users, selPicture: fileObjs })}
                     acceptedFiles={['image/*']} />

@@ -70,9 +70,11 @@ export default function DashBoard(props) {
 
   function getLastEntry(date) {
     return (
-      <div className={classes.borderBoxL}>
-        <Typography className={classes.date}>{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()} 
-            ${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
+      <div className={classes.centerBox}>
+        <Typography className={classes.BoxText}>Su Ultimo Acceso fue </Typography>
+        <Typography className={classes.date} align="center">{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()}`}
+        </Typography>
+        <Typography className={classes.date} align="center">{`${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
       </div>
     )
   }
@@ -99,8 +101,7 @@ export default function DashBoard(props) {
         <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>
       </Paper>
       <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
-        <Typography className={classes.BoxText}>Su Ultimo Acceso fue </Typography>
-        {isPromiseReady ? getLastEntry(Data.lastEntry) : "..."}
+        {isPromiseReady ? getLastEntry() : ""}
       </Paper>
       <Paper elevation={2} className={clsx(classes.borderBoxR, !isPromiseReady && classes.loading, classes.buttonBox)}>
         <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>

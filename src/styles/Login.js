@@ -1,7 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
 import sizes from "./sizes";
+import img from "./resources/1398650.jpg"
 
 export default makeStyles((theme) => ({
+    main:{  
+        backgroundImage: `url(${img})`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover"
+    },
     root: {
         textAlign: "center",
         width: "40vw",
