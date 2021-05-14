@@ -41,7 +41,7 @@ export default function History() {
 
     useEffect(() => {
         if (Data.Users !== "") FuzzySearch()
-    }, [Textfield,States.Type])
+    }, [Textfield, States.Type])
 
     useEffect(() => {
         if (Data.AllUsers.length !== 0) {
@@ -173,15 +173,15 @@ export default function History() {
         let reg = new RegExp(`\\b${Textfield}`, 'i');
         let newSearchArr = [];
         Data.Users.forEach(e => {
-            if(Textfield === "" && States.Type === "A" && e.IsAdmin){
+            if (Textfield === "" && States.Type === "A" && e.IsAdmin) {
                 newSearchArr.push(e);
-            } else if(Textfield === "" && States.Type === "U" && !e.IsAdmin){
+            } else if (Textfield === "" && States.Type === "U" && !e.IsAdmin) {
                 newSearchArr.push(e);
             }
             if ((reg.test(e.FullName) && Textfield !== "")
                 || (reg.test(e.Email) && Textfield !== "")
                 || (reg.test(e.IDUser) && Textfield !== "")) {
-                if(States.Type === "T" || (States.Type === "U" && !e.IsAdmin) || (States.Type === "A" && e.IsAdmin)){
+                if (States.Type === "T" || (States.Type === "U" && !e.IsAdmin) || (States.Type === "A" && e.IsAdmin)) {
                     newSearchArr.push(e)
                 }
             } else if (Textfield === "" && States.Type === "T") {
@@ -384,11 +384,8 @@ export default function History() {
                                     expandIcon={<ExpandMore />}
                                     aria-controls="panel1c-content"
                                 >
-                                    <div className="UserIcon">
-                                        {el.IsAdmin ? <VerifiedUser /> : <People /> }
-                                    </div>
                                     <div className="UserInfo">
-                                        <Typography className={classes.heading}>{el.FullName}</Typography>
+                                        <Typography className={classes.heading}>{el.IsAdmin ? <VerifiedUser /> : <People /> } <span style={{marginLeft: "8px"}}>{el.FullName}</span></Typography>
                                     </div>
                                     <div className="UserInfo">
                                         <Typography className={classes.secondaryHeading}>ID: {el.IDUser}</Typography>

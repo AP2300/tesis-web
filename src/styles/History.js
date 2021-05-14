@@ -52,7 +52,7 @@ export default makeStyles((theme) => ({
         overflowY: "scroll",
         "& > .MuiAccordion-root.Mui-expanded": {
             margin: 0
-        }
+        },
     },
     GeneralGraph: {
         width: "100%",
@@ -68,15 +68,11 @@ export default makeStyles((theme) => ({
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
+        display: "flex",
+        alignItems: "flex-end",
     },
     secondaryHeading: {
         fontSize: "1rem",
-        color: "#000000bd"
-    },
-    icon: {
-        verticalAlign: 'bottom',
-        height: 20,
-        width: 20,
     },
     details: {
         alignItems: 'center',
@@ -177,6 +173,7 @@ export default makeStyles((theme) => ({
         "& > .MuiButtonBase-root.MuiAccordionSummary-root .MuiAccordionSummary-content": {
             flexWrap: "wrap",
             justifyContent: "space-between",
+            color: "#000000bd",
             "&  .UserInfo": {
                 display: "flex",
                 width: "30%",

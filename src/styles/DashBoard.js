@@ -55,6 +55,7 @@ export default makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    padding: "2%",
     "& > *":{
       color: "#000000a6",
       fontWeight: "600"
@@ -87,14 +88,29 @@ export default makeStyles((theme) => ({
   buttonBox:{
     display: "flex",
     alignItems: "center",
+    flexDirection: "column",
     justifyContent: "space-evenly",
-    "& > .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
+    padding: ".5%",
+    "& div":{
+      display: "flex",
+      width: "100%",
+      justifyContent: "space-evenly",
+      padding: "1%",
+      height: "9vh"
+    },
+    "& > div .MuiButtonBase-root.MuiButton-root.MuiButton-text":{
       fontSize: "calc(18px + (50 - 18) * ((90vw - 320px) / (1600 - 300)))",
       width: "50%",
       height: "100%",
       borderRadius: "5px",
       color: "#565656",
-      minWidth: 0
+      minWidth: 0,
+    },
+    "& .title":{
+      fontSize: "calc(15px + (40 - 15) * ((50vw - 320px) / (1600 - 300)))",
+      color: "#000000a6",
+      fontWeight: "600",
+      paddingBottom: "2%"
     }
   },
   selectedChart:{

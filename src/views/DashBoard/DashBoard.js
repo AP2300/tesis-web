@@ -73,7 +73,7 @@ export default function DashBoard(props) {
   function getLastEntry(date) {
     return (
       <div className={classes.centerBox}>
-        <Typography className={classes.BoxText}>Su Ultimo Acceso fue </Typography>
+        <Typography className={classes.BoxText}>Su último acceso fue </Typography>
         <Typography className={classes.date} align="center">{`${moment(date).date()}-${moment(date).month() + 1}-${moment(date).year()}`}
         </Typography>
         <Typography className={classes.date} align="center">{`${ShowTime('h', moment(date).hour())}:${ShowTime('m', moment(date).minute())} ${ShowTime('am/pm', moment(date).hour())}`}</Typography>
@@ -99,26 +99,31 @@ export default function DashBoard(props) {
   return (
     <div className={classes.root}>
       <Paper elevation={2} className={clsx(classes.borderBoxL, !isPromiseReady && classes.loading)}>
-        {isPromiseReady ? <Typography className={classes.BoxText} >Esta semana accedio</Typography>: ""}
-        {isPromiseReady ? <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography>: ""}
+        {isPromiseReady ? <Typography className={classes.BoxText} >Esta semana accedió</Typography> : ""}
+        {isPromiseReady ? <Typography className={classes.number}>{getDateAccess(generateGraphData(Data.graph))}</Typography> : ""}
       </Paper>
       <Paper elevation={2} className={clsx(!isPromiseReady && classes.loading)} >
         {isPromiseReady ? getLastEntry() : ""}
       </Paper>
       <Paper elevation={2} className={clsx(classes.borderBoxR, classes.buttonBox)}>
-        <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
-          <i className="fas fa-chart-bar"></i>
-        </Button>
-        <Button name="line" onClick={handleClick} className={clsx(typeChart === "line" ? classes.selectedChart : "")}>
-          <i className="fas fa-chart-area"></i>
-        </Button>
+        <Typography align="center" className="title">
+          Tipo de gráfica
+        </Typography>
+        <div>
+          <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
+            <i className="fas fa-chart-bar"></i>
+          </Button>
+          <Button name="line" onClick={handleClick} className={clsx(typeChart === "line" ? classes.selectedChart : "")}>
+            <i className="fas fa-chart-area"></i>
+          </Button>
+        </div>
       </Paper>
 
       <Paper elevation={2} className={clsx(classes.GraphBox, !isPromiseReady && classes.loading)} >
-        {isPromiseReady ?Data.graph !== "" ?  <ChartComponent
+        {isPromiseReady ? Data.graph !== "" ? <ChartComponent
           type={typeChart}
           data={getDataGraph()}
-        /> : <div className={classes.message}><Typography>No hay accesos la ultima semana</Typography></div> : "" }
+        /> : <div className={classes.message}><Typography>No hay accesos la última semana</Typography></div> : ""}
       </Paper>
     </div>
   );

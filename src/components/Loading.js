@@ -60,40 +60,47 @@ export default function LoadingComp() {
 
     const getUserData = async () => {
         const res = await GetUserData()
-        if(res) setIsAdmin(res.res.IsAdmin)
+        if (res) setIsAdmin(res.res.IsAdmin)
         else history.push("/")
-        
+
     }
 
     function handleReturn() {
         history.push("/home")
     }
+    function loadAnimation() {
+        return (
+            <div className={classes.cont}>
+                <Typography className={classes.text} gutterBottom variant="h5" component="h2">
+                    Verificando privilegios...
+                </Typography>
+                <Ellipsis size={120} color={"#4f4f4f"} />
+            </div>
+        )
+    }
 
     return (
         <div className={classes.root}>
             {IsAdmin === "" ?
-                <div className={classes.cont}>
-                    <Typography className={classes.text} gutterBottom variant="h5" component="h2">
-                        Verificando privilegios...
-                </Typography>
-                    <Ellipsis size={120} color={"#4f4f4f"} />
-                </div>
-                :
-                <div className={classes.cont}>
-                    <div className="codeCont">
-                        <Typography className={classes.number}>4</Typography>
-                        <Typography className={classes.number}>0</Typography>
-                        <Typography className={classes.number}>3</Typography>
-                    </div>
-                    <Typography className={classes.text} gutterBottom variant="h2" component="h2" style={{ color: "#ff6d6d" }} align="center">
-                        Acceso Denegado
+                    loadAnimation()
+                : IsAdmin === 0 ?
+                    <div className={classes.cont}>
+                        <div className="codeCont">
+                            <Typography className={classes.number}>4</Typography>
+                            <Typography className={classes.number}>0</Typography>
+                            <Typography className={classes.number}>3</Typography>
+                        </div>
+                        <Typography className={classes.text} gutterBottom variant="h2" component="h2" style={{ color: "#ff6d6d" }} align="center">
+                            Acceso Denegado
                     </Typography>
-                    <Button onClick={handleReturn}
-                        style={{ fontSize: "1.5em", color: "#4f4f4f"}}>
-                        Volver a home
+                        <Button onClick={handleReturn}
+                            style={{ fontSize: "1.5em", color: "#4f4f4f" }}>
+                            Volver a home
                     </Button>
-                </div>
-            }
+                    </div>
+                    :
+                    loadAnimation()
+                    }
         </div>
     )
 }
