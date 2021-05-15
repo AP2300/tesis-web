@@ -591,7 +591,7 @@ export default function AdminUserSecurity(props) {
                                                     icon={<ReportProblemRounded />}
                                                     label="No hay huellas dactilares configuradas"
                                                 />
-                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd}>
+                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
                                                     <Add />
                                                         Agregar foto
                                                 </Button>
