@@ -150,7 +150,12 @@ export default function Security(props) {
                             icon={<ReportProblemRounded />}
                             label="El reconocimiento facial esta desactivado"
                         />}
-                        <Avatar src={`${Cons.url}${state.Security ? state.Security.filter((el) => el.Name == "Facial")[0].data : ""}`} className={classes.img} />
+                        {formats.includes("Facial") ?
+                            <Avatar src={`${Cons.url}${state.Security ? state.Security.filter((el) => el.Name == "Facial")[0].data : ""}`} className={classes.img} />
+                            : 
+                            <Avatar className={classes.img} />
+                        }
+                        
                     </div>
                 </Paper>
                 <div className={classes.rightContainer}>

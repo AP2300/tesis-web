@@ -75,7 +75,7 @@ function Login(props) {
                 setOpen(true);
             }else if(response.data.session && !response.data.success){
                 setisLoading(false);
-                setMsg("El usuario ya tiene una sesion activa, Espere 5 Minutos");
+                setMsg("El usuario ya tiene una sesion activa");
                 setOpen(true);
             } else{
                 setisLoading(false);
