@@ -10,7 +10,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 const actions = [
-  { icon: <PeopleIcon />, name: 'Administar usuarios' },
+  { icon: <PeopleIcon />, name: 'Administrar usuarios' },
   { icon: <HistoryIcon />, name: 'Historial global' },
   { icon: <LockOpenIcon />, name: 'Administrar seguridad' }
 ];

@@ -49,26 +49,13 @@ export function SelectPage(location) {
       return "Administrar seguridad";
 
     case "/admin/users":
-      return "Administar usuarios";
+      return "Administrar usuarios";
 
     default:
       return "Panel Principal";
   };
 }
 
-// export function otherPage(e) {
-//   let route = "";
-//   if (isObject(e)) route = e.target.outerText;
-//   else route = e;
-//   switch (route) {
-//     case "Panel Principal": return ("/home");
-//     case "Panel Personal": return ("/home/profile");
-//     case "Historial": return ("/home/history");
-//     case "Seguridad": return ("/home/security");
-//     case "Administrar seguridad": return ("/admin/security");
-//     case "Historial global": return ("/admin/history");
-//     default: return ("/home");
-//   }
 
 export function otherPage(route) {
   switch (route) {
@@ -78,7 +65,7 @@ export function otherPage(route) {
     case "Seguridad": return ("/home/security");
     case "Administrar seguridad": return ("/admin/security");
     case "Historial global": return ("/admin/history");
-    case "Administar usuarios": return ("/admin/users")
+    case "Administrar usuarios": return ("/admin/users")
     default: return ("/home");
   }
 }

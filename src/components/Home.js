@@ -22,7 +22,6 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(async () => {
       const res = await CheckSession()
-      console.log(res);
       if(res.data.session === "vencida") history.push("/")
     }, 10000);
     return () => clearInterval(interval);

@@ -100,7 +100,7 @@ export default function AdminUser() {
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
         users.usersList.map(async (el, i) => {
-                if (el.IDUser === Number(e.currentTarget.id)) {
+            if (el.IDUser === Number(e.currentTarget.id)) {
                 const res = await GetSecurityUserData(e.currentTarget.id)
                 setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
                 setSelUser(i)
@@ -288,9 +288,7 @@ export default function AdminUser() {
                                 <div className={classes.UpperContainer}>
                                     <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", width: "100%" }}>
                                         <Button onClick={handleClose} className={classes.closeButton}><Close /></Button>
-                                        {/* {!users.userDisplay.IsAdmin ? */}
                                         <Button onClick={handleDelete} className={classes.closeButton}><Delete /></Button>
-                                        {/* : ""} */}
                                     </div>
                                     {promises.userDisplay ? <Typography className="name">{users.userDisplay.FullName}</Typography>
                                         : <Typography className={classes.loading} style={{ width: "18vw", height: "5vh" }}></Typography>}
@@ -312,8 +310,6 @@ export default function AdminUser() {
                                             </Typography>
                                             <Divider variant="middle" flexItem style={{ height: "1px" }} />
 
-                                            {/* {!users.userDisplay.IsAdmin ?  */}
-
                                             {!users.isActivatable ?
                                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
                                                     <Alert severity="warning" style={{ margin: "2% 5% 2% 5%" }}>El usuario no tiene metodos de autenticacion, no es activable</Alert>
@@ -329,9 +325,6 @@ export default function AdminUser() {
                                                     />
                                                     <Typography>Activo</Typography>
                                                 </div>}
-
-                                            {/* : ""} */}
-
 
                                         </div>
                                         <Divider orientation="vertical" variant="middle" className="dividerV" />
