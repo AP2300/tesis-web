@@ -8,6 +8,33 @@ export default makeStyles((theme) => ({
         "100%": { backgroundPosition: "0% 50%" }
     },
 
+    "@keyframes fade": {
+        "0%,25%": {
+            opacity: "0"
+        },
+        "50%": {
+            opacity: "1"
+        },
+        "90%": {
+            opacity: "1"
+        },
+        "100%": {
+            opacity: "0"
+        }
+    },
+
+    "@keyframes rotateLente": {
+        "0%": {
+            transform: "rotate(0deg)"
+        },
+        "50%": {
+            transform: "rotate(360deg)"
+        },
+        "100%": {
+            transform: "rotate(360deg)"
+        },
+    },
+
     loading: {
         animationName: '$loading',
         background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
@@ -23,7 +50,23 @@ export default makeStyles((theme) => ({
         marginRight: "2%",
         "& > *": {
             color: "#4f4f4f"
-        }
+        },
+        "& #Lente, #Person": {
+            transition: "all 1s ease",
+            transformBox: "fill-box",
+            transformOrigin: "center",
+        },
+        "& #Person": {
+            opacity: "0",
+        },
+        "& @media (prefers-reduced-motion: no-preference)": {
+            "#Lente": {
+                animation: "rotateLente 3s ease-in-out infinite",
+            },
+            "#Person": {
+                animation: "fade 3s ease-out forwards infinite",
+            }
+        },
     },
     mainContainer:{
         width: "100%",
