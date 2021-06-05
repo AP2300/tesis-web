@@ -99,15 +99,17 @@ export default function AdminUser() {
 
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
-        users.usersList.map(async (el, i) => {
-            if (el.IDUser === Number(e.currentTarget.id)) {
-                const res = await GetSecurityUserData(e.currentTarget.id)
-                setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
-                setSelUser(i)
-                setIsActive(users.usersList[i].IsActive)
-                setPromises({ ...promises, userDisplay: true })
-            }
-        })
+        if(users){
+            users.usersList.map(async (el, i) => {
+                if (el.IDUser === Number(e.currentTarget.id)) {
+                    const res = await GetSecurityUserData(e.currentTarget.id)
+                    setUsers({ ...users, userDisplay: el, userAdd: false, isActivatable: res.data.data.length < 2 ? false : true })
+                    setSelUser(i)
+                    setIsActive(users.usersList[i].IsActive)
+                    setPromises({ ...promises, userDisplay: true })
+                }
+            })
+        }
     }
 
     const GetUsers = async () => {

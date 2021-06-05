@@ -17,7 +17,7 @@ moment().format();
 
 
 export default function Profile(props) {
-    const { FullName, Email, RegDate, Picture, IDUser } = props.Data
+    const { FullName, Email, RegDate, Picture, IDUser, IsAdmin } = props.Data
     const history = useHistory()
     const classes = useStyles();
     const [FormControl, setFormControl] = useState({ NameControl: "", EmailControl: "", PassControl: "", PassControlConfirm: "", selPicture: "" })
@@ -250,7 +250,7 @@ export default function Profile(props) {
                             <Typography variant="h3" className={clsx("name", !IsPromiseReady && classes.loading)}>
                                 {IsPromiseReady ? FullName : "||||||||||||||||||||||"}</Typography>
                             <Typography variant="subtitle1" className={clsx("secondary", !IsPromiseReady && classes.loading)}>
-                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - Tipo Usuario</Typography>
+                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - {IsAdmin ? "administrador" : "usuario"}</Typography>
                         </div>
                         <div className={classes.modifyImg}>
                             <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
@@ -305,7 +305,7 @@ export default function Profile(props) {
 
                                 <div className={classes.item}>
                                     <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange} type="email"
-                                        className={classes.textField} value={FormControl.Email} name="EmailControl" helperText="modificar el correo cerrara la sesion" />
+                                        className={classes.textField} value={FormControl.Email} name="EmailControl" helperText="modificar el correo cerrará la sesión" />
                                     <Button className={classes.editButton} onClick={() => HandleClick("email")}><Edit /></Button>
                                 </div>
 
