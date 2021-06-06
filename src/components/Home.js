@@ -22,7 +22,10 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(async () => {
       const res = await CheckSession()
-      if(res.data.session === "vencida") history.push("/")
+      if(res.data.session === "vencida") {
+        history.replace({state: { expired: true }})
+        history.push("/")
+      }
     }, 10000);
     return () => clearInterval(interval);
   }, []);

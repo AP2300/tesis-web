@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
 import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add } from '@material-ui/icons/';
-import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFace, setFinger } from '../../api/user';
+import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFace, setFaceBlob, getFace, setFinger, getFinger } from '../../api/user';
 import Notification from '../../components/Notifications';
 import Modal from '../../components/Modal';
 import { useHistory } from 'react-router';
+import { Ellipsis } from 'react-css-spinners'
 import { DropzoneArea } from 'material-ui-dropzone';
 import * as Cons from "../../api/constants";
 import clsx from 'clsx';
@@ -24,6 +25,8 @@ export default function AdminUserSecurity(props) {
     const [UsersPanel, setUsersPanel] = useState(true);
     const [fileInfo, setFileInfo] = useState({ isAdded: false });
     const [handData, setHandData] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [face, setFace] = useState({success: false, })
     const [fingerData, setFingerData] = useState({value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"]});
     const [formCompleted, setFormCompleted] = useState(false)
     const classes = useStyles();
@@ -31,6 +34,10 @@ export default function AdminUserSecurity(props) {
     useEffect(() => {
         checkIfFormCompleted()
     }, [fileInfo])
+
+    useEffect(() => {
+        console.log(openAdd)
+    }, [openAdd])
 
     useEffect(async () => {
         console.log(props.match.params);
@@ -211,8 +218,98 @@ export default function AdminUserSecurity(props) {
         }
     }
 
-    function handleAddTakePhoto() {
+    function handleAddTakePhoto(type) {
+        if(type === "finger") {
+            setOpenAdd({open: true, name: "fingerInstructions"});
+        } else if(type === "face") {
+            setOpenAdd({open: true, name: "faceInstructions"});
+        }
+    }
 
+    async function handleAddTakePic(type) {
+        if(type === "fingerConfirm") {
+            setOpenAdd({open: true, name: "fingerAdd"});
+        } else if(type === "faceConfirm") {
+            setOpenAdd({open: true, name: "faceAdd"});
+            const res = await getFace();
+            if(res) {
+                if(res.data.success) {
+                    setFace(res.data)  
+                } else {
+                    setOpenAdd({open: false, name: ""})
+                    setNoti({
+                        severity: "error",
+                        description: res.data.msg,
+                        open: true})
+                }
+            }
+            
+        }
+    }
+
+    useEffect(() => {
+        if(face.success) {
+            setIsLoading(false)
+        }
+    }, [face])
+
+    function retakeFace() {
+
+    }
+
+    const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+      
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+      
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+      
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+      
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    };
+
+    async function handleConfirmPhoto() {
+        const params = {
+            face: b64toBlob(face.base64_img, 'image/jpeg'),
+            id: userData.IDUser
+        } 
+        setFace({success: false, })
+        setIsLoading(true)
+        console.log(params);
+        const res = await setFaceBlob(params)
+        console.log(res);
+        if (res) {
+            if(res.data.success) {
+                setOpenAdd({open: false, name: ""});
+                setNoti({
+                    severity: "success",
+                    description: "Se ha agregado la imagen satisfactoriamente",
+                    open: true
+                })
+                fetchUserSecurity(activeUser, userData.IDUser);
+                setFileInfo({isAdded: false});
+            } else {
+                setNoti({
+                    severity: "error",
+                    description: "Ha ocurrido un error, inténtelo nuevamente",
+                    open: true
+                })
+            }
+        } else {
+            history.push({
+                pathname: '/',
+                state: { expired: true }
+            });
+        }
     }
 
     useEffect(() => {
@@ -282,20 +379,12 @@ export default function AdminUserSecurity(props) {
         }
     }
 
-    const handleClickOpenEdit = (data) => {
+    /*const handleClickOpenEdit = (data) => {
         setOpenEdit({ open: true, data });
-    };
-
-    function handleEditUpload() {
-
-    }
+    };*/
 
     function handleCloseEdit() {
         setOpenEdit({ open: false, data: "" })
-    }
-
-    function handleEditTakePhoto() {
-
     }
 
     return (
@@ -311,7 +400,7 @@ export default function AdminUserSecurity(props) {
                     />
                 </Modal>
                     {openAdd.name == "Huella" ? (
-                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={handleAddTakePhoto} disableUploadPhoto={!formCompleted} title={"Agregar Dedo"}>
+                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} disableUploadPhoto={!formCompleted} title={"Agregar Dedo"}>
                             <div >
                                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({fileObjs, isAdded: true})} onDrop={(fileObjs) => setFileInfo({fileObjs, isAdded: true})}
                                 onDelete={() => setFileInfo({isAdded: false})}/>
@@ -361,15 +450,32 @@ export default function AdminUserSecurity(props) {
                             </div>
                         </Modal>
                     ) :  openAdd.name == "Facial" ? (
-                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={handleAddTakePhoto} disableUploadPhoto={!fileInfo.isAdded} title={"Agregar imagen facial"}>
+                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} disableUploadPhoto={!fileInfo.isAdded} title={"Agregar imagen facial"}>
                             <div>
                                 <Typography align="center">Ingrese la nueva foto facial </Typography>
                                 <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({fileObjs, isAdded: true})} onDrop={(fileObjs) => setFileInfo({fileObjs, isAdded: true})}
                                 onDelete={() => setFileInfo({isAdded: false})}/>
                             </div>
                         </Modal>
+                    ) : openAdd.name == "faceInstructions" ? (
+                        <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd}  handleTakePicFunction={() => handleAddTakePic("faceConfirm")} title={"Tomar imagen facial"}>
+                            <div>
+                                
+                            </div>
+                        </Modal>
+                    ) : openAdd.name == "faceAdd" ? (
+                        <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
+                            { (isLoading && !face.success) ? (
+                                <div style={{position: "flex", alignItems: "center", alignContent: "center", width: "100%"}}>
+                                    <Ellipsis size={120} color={"#4f4f4f"} />
+                                </div>
+                            ) : (
+                                <Avatar src={`data:image/jpeg;base64,${face.base64_img}`} style={{width: "400px", height: "400px"}}/>
+                            )}
+                           
+                        </Modal>
                     ) : (null)}
-                <Modal defaultButtons={false} IsOpen={openEdit.open} close={handleCloseEdit} uploadPhotoFunction={handleEditUpload} takePhotoFunction={handleEditTakePhoto} disableUploadPhoto={!fileInfo.isAdded} title="Editar">
+                {/*<Modal defaultButtons={false} IsOpen={openEdit.open} close={handleCloseEdit} uploadPhotoFunction={handleEditUpload} takePhotoFunction={handleEditTakePhoto} disableUploadPhoto={!fileInfo.isAdded} title="Editar">
                     {openEdit.data.Name === "Huella" ? (
                         <div>
                             <Typography align="center">Dedo {openEdit.data.fingerName}</Typography>
@@ -384,7 +490,7 @@ export default function AdminUserSecurity(props) {
                         </div>
                     ) : (null)}
 
-                </Modal>
+                </Modal>*/}
                 <div className={classes.panelContainer}>
                     <Paper className={clsx(UsersPanel ? classes.UserList : classes.UserListMinimized)}>
                         {UsersPanel ?

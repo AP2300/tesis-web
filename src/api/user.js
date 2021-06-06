@@ -252,6 +252,61 @@ export async function setFace(data) {
   }
 }
 
+export async function setFaceBlob(data) {
+  const form = new FormData();
+  form.append("face", data.face, 'tempface.jpg')
+  form.append("id", data.id)
+  try {
+    const res = await axios.post(Cons.setFace, form, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getFace() {
+  try {
+    const res = await axios.get(Cons.getFace, {
+      headers: {
+        'Access-Control-Allow-Origin': "*"
+      }
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getFinger() {
+  try {
+    const res = await axios.get(Cons.getFinger, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    if ((await res).status === 200) {
+      return res
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export async function DeletePicture(params){
   try{
     const res = axios.post(Cons.DeleteProf, params ,{

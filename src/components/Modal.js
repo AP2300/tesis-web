@@ -5,11 +5,11 @@ import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton"
-import { Close, Done, Backup, AddAPhoto, Delete } from '@material-ui/icons/';
+import { Close, Done, Backup, AddAPhoto, Delete, Replay} from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const { defaultButtons = true, disableUploadPhoto = false } = props
+    const { defaultButtons = true, disableUploadPhoto = false, takePhoto = false, confirmPhoto = false} = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -43,15 +43,25 @@ export default function ModalComponent(props) {
     };
 
     const handleTakePhoto = () => {
-        props.takePhotoFunction()
         setOpen(false);
         props.close(false)
+        props.takePhotoFunction()
     };
 
     const handleDeletePicture = () => {
         props.deletePicture()
         setOpen(false);
         props.close(false)
+    }
+
+    const handleTakePic = () => {
+        setOpen(false);
+        props.close(false)
+        props.handleTakePicFunction()
+    }
+
+    const handleRetakePic = () => {
+        props.handleRetakePicFunction()
     }
 
     return (
@@ -89,6 +99,27 @@ export default function ModalComponent(props) {
                                     </IconButton>}
                                 <IconButton className={classes.continue} onClick={handleOK}>
                                     <Done /> Continuar
+                                </IconButton>
+                            </div>
+                        ) : takePhoto ? (
+                            <div className={classes.bottom}>
+                                <IconButton className={classes.close} onClick={handleClose}>
+                                    <Close /> Cancelar
+                                </IconButton>
+                                <IconButton className={classes.continue} onClick={handleTakePic}>
+                                    <AddAPhoto />  Tomar Foto
+                                </IconButton>
+                            </div>
+                        ) : confirmPhoto ? (
+                            <div className={classes.bottom}>
+                                <IconButton className={classes.close} onClick={handleClose}>
+                                    <Close /> Cancelar
+                                </IconButton>
+                                <IconButton className={classes.continue} onClick={handleRetakePic}>
+                                    <Replay /> Volver a tomar
+                                </IconButton>
+                                <IconButton className={classes.continue} onClick={handleOK}>
+                                    <Done /> Confirmar
                                 </IconButton>
                             </div>
                         ) : (
