@@ -294,7 +294,7 @@ export async function getFinger() {
   try {
     const res = await axios.get(Cons.getFinger, {
       headers: {
-        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': "*"
       }
     })
     if ((await res).status === 200) {
@@ -304,6 +304,7 @@ export async function getFinger() {
     }
   } catch (e) {
     console.error(e)
+    return false
   }
 }
 
@@ -322,5 +323,6 @@ export async function DeletePicture(params){
     }
   }catch(e){
     console.error(e)
+    return false
   }
 }
