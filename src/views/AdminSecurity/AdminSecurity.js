@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add } from '@material-ui/icons/';
-import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFace, setFaceBlob, getFace, setFinger, getFinger } from '../../api/user';
+import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle } from '@material-ui/icons/';
+import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger } from '../../api/user';
 import Notification from '../../components/Notifications';
 import Modal from '../../components/Modal';
 import { useHistory } from 'react-router';
@@ -10,6 +10,8 @@ import { Ellipsis } from 'react-css-spinners'
 import { DropzoneArea } from 'material-ui-dropzone';
 import * as Cons from "../../api/constants";
 import clsx from 'clsx';
+import { ReactComponent as PersonaAnimation } from "../../styles/resources/Persona.svg"
+import { ReactComponent as HuellaAnimation } from "../../styles/resources/Huella.svg"
 
 export default function AdminUserSecurity(props) {
     const history = useHistory();
@@ -25,16 +27,18 @@ export default function AdminUserSecurity(props) {
     const [UsersPanel, setUsersPanel] = useState(true);
     const [fileInfo, setFileInfo] = useState({ isAdded: false });
     const [handData, setHandData] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
-    const [face, setFace] = useState({success: false, });
-    const [finger, setFinger] = useState({success: false, });
-    const [fingerData, setFingerData] = useState({value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"]});
-    const [formCompleted, setFormCompleted] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [face, setFace] = useState({ success: false, });
+    const [finger, setFinger] = useState({ success: false, });
+    const [fingerData, setFingerData] = useState({ value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"] });
+    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm:true})
     const classes = useStyles();
 
     useEffect(() => {
-        checkIfFormCompleted()
-    }, [fileInfo])
+        console.log(formCompleted)
+        if (handData && fingerData.value) setFormCompleted({ ...formCompleted, picture: true })
+        if (fileInfo.isAdded) setFormCompleted({ ...formCompleted, file: true })
+    }, [fileInfo, fingerData, handData])
 
     useEffect(() => {
         console.log(openAdd)
@@ -42,7 +46,7 @@ export default function AdminUserSecurity(props) {
 
     useEffect(async () => {
         console.log(props.match.params);
-        async function GetData(){
+        async function GetData() {
             if (userList.length === 0) {
                 console.log(userList)
                 let data = await GetHistoryData();
@@ -75,7 +79,7 @@ export default function AdminUserSecurity(props) {
     }, [userList])
 
     useEffect(() => {
-        if(face.success) {
+        if (face.success) {
             setIsLoading(false)
         }
     }, [face])
@@ -83,9 +87,11 @@ export default function AdminUserSecurity(props) {
     useEffect(() => {
         if (handData) {
             console.log(userData)
-            setFingerData({...fingerData, array: userData.huella.filter((item) => {
-                return item.fingerName.includes(handData)
-            })})
+            setFingerData({
+                ...fingerData, array: userData.huella.filter((item) => {
+                    return item.fingerName.includes(handData)
+                })
+            })
         }
     }, [handData])
 
@@ -164,7 +170,7 @@ export default function AdminUserSecurity(props) {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
         setHandData("")
-        setFingerData({...fingerData, value: "", array: []})
+        setFingerData({ ...fingerData, value: "", array: [] })
     }
 
     async function handleAddUpload() {
@@ -176,15 +182,15 @@ export default function AdminUserSecurity(props) {
         const res = await setFace(params)
         console.log(res);
         if (res) {
-            if(res.data.success) {
-                setOpenAdd({open: false, name: ""});
+            if (res.data.success) {
+                setOpenAdd({ open: false, name: "" });
                 setNoti({
                     severity: "success",
                     description: "Se ha agregado la imagen satisfactoriamente",
                     open: true
                 })
                 fetchUserSecurity(activeUser, userData.IDUser);
-                setFileInfo({isAdded: false});
+                setFileInfo({ isAdded: false });
             } else {
                 setNoti({
                     severity: "error",
@@ -210,15 +216,15 @@ export default function AdminUserSecurity(props) {
         const res = await setFinger(params)
         console.log(res);
         if (res) {
-            if(res.data.success) {
-                setOpenAdd({open: false, name: ""});
+            if (res.data.success) {
+                setOpenAdd({ open: false, name: "" });
                 setNoti({
                     severity: "success",
                     description: "Se ha agregado la imagen satisfactoriamente",
                     open: true
                 })
                 fetchUserSecurity(activeUser, userData.IDUser);
-                setFileInfo({isAdded: false});
+                setFileInfo({ isAdded: false });
             } else {
                 setNoti({
                     severity: "error",
@@ -235,44 +241,63 @@ export default function AdminUserSecurity(props) {
     }
 
     function handleAddTakePhoto(type) {
-        if(type === "finger") {
-            setOpenAdd({open: true, name: "fingerInstructions"});
-        } else if(type === "face") {
-            setOpenAdd({open: true, name: "faceInstructions"});
+        if (type === "finger") {
+            setOpenAdd({ open: true, name: "fingerInstructions" });
+        } else if (type === "face") {
+            setOpenAdd({ open: true, name: "faceInstructions" });
         }
     }
 
     async function handleAddTakePic(type) {
-        if(type === "fingerConfirm") {
-            setOpenAdd({open: true, name: "fingerAdd"});
+        if (type === "fingerConfirm") {
+            setOpenAdd({ open: true, name: "fingerAdd" });
             const res = await getFinger();
-            if(res) {
-                if(res.data.success) {
-                    setFinger(res.data)  
+            if (res) {
+                if (res.data.success) {
+                    setIsLoading(true)
+                    const params = {
+                        finger: b64toBlob(res.data.base64_img, "image/jpeg"),
+                        id: userData.IDUser
+                    }
+                    const res2 = await setFingerBlob(params)
+                    if (res2) {
+                        setFinger(true)
+                        setOpenAdd({ open: false, name: "" });
+                        setNoti({
+                            severity: "success",
+                            description: "Se ha agregado la imagen satisfactoriamente",
+                            open: true
+                        })
+                        fetchUserSecurity(activeUser, userData.IDUser);
+                        setFileInfo({ isAdded: false });
+                    }
+
                 } else {
-                    setFingerData({value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"]})
-                    setOpenAdd({open: false, name: ""})
+                    setFingerData({ value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"] })
+                    setOpenAdd({ open: false, name: "" })
                     setNoti({
                         severity: "error",
                         description: res.data.msg,
-                        open: true})
+                        open: true
+                    })
                 }
             }
-        } else if(type === "faceConfirm") {
-            setOpenAdd({open: true, name: "faceAdd"});
+        } else if (type === "faceConfirm") {
+            setOpenAdd({ open: true, name: "faceAdd" });
             const res = await getFace();
-            if(res) {
-                if(res.data.success) {
-                    setFace(res.data)  
+            if (res) {
+                if (res.data.success) {
+                    setFace(res.data)
                 } else {
-                    setOpenAdd({open: false, name: ""})
+                    setOpenAdd({ open: false, name: "" })
                     setNoti({
                         severity: "error",
                         description: res.data.msg,
-                        open: true})
+                        open: true
+                    })
                 }
             }
-            
+
         }
     }
 
@@ -283,20 +308,20 @@ export default function AdminUserSecurity(props) {
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
         const byteCharacters = atob(b64Data);
         const byteArrays = [];
-      
+
         for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-          const slice = byteCharacters.slice(offset, offset + sliceSize);
-      
-          const byteNumbers = new Array(slice.length);
-          for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-          }
-      
-          const byteArray = new Uint8Array(byteNumbers);
-          byteArrays.push(byteArray);
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
         }
-      
-        const blob = new Blob(byteArrays, {type: contentType});
+
+        const blob = new Blob(byteArrays, { type: contentType });
         return blob;
     };
 
@@ -304,22 +329,22 @@ export default function AdminUserSecurity(props) {
         const params = {
             face: b64toBlob(face.base64_img, 'image/jpeg'),
             id: userData.IDUser
-        } 
-        setFace({success: false, })
+        }
+        setFace({ success: false, })
         setIsLoading(true)
         console.log(params);
         const res = await setFaceBlob(params)
         console.log(res);
         if (res) {
-            if(res.data.success) {
-                setOpenAdd({open: false, name: ""});
+            if (res.data.success) {
+                setOpenAdd({ open: false, name: "" });
                 setNoti({
                     severity: "success",
                     description: "Se ha agregado la imagen satisfactoriamente",
                     open: true
                 })
                 fetchUserSecurity(activeUser, userData.IDUser);
-                setFileInfo({isAdded: false});
+                setFileInfo({ isAdded: false });
             } else {
                 setNoti({
                     severity: "error",
@@ -335,18 +360,10 @@ export default function AdminUserSecurity(props) {
         }
     }
 
-    function handleHand(e) {
-        setHandData(e.target.value)
-        checkIfFormCompleted()
-    }
 
     function handleFinger(e) {
-        setFingerData({...fingerData, value: e.target.value})
-        checkIfFormCompleted()
-    }
-
-    function checkIfFormCompleted() {
-        if(handData && fingerData.value && fileInfo.isAdded) setFormCompleted(true)
+        if (e.target.name === "hand") setHandData(e.target.value)
+        if (e.target.name === "finger") setFingerData({ ...fingerData, value: e.target.value })
     }
 
     async function fetchUserSecurity(name, id) {
@@ -410,144 +427,102 @@ export default function AdminUserSecurity(props) {
                         className={classes.chip}
                         icon={<ReportProblemRounded />}
                         label="Esta acción no se podrá deshacer."
-                        style={{marginTop: "1em"}}
+                        style={{ marginTop: "1em" }}
                     />
                 </Modal>
-                    {openAdd.name == "Huella" ? (
-                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} disableUploadPhoto={!formCompleted} title={"Agregar Dedo"}>
-                            <div >
-                                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({fileObjs, isAdded: true})} onDrop={(fileObjs) => setFileInfo({fileObjs, isAdded: true})}
-                                onDelete={() => setFileInfo({isAdded: false})}/>
-                                <div style={{display: "flex"}}>
-                                    <FormControl required className={classes.formControl}>
-                                        <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
-                                            <Select
-                                            value={handData}
-                                            onChange={handleHand}
-                                            name="hand"
-                                            inputProps={{
-                                                id: 'hand-native-required',
-                                            }}
-                                            >
-                                                <MenuItem disabled value="">
-                                                    <em>Seleccionar</em>
-                                                </MenuItem>
-                                                <MenuItem value={"derecho"}>Derecha</MenuItem>
-                                                <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
-                                            </Select>
-                                        <FormHelperText>Obligatorio</FormHelperText>
-                                    </FormControl>
-                                    <FormControl required className={classes.formControl}>
-                                        <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
-                                            <Select
-                                            value={fingerData.value}
-                                            onChange={handleFinger}
-                                            name="finger"
-                                            inputProps={{
-                                                id: 'finger-native-required',
-                                            }}
-                                            >
-                                                {fingerData.array ? fingerData.fingers.map((finger, idx) => {
-                                                    for(let i of fingerData.array) {
-                                                        console.log(i)
-                                                        console.log(handData)
-                                                        if(i.fingerName.includes(finger)) {
-                                                            return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
-                                                        }
-                                                    }
-                                                    return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
-                                                }) : ""}
-                                            </Select>
-                                        <FormHelperText>Obligatorio</FormHelperText>
-                                    </FormControl>
-                                </div>
+                {openAdd.name == "Huella" ? (
+                    <Modal defaultButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
+                        <div >
+                            <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
+                                onDelete={() => setFileInfo({ isAdded: false })} />
+                            <div style={{ display: "flex" }}>
+                                <FormControl required className={classes.formControl}>
+                                    <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
+                                    <Select
+                                        value={handData}
+                                        onChange={handleFinger}
+                                        name="hand"
+                                        inputProps={{
+                                            id: 'hand-native-required',
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            <em>Seleccionar</em>
+                                        </MenuItem>
+                                        <MenuItem value={"derecho"}>Derecha</MenuItem>
+                                        <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
+                                    </Select>
+                                    <FormHelperText>Obligatorio</FormHelperText>
+                                </FormControl>
+                                <FormControl required className={classes.formControl}>
+                                    <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
+                                    <Select
+                                        value={fingerData.value}
+                                        onChange={handleFinger}
+                                        name="finger"
+                                        inputProps={{
+                                            id: 'finger-native-required',
+                                        }}
+                                    >
+                                        {fingerData.array ? fingerData.fingers.map((finger, idx) => {
+                                            for (let i of fingerData.array) {
+                                                console.log(i)
+                                                console.log(handData)
+                                                if (i.fingerName.includes(finger)) {
+                                                    return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
+                                                }
+                                            }
+                                            return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
+                                        }) : ""}
+                                    </Select>
+                                    <FormHelperText>Obligatorio</FormHelperText>
+                                </FormControl>
                             </div>
-                        </Modal>
-                    ) : openAdd.name == "fingerInstructions" ? (
-                        <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd}  handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
-                            <div>
-                                
-                            </div>
-                        </Modal>
-                    ) : openAdd.name == "fingerAdd" ? (
-                        <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
-                            { (isLoading && !face.success) ? (
-                                <div style={{position: "flex", alignItems: "center", alignContent: "center", width: "100%"}}>
-                                    <Ellipsis size={120} color={"#4f4f4f"} />
-                                </div>
+                        </div>
+                    </Modal>
+                ) : openAdd.name == "fingerInstructions" ? (
+                    <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
+                        <div>
+                            <HuellaAnimation width="300" height="300" className={classes.root} />
+                        </div>
+                    </Modal>
+                ) : openAdd.name == "fingerAdd" ? (
+                    <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                            {(isLoading && finger.success) ? (
+
+                                <Ellipsis size={120} color={"#4f4f4f"} />
+
                             ) : (
-                                <div>
-                                    <FormControl required className={classes.formControl}>
-                                        <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
-                                            <Select
-                                            value={handData}
-                                            onChange={handleHand}
-                                            name="hand"
-                                            inputProps={{
-                                                id: 'hand-native-required',
-                                            }}
-                                            >
-                                                <MenuItem disabled value="">
-                                                    <em>Seleccionar</em>
-                                                </MenuItem>
-                                                <MenuItem value={"derecho"}>Derecha</MenuItem>
-                                                <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
-                                            </Select>
-                                        <FormHelperText>Obligatorio</FormHelperText>
-                                    </FormControl>
-                                    <FormControl required className={classes.formControl}>
-                                        <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
-                                            <Select
-                                            value={fingerData.value}
-                                            onChange={handleFinger}
-                                            name="finger"
-                                            inputProps={{
-                                                id: 'finger-native-required',
-                                            }}
-                                            >
-                                                {fingerData.array ? fingerData.fingers.map((finger, idx) => {
-                                                    for(let i of fingerData.array) {
-                                                        console.log(i)
-                                                        console.log(handData)
-                                                        if(i.fingerName.includes(finger)) {
-                                                            return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
-                                                        }
-                                                    }
-                                                    return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
-                                                }) : ""}
-                                            </Select>
-                                        <FormHelperText>Obligatorio</FormHelperText>
-                                    </FormControl>
-                                </div>
+                                <CheckCircle style={{ fontSize: "8rem", color: "#4f4f4f" }} />
                             )}
-                           
-                        </Modal>
-                    ) : openAdd.name == "Facial" ? (
-                        <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} disableUploadPhoto={!fileInfo.isAdded} title={"Agregar imagen facial"}>
-                            <div>
-                                <Typography align="center">Ingrese la nueva foto facial </Typography>
-                                <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({fileObjs, isAdded: true})} onDrop={(fileObjs) => setFileInfo({fileObjs, isAdded: true})}
-                                onDelete={() => setFileInfo({isAdded: false})}/>
-                            </div>
-                        </Modal>
-                    ) : openAdd.name == "faceInstructions" ? (
-                        <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd}  handleTakePicFunction={() => handleAddTakePic("faceConfirm")} title={"Tomar imagen facial"}>
-                            <div>
-                                
-                            </div>
-                        </Modal>
-                    ) : openAdd.name == "faceAdd" ? (
-                        <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
-                            { (isLoading && !face.success) ? (
-                                <div style={{position: "flex", alignItems: "center", alignContent: "center", width: "100%"}}>
-                                    <Ellipsis size={120} color={"#4f4f4f"} />
-                                </div>
+                        </div>
+                    </Modal>
+                ) : openAdd.name == "Facial" ? (
+                    <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
+                        <div>
+                            <Typography align="center">Ingrese la nueva foto facial</Typography>
+                            <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
+                                onDelete={() => setFileInfo({ isAdded: false })} />
+                        </div>
+                    </Modal>
+                ) : openAdd.name == "faceInstructions" ? (
+                    <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("faceConfirm")} title={"Tomar imagen facial"}>
+                        <div>
+                            <PersonaAnimation width="300" height="300" className={classes.root} />
+                        </div>
+                    </Modal>
+                ) : openAdd.name == "faceAdd" ? (
+                    <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", marginTop: "5%" }}>
+                            {(isLoading && !face.success) ? (
+                                <Ellipsis size={120} color={"#4f4f4f"} />
                             ) : (
-                                <Avatar src={`data:image/jpeg;base64,${face.base64_img}`} style={{width: "400px", height: "400px"}}/>
+                                <Avatar src={`data:image/jpeg;base64,${face.base64_img}`} style={{ width: "300px", height: "300px" }} />
                             )}
-                           
-                        </Modal>
-                    ) : (null)}
+                        </div>
+                    </Modal>
+                ) : (null)}
                 {/*<Modal defaultButtons={false} IsOpen={openEdit.open} close={handleCloseEdit} uploadPhotoFunction={handleEditUpload} takePhotoFunction={handleEditTakePhoto} disableUploadPhoto={!fileInfo.isAdded} title="Editar">
                     {openEdit.data.Name === "Huella" ? (
                         <div>

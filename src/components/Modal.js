@@ -9,7 +9,7 @@ import { Close, Done, Backup, AddAPhoto, Delete, Replay} from '@material-ui/icon
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const { defaultButtons = true, disableUploadPhoto = false, takePhoto = false, confirmPhoto = false} = props
+    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false} = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -106,7 +106,7 @@ export default function ModalComponent(props) {
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar
                                 </IconButton>
-                                <IconButton className={classes.continue} onClick={handleTakePic}>
+                                <IconButton className={classes.continue} onClick={handleTakePic} >
                                     <AddAPhoto />  Tomar Foto
                                 </IconButton>
                             </div>
@@ -127,10 +127,11 @@ export default function ModalComponent(props) {
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar
                                 </IconButton>
-                                <IconButton className={classes.continue} onClick={handleUploadPhoto} disabled={props.disableUploadPhoto}>
+                                <IconButton className={classes.continue} onClick={handleUploadPhoto} disabled={!buttonsDisabled.file}>
                                     <Backup />  Cargar Foto
                                 </IconButton>
-                                <IconButton className={classes.continue} onClick={handleTakePhoto}>
+                                {console.log(buttonsDisabled.picture, buttonsDisabled.fileOm)}
+                                <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : !buttonsDisabled.fileOm }>
                                     <AddAPhoto />  Tomar Foto
                                 </IconButton>
                             </div>

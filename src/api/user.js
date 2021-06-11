@@ -209,7 +209,7 @@ export async function UpdateProfPicture(data) {
   }
 }
 
-export async function setFinger(data) {
+export async function setFingerBlob(data) {
   const form = new FormData();
   form.append("finger", data.finger)
   form.append("id", data.id)

@@ -1,5 +1,5 @@
 export const url = " http://localhost:3001";
-export const url_RBPI = " http://192.168.1.122:5000";
+export const url_RBPI = " http://172.28.237.72:5000";
 
 // Rutas
 export const LogOut = `${url}/logOut`;
@@ -26,7 +26,7 @@ export const CheckSession = `${url}/checkSession`
 
 // Rutas Raspberry Pi
 export const getFace = `${url_RBPI}/getFace`
-export const getFinger = `${url_RBPI}/getFinger`
+export const getFinger = `${url_RBPI}/getFingerprint`
 
 // Constantes db
 export const colors = [
