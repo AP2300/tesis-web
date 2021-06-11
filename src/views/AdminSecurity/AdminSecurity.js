@@ -169,8 +169,8 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
-        setHandData("")
-        setFingerData({ ...fingerData, value: "", array: [] })
+        // setHandData("")
+        // setFingerData({ ...fingerData, value: "", array: [] })
     }
 
     async function handleAddUpload() {
@@ -249,20 +249,25 @@ export default function AdminUserSecurity(props) {
     }
 
     async function handleAddTakePic(type) {
+        setIsLoading(true)
         if (type === "fingerConfirm") {
             setOpenAdd({ open: true, name: "fingerAdd" });
             const res = await getFinger();
             if (res) {
                 if (res.data.success) {
-                    setIsLoading(true)
+                    
+                    setFinger({...finger, success: true})
                     const params = {
                         finger: b64toBlob(res.data.base64_img, "image/jpeg"),
-                        id: userData.IDUser
+                        id: userData.IDUser,
+                        fingerName: `${fingerData.value} ${handData}`
                     }
                     const res2 = await setFingerBlob(params)
                     if (res2) {
-                        setFinger(true)
+                        setFinger({...finger, success: false})
                         setOpenAdd({ open: false, name: "" });
+                        setFingerData({...fingerData, value: ""})
+                        setHandData("")
                         setNoti({
                             severity: "success",
                             description: "Se ha agregado la imagen satisfactoriamente",
@@ -431,7 +436,7 @@ export default function AdminUserSecurity(props) {
                     />
                 </Modal>
                 {openAdd.name == "Huella" ? (
-                    <Modal defaultButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
+                    <Modal defaultButtons={false} noButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
                         <div >
                             <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
                                 onDelete={() => setFileInfo({ isAdded: false })} />
@@ -481,15 +486,15 @@ export default function AdminUserSecurity(props) {
                         </div>
                     </Modal>
                 ) : openAdd.name == "fingerInstructions" ? (
-                    <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
+                    <Modal defaultButtons={false} noButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
                         <div>
                             <HuellaAnimation width="300" height="300" className={classes.root} />
                         </div>
                     </Modal>
                 ) : openAdd.name == "fingerAdd" ? (
-                    <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
+                    <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                            {(isLoading && finger.success) ? (
+                            {isLoading  ? (
 
                                 <Ellipsis size={120} color={"#4f4f4f"} />
 
@@ -499,7 +504,7 @@ export default function AdminUserSecurity(props) {
                         </div>
                     </Modal>
                 ) : openAdd.name == "Facial" ? (
-                    <Modal defaultButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
+                    <Modal defaultButtons={false} noButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
                         <div>
                             <Typography align="center">Ingrese la nueva foto facial</Typography>
                             <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
@@ -507,13 +512,13 @@ export default function AdminUserSecurity(props) {
                         </div>
                     </Modal>
                 ) : openAdd.name == "faceInstructions" ? (
-                    <Modal defaultButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("faceConfirm")} title={"Tomar imagen facial"}>
+                    <Modal defaultButtons={false} noButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("faceConfirm")} title={"Tomar imagen facial"}>
                         <div>
                             <PersonaAnimation width="300" height="300" className={classes.root} />
                         </div>
                     </Modal>
                 ) : openAdd.name == "faceAdd" ? (
-                    <Modal defaultButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
+                    <Modal defaultButtons={false} noButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", marginTop: "5%" }}>
                             {(isLoading && !face.success) ? (
                                 <Ellipsis size={120} color={"#4f4f4f"} />

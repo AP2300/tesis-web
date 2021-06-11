@@ -211,7 +211,7 @@ export async function UpdateProfPicture(data) {
 
 export async function setFingerBlob(data) {
   const form = new FormData();
-  form.append("finger", data.finger)
+  form.append("finger", data.finger, 'tempfinger.jpg')
   form.append("id", data.id)
   form.append("fingerName", data.fingerName)
   try {
