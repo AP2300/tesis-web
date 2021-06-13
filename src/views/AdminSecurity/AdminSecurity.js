@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
+import Alert from '@material-ui/lab/Alert';
 import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle } from '@material-ui/icons/';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger } from '../../api/user';
 import Notification from '../../components/Notifications';
@@ -169,6 +170,7 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
+        setFace({success: false})
         // setHandData("")
         // setFingerData({ ...fingerData, value: "", array: [] })
     }
@@ -307,7 +309,8 @@ export default function AdminUserSecurity(props) {
     }
 
     function retakeFace() {
-
+        setFace({success: false})
+        handleAddTakePic("faceConfirm")
     }
 
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
@@ -428,12 +431,7 @@ export default function AdminUserSecurity(props) {
             {(noti.open) ? <Notification close={setNoti} data={noti} /> : ""}
             <Paper elevation={2} className={classes.mainContainer}>
                 <Modal IsOpen={open.open} close={handleClose} okFunction={handleConfirmDelete} title="Desea eliminar la foto?">
-                    <Chip
-                        className={classes.chip}
-                        icon={<ReportProblemRounded />}
-                        label="Esta acción no se podrá deshacer."
-                        style={{ marginTop: "1em" }}
-                    />
+                    <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
                 </Modal>
                 {openAdd.name == "Huella" ? (
                     <Modal defaultButtons={false} noButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
@@ -518,9 +516,9 @@ export default function AdminUserSecurity(props) {
                         </div>
                     </Modal>
                 ) : openAdd.name == "faceAdd" ? (
-                    <Modal defaultButtons={false} noButtons={false} confirmPhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
+                    <Modal defaultButtons={false} noButtons={isLoading} confirmPhoto={!isLoading} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen facial"}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", marginTop: "5%" }}>
-                            {(isLoading && !face.success) ? (
+                            {isLoading ? (
                                 <Ellipsis size={120} color={"#4f4f4f"} />
                             ) : (
                                 <Avatar src={`data:image/jpeg;base64,${face.base64_img}`} style={{ width: "300px", height: "300px" }} />
