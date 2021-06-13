@@ -171,17 +171,12 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
-        // setHandData("")
-        // setFingerData({ ...fingerData, value: "", array: [] })
-    }
-
-    function handleLastClose(){
         setFingerData({ ...fingerData, value: "" })
         setHandData("")
         setFace({ success: false })
         setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
-        setOpenAdd({ open: false, name: "" })
-        setFileInfo({ isAdded: false })
+        // setHandData("")
+        // setFingerData({ ...fingerData, value: "", array: [] })
     }
 
     async function handleAddUpload() {
@@ -286,6 +281,11 @@ export default function AdminUserSecurity(props) {
                         })
                         fetchUserSecurity(activeUser, userData.IDUser);
                         setFileInfo({ isAdded: false });
+                    } else {
+                        history.push({
+                            pathname: '/',
+                            state: { expired: true }
+                        });
                     }
 
                 } else {
@@ -297,6 +297,14 @@ export default function AdminUserSecurity(props) {
                         open: true
                     })
                 }
+                setFingerData({ ...fingerData, value: "" })
+                setHandData("")
+                setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
+            } else {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
             }
         } else if (type === "faceConfirm") {
             setOpenAdd({ open: true, name: "faceAdd" });
@@ -376,7 +384,6 @@ export default function AdminUserSecurity(props) {
             });
         }
     }
-
 
     function handleFinger(e) {
         if (e.target.name === "hand") setHandData(e.target.value)
