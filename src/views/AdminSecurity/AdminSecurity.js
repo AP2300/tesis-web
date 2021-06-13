@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
-import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle } from '@material-ui/icons/';
+import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle, Delete } from '@material-ui/icons/';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger } from '../../api/user';
 import Notification from '../../components/Notifications';
 import Modal from '../../components/Modal';
@@ -31,7 +31,7 @@ export default function AdminUserSecurity(props) {
     const [face, setFace] = useState({ success: false, });
     const [finger, setFinger] = useState({ success: false, });
     const [fingerData, setFingerData] = useState({ value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"] });
-    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm:true})
+    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm: true })
     const classes = useStyles();
 
     useEffect(() => {
@@ -169,6 +169,8 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
+        setFingerData({ ...fingerData, value: "" })
+        setHandData("")
         // setHandData("")
         // setFingerData({ ...fingerData, value: "", array: [] })
     }
@@ -255,8 +257,8 @@ export default function AdminUserSecurity(props) {
             const res = await getFinger();
             if (res) {
                 if (res.data.success) {
-                    
-                    setFinger({...finger, success: true})
+
+                    setFinger({ ...finger, success: true })
                     const params = {
                         finger: b64toBlob(res.data.base64_img, "image/jpeg"),
                         id: userData.IDUser,
@@ -264,9 +266,9 @@ export default function AdminUserSecurity(props) {
                     }
                     const res2 = await setFingerBlob(params)
                     if (res2) {
-                        setFinger({...finger, success: false})
+                        setFinger({ ...finger, success: false })
                         setOpenAdd({ open: false, name: "" });
-                        setFingerData({...fingerData, value: ""})
+                        setFingerData({ ...fingerData, value: "" })
                         setHandData("")
                         setNoti({
                             severity: "success",
@@ -494,7 +496,7 @@ export default function AdminUserSecurity(props) {
                 ) : openAdd.name == "fingerAdd" ? (
                     <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                            {isLoading  ? (
+                            {isLoading ? (
 
                                 <Ellipsis size={120} color={"#4f4f4f"} />
 
@@ -643,7 +645,7 @@ export default function AdminUserSecurity(props) {
                                                 Editar
                                             </Button>*/}
                                             <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(userData.facial[0].IDBiometrics, userData.IDUser)}>
-                                                Eliminar
+                                                Eliminar <Delete />
                                             </Button>
                                         </div>
                                         <Paper onClick={() => Toggle(userData.facial[0].Name)} key={userData.facial[0].Name}
@@ -672,7 +674,7 @@ export default function AdminUserSecurity(props) {
                                             />
                                             <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={() => handleClickOpenAdd("Facial")}>
                                                 <Add />
-                                                    Agregar foto
+                                                Agregar foto
                                             </Button>
                                         </div>
                                     </Paper>
@@ -689,9 +691,7 @@ export default function AdminUserSecurity(props) {
                                                 return (
                                                     <div key={data.IDBiometrics} className={classes.fingerDataContainer}>
                                                         <div className={classes.fingerContainer2}>
-                                                            <Avatar className={classes.fingerAvatar}>
-                                                                <Fingerprint style={{ width: "50%", height: "50%" }} />
-                                                            </Avatar>
+                                                            <Fingerprint className={classes.iconList} />
                                                             <div className={classes.fingerItem}>
                                                                 <div className={classes.fingerItemTitleContainer}>
                                                                     <Typography variant="h5" className={classes.fingerItemTitle}>
@@ -700,26 +700,26 @@ export default function AdminUserSecurity(props) {
                                                                 </div>
 
                                                                 <div className={classes.fingerItemButtonGroup}>
-                                                                    {/*<Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}} onClick={() => handleClickOpenEdit(data)}>
-                                                                            Editar
-                                                                        </Button>*/}
                                                                     <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(data.IDBiometrics, userData.IDUser)}>
-                                                                        Eliminar
-                                                                        </Button>
+                                                                        <Delete />
+                                                                    </Button>
                                                                 </div>
 
                                                             </div>
                                                         </div>
-                                                        <Divider orientation="horizontal" variant={"middle"} style={{ width: "80%" }} />
+                                                        {/* 
                                                         {(userData.huella.length === (index + 1)) ? (
-                                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
-                                                                <Add />
-                                                                Agregar foto
-                                                            </Button>
-                                                        ) : null}
+
+                                                        ): null} */}
                                                     </div>
                                                 )
                                             })}
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
+                                                    <Add />
+                                                    Agregar huella
+                                                </Button>
+                                            </div>
                                         </div>
 
                                         <div style={{ width: "100%" }}>
@@ -752,7 +752,7 @@ export default function AdminUserSecurity(props) {
                                                 />
                                                 <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
                                                     <Add />
-                                                        Agregar foto
+                                                    Agregar foto
                                                 </Button>
                                             </div>
                                         </Paper>
@@ -763,7 +763,7 @@ export default function AdminUserSecurity(props) {
                     ) :
                         <Typography className={classes.noInfoText}>
                             Seleccione un usuario para visualizar su información
-                    </Typography>
+                        </Typography>
                     }
                 </div>
             </Paper>
