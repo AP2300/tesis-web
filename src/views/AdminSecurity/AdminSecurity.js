@@ -13,6 +13,7 @@ import * as Cons from "../../api/constants";
 import clsx from 'clsx';
 import { ReactComponent as PersonaAnimation } from "../../styles/resources/Persona.svg"
 import { ReactComponent as HuellaAnimation } from "../../styles/resources/Huella.svg"
+import { set } from 'lodash';
 
 export default function AdminUserSecurity(props) {
     const history = useHistory();
@@ -170,11 +171,17 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
+        // setHandData("")
+        // setFingerData({ ...fingerData, value: "", array: [] })
+    }
+
+    function handleLastClose(){
         setFingerData({ ...fingerData, value: "" })
         setHandData("")
         setFace({ success: false })
-        // setHandData("")
-        // setFingerData({ ...fingerData, value: "", array: [] })
+        setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
+        setOpenAdd({ open: false, name: "" })
+        setFileInfo({ isAdded: false })
     }
 
     async function handleAddUpload() {
@@ -492,7 +499,7 @@ export default function AdminUserSecurity(props) {
                         </div>
                     </Modal>
                 ) : openAdd.name == "fingerAdd" ? (
-                    <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
+                    <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleLastClose} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
                             {isLoading ? (
 
