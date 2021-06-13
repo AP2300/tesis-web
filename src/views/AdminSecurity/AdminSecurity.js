@@ -435,75 +435,77 @@ export default function AdminUserSecurity(props) {
                 <Modal IsOpen={open.open} close={handleClose} okFunction={handleConfirmDelete} title="Desea eliminar la foto?">
                     <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
                 </Modal>
-                {openAdd.name == "Huella" ? (
-                    <Modal defaultButtons={false} noButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
+                { openAdd.name == "" ? ""
+                    : (
+                        <Modal defaultButtons={false} noButtons={openAdd.name == "fingerAdd" ? true : false} buttonsDisabled={openAdd.name == "Huella" ? formCompleted : false} takePhoto={openAdd.name == "fingerInstructions" ? true : false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={openAdd.name == "Huella" ? "Agregar Dedo" : openAdd.name == "fingerInstructions" ? "Tomar imagen del dedo" : openAdd.name == "fingerAdd" ? "Confirmar imagen del dedo" : ""}>
+                    {openAdd.name == "Huella" ? ( 
                         <div >
                             <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
-                                onDelete={() => setFileInfo({ isAdded: false })} />
-                            <div style={{ display: "flex" }}>
-                                <FormControl required className={classes.formControl}>
-                                    <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
-                                    <Select
-                                        value={handData}
-                                        onChange={handleFinger}
-                                        name="hand"
-                                        inputProps={{
-                                            id: 'hand-native-required',
-                                        }}
-                                    >
-                                        <MenuItem disabled value="">
-                                            <em>Seleccionar</em>
-                                        </MenuItem>
-                                        <MenuItem value={"derecho"}>Derecha</MenuItem>
-                                        <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
-                                    </Select>
-                                    <FormHelperText>Obligatorio</FormHelperText>
-                                </FormControl>
-                                <FormControl required className={classes.formControl}>
-                                    <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
-                                    <Select
-                                        value={fingerData.value}
-                                        onChange={handleFinger}
-                                        name="finger"
-                                        inputProps={{
-                                            id: 'finger-native-required',
-                                        }}
-                                    >
-                                        {fingerData.array ? fingerData.fingers.map((finger, idx) => {
-                                            for (let i of fingerData.array) {
-                                                console.log(i)
-                                                console.log(handData)
-                                                if (i.fingerName.includes(finger)) {
-                                                    return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
+                            onDelete={() => setFileInfo({ isAdded: false })} />
+                                <div style={{ display: "flex" }}>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
+                                        <Select
+                                            value={handData}
+                                            onChange={handleFinger}
+                                            name="hand"
+                                            inputProps={{
+                                                id: 'hand-native-required',
+                                            }}
+                                        >
+                                            <MenuItem disabled value="">
+                                                <em>Seleccionar</em>
+                                            </MenuItem>
+                                            <MenuItem value={"derecho"}>Derecha</MenuItem>
+                                            <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
+                                        </Select>
+                                        <FormHelperText>Obligatorio</FormHelperText>
+                                    </FormControl>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
+                                        <Select
+                                            value={fingerData.value}
+                                            onChange={handleFinger}
+                                            name="finger"
+                                            inputProps={{
+                                                id: 'finger-native-required',
+                                            }}
+                                        >
+                                            {fingerData.array ? fingerData.fingers.map((finger, idx) => {
+                                                for (let i of fingerData.array) {
+                                                    console.log(i)
+                                                    console.log(handData)
+                                                    if (i.fingerName.includes(finger)) {
+                                                        return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
+                                                    }
                                                 }
-                                            }
-                                            return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
-                                        }) : ""}
-                                    </Select>
-                                    <FormHelperText>Obligatorio</FormHelperText>
-                                </FormControl>
+                                                return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
+                                            }) : ""}
+                                        </Select>
+                                        <FormHelperText>Obligatorio</FormHelperText>
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "fingerInstructions" ? (
-                    <Modal defaultButtons={false} noButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
-                        <div>
-                            <HuellaAnimation width="300" height="300" className={classes.root} />
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "fingerAdd" ? (
-                    <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                            {isLoading ? (
+                            ) : openAdd.name == "fingerInstructions" ? (
+                                <div>
+                                    <HuellaAnimation width="300" height="300" className={classes.root} />
+                                </div>
+                            ) : openAdd.name == "fingerAdd" ? (
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                                    {isLoading ? (
 
-                                <Ellipsis size={120} color={"#4f4f4f"} />
+                                        <Ellipsis size={120} color={"#4f4f4f"} />
 
-                            ) : (
-                                <CheckCircle style={{ fontSize: "8rem", color: "#4f4f4f" }} />
-                            )}
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "Facial" ? (
+                                    ) : (
+                                        <CheckCircle style={{ fontSize: "8rem", color: "#4f4f4f" }} />
+                                    )}
+                                </div>
+                            ) : ""}
+                        </Modal>
+                    )
+                }
+                
+                {openAdd.name == "Facial" ? (
                     <Modal defaultButtons={false} noButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
                         <div>
                             <Typography align="center">Ingrese la nueva foto facial</Typography>

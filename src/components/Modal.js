@@ -44,7 +44,6 @@ export default function ModalComponent(props) {
 
     const handleTakePhoto = () => {
         setOpen(false);
-        props.close(false)
         props.takePhotoFunction()
     };
 
@@ -56,7 +55,6 @@ export default function ModalComponent(props) {
 
     const handleTakePic = () => {
         setOpen(false);
-        props.close(false)
         props.handleTakePicFunction()
     }
 
