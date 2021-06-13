@@ -13,6 +13,7 @@ import * as Cons from "../../api/constants";
 import clsx from 'clsx';
 import { ReactComponent as PersonaAnimation } from "../../styles/resources/Persona.svg"
 import { ReactComponent as HuellaAnimation } from "../../styles/resources/Huella.svg"
+import { set } from 'lodash';
 
 export default function AdminUserSecurity(props) {
     const history = useHistory();
@@ -170,11 +171,17 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
+        // setHandData("")
+        // setFingerData({ ...fingerData, value: "", array: [] })
+    }
+
+    function handleLastClose(){
         setFingerData({ ...fingerData, value: "" })
         setHandData("")
         setFace({ success: false })
-        // setHandData("")
-        // setFingerData({ ...fingerData, value: "", array: [] })
+        setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
+        setOpenAdd({ open: false, name: "" })
+        setFileInfo({ isAdded: false })
     }
 
     async function handleAddUpload() {
