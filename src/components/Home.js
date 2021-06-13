@@ -19,16 +19,16 @@ export default function Home() {
   const [Data, setData] = useState("");
   const [activeWindow, setActiveWindow] = useState(SelectPage(location));
 
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     const res = await CheckSession()
-  //     if(res.data.session === "vencida") {
-  //       history.replace({state: { expired: true }})
-  //       history.push("/")
-  //     }
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await CheckSession()
+      if(res.data.session === "vencida") {
+        history.replace({state: { expired: true }})
+        history.push("/")
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (Data === "") getData();
