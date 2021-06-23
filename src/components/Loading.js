@@ -60,7 +60,7 @@ export default function LoadingComp() {
 
     const getUserData = async () => {
         const res = await GetUserData()
-        if (res) setIsAdmin(res.res.IsAdmin)
+        if (res.success) setIsAdmin(res.res.IsAdmin)
         else history.push("/")
 
     }

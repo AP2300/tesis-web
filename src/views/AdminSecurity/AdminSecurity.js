@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
 import Alert from '@material-ui/lab/Alert';
-import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle } from '@material-ui/icons/';
+import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle, Delete } from '@material-ui/icons/';
 import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger } from '../../api/user';
 import Notification from '../../components/Notifications';
 import Modal from '../../components/Modal';
@@ -13,6 +13,7 @@ import * as Cons from "../../api/constants";
 import clsx from 'clsx';
 import { ReactComponent as PersonaAnimation } from "../../styles/resources/Persona.svg"
 import { ReactComponent as HuellaAnimation } from "../../styles/resources/Huella.svg"
+import { set } from 'lodash';
 
 export default function AdminUserSecurity(props) {
     const history = useHistory();
@@ -32,7 +33,7 @@ export default function AdminUserSecurity(props) {
     const [face, setFace] = useState({ success: false, });
     const [finger, setFinger] = useState({ success: false, });
     const [fingerData, setFingerData] = useState({ value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"] });
-    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm:true})
+    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm: true })
     const classes = useStyles();
 
     useEffect(() => {
@@ -170,7 +171,10 @@ export default function AdminUserSecurity(props) {
     function handleCloseAdd() {
         setOpenAdd({ open: false, name: "" })
         setFileInfo({ isAdded: false })
-        setFace({success: false})
+        setFingerData({ ...fingerData, value: "" })
+        setHandData("")
+        setFace({ success: false })
+        setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
         // setHandData("")
         // setFingerData({ ...fingerData, value: "", array: [] })
     }
@@ -257,8 +261,8 @@ export default function AdminUserSecurity(props) {
             const res = await getFinger();
             if (res) {
                 if (res.data.success) {
-                    
-                    setFinger({...finger, success: true})
+
+                    setFinger({ ...finger, success: true })
                     const params = {
                         finger: b64toBlob(res.data.base64_img, "image/jpeg"),
                         id: userData.IDUser,
@@ -266,9 +270,9 @@ export default function AdminUserSecurity(props) {
                     }
                     const res2 = await setFingerBlob(params)
                     if (res2) {
-                        setFinger({...finger, success: false})
+                        setFinger({ ...finger, success: false })
                         setOpenAdd({ open: false, name: "" });
-                        setFingerData({...fingerData, value: ""})
+                        setFingerData({ ...fingerData, value: "" })
                         setHandData("")
                         setNoti({
                             severity: "success",
@@ -277,6 +281,11 @@ export default function AdminUserSecurity(props) {
                         })
                         fetchUserSecurity(activeUser, userData.IDUser);
                         setFileInfo({ isAdded: false });
+                    } else {
+                        history.push({
+                            pathname: '/',
+                            state: { expired: true }
+                        });
                     }
 
                 } else {
@@ -288,6 +297,14 @@ export default function AdminUserSecurity(props) {
                         open: true
                     })
                 }
+                setFingerData({ ...fingerData, value: "" })
+                setHandData("")
+                setFormCompleted({...formCompleted, picture: false, file: false, fileOm: true})
+            } else {
+                history.push({
+                    pathname: '/',
+                    state: { expired: true }
+                });
             }
         } else if (type === "faceConfirm") {
             setOpenAdd({ open: true, name: "faceAdd" });
@@ -309,7 +326,7 @@ export default function AdminUserSecurity(props) {
     }
 
     function retakeFace() {
-        setFace({success: false})
+        setFace({ success: false })
         handleAddTakePic("faceConfirm")
     }
 
@@ -367,7 +384,6 @@ export default function AdminUserSecurity(props) {
             });
         }
     }
-
 
     function handleFinger(e) {
         if (e.target.name === "hand") setHandData(e.target.value)
@@ -433,75 +449,77 @@ export default function AdminUserSecurity(props) {
                 <Modal IsOpen={open.open} close={handleClose} okFunction={handleConfirmDelete} title="Desea eliminar la foto?">
                     <Alert severity="warning" variant="filled" >Esta accion es irreversible</Alert>
                 </Modal>
-                {openAdd.name == "Huella" ? (
-                    <Modal defaultButtons={false} noButtons={false} buttonsDisabled={formCompleted} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} title={"Agregar Dedo"}>
+                { openAdd.name == "" ? ""
+                    : (
+                        <Modal defaultButtons={false} noButtons={openAdd.name == "fingerAdd" ? true : false} buttonsDisabled={openAdd.name == "Huella" ? formCompleted : false} takePhoto={openAdd.name == "fingerInstructions" ? true : false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={openAdd.name == "Huella" ? "Agregar Dedo" : openAdd.name == "fingerInstructions" ? "Tomar imagen del dedo" : openAdd.name == "fingerAdd" ? "Confirmar imagen del dedo" : ""}>
+                    {openAdd.name == "Huella" ? ( 
                         <div >
                             <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}
-                                onDelete={() => setFileInfo({ isAdded: false })} />
-                            <div style={{ display: "flex" }}>
-                                <FormControl required className={classes.formControl}>
-                                    <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
-                                    <Select
-                                        value={handData}
-                                        onChange={handleFinger}
-                                        name="hand"
-                                        inputProps={{
-                                            id: 'hand-native-required',
-                                        }}
-                                    >
-                                        <MenuItem disabled value="">
-                                            <em>Seleccionar</em>
-                                        </MenuItem>
-                                        <MenuItem value={"derecho"}>Derecha</MenuItem>
-                                        <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
-                                    </Select>
-                                    <FormHelperText>Obligatorio</FormHelperText>
-                                </FormControl>
-                                <FormControl required className={classes.formControl}>
-                                    <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
-                                    <Select
-                                        value={fingerData.value}
-                                        onChange={handleFinger}
-                                        name="finger"
-                                        inputProps={{
-                                            id: 'finger-native-required',
-                                        }}
-                                    >
-                                        {fingerData.array ? fingerData.fingers.map((finger, idx) => {
-                                            for (let i of fingerData.array) {
-                                                console.log(i)
-                                                console.log(handData)
-                                                if (i.fingerName.includes(finger)) {
-                                                    return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
+                            onDelete={() => setFileInfo({ isAdded: false })} />
+                                <div style={{ display: "flex" }}>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel htmlFor="hand-native-required">Mano</InputLabel>
+                                        <Select
+                                            value={handData}
+                                            onChange={handleFinger}
+                                            name="hand"
+                                            inputProps={{
+                                                id: 'hand-native-required',
+                                            }}
+                                        >
+                                            <MenuItem disabled value="">
+                                                <em>Seleccionar</em>
+                                            </MenuItem>
+                                            <MenuItem value={"derecho"}>Derecha</MenuItem>
+                                            <MenuItem value={"izquierdo"}>Izquierda</MenuItem>
+                                        </Select>
+                                        <FormHelperText>Obligatorio</FormHelperText>
+                                    </FormControl>
+                                    <FormControl required className={classes.formControl}>
+                                        <InputLabel htmlFor="finger-native-required">Dedo</InputLabel>
+                                        <Select
+                                            value={fingerData.value}
+                                            onChange={handleFinger}
+                                            name="finger"
+                                            inputProps={{
+                                                id: 'finger-native-required',
+                                            }}
+                                        >
+                                            {fingerData.array ? fingerData.fingers.map((finger, idx) => {
+                                                for (let i of fingerData.array) {
+                                                    console.log(i)
+                                                    console.log(handData)
+                                                    if (i.fingerName.includes(finger)) {
+                                                        return <MenuItem disabled key={idx} value={finger}>{finger}</MenuItem>
+                                                    }
                                                 }
-                                            }
-                                            return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
-                                        }) : ""}
-                                    </Select>
-                                    <FormHelperText>Obligatorio</FormHelperText>
-                                </FormControl>
+                                                return <MenuItem key={idx} value={finger}>{finger}</MenuItem>
+                                            }) : ""}
+                                        </Select>
+                                        <FormHelperText>Obligatorio</FormHelperText>
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "fingerInstructions" ? (
-                    <Modal defaultButtons={false} noButtons={false} takePhoto={true} IsOpen={openAdd.open} close={handleCloseAdd} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} title={"Tomar imagen del dedo"}>
-                        <div>
-                            <HuellaAnimation width="300" height="300" className={classes.root} />
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "fingerAdd" ? (
-                    <Modal defaultButtons={false} noButtons={true} confirmPhoto={false} IsOpen={openAdd.open} close={handleCloseAdd} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={"Confirmar imagen del dedo"}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                            {isLoading  ? (
+                            ) : openAdd.name == "fingerInstructions" ? (
+                                <div>
+                                    <HuellaAnimation width="300" height="300" className={classes.root} />
+                                </div>
+                            ) : openAdd.name == "fingerAdd" ? (
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                                    {isLoading ? (
 
-                                <Ellipsis size={120} color={"#4f4f4f"} />
+                                        <Ellipsis size={120} color={"#4f4f4f"} />
 
-                            ) : (
-                                <CheckCircle style={{ fontSize: "8rem", color: "#4f4f4f" }} />
-                            )}
-                        </div>
-                    </Modal>
-                ) : openAdd.name == "Facial" ? (
+                                    ) : (
+                                        <CheckCircle style={{ fontSize: "8rem", color: "#4f4f4f" }} />
+                                    )}
+                                </div>
+                            ) : ""}
+                        </Modal>
+                    )
+                }
+                
+                {openAdd.name == "Facial" ? (
                     <Modal defaultButtons={false} noButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
                         <div>
                             <Typography align="center">Ingrese la nueva foto facial</Typography>
@@ -641,7 +659,7 @@ export default function AdminUserSecurity(props) {
                                                 Editar
                                             </Button>*/}
                                             <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(userData.facial[0].IDBiometrics, userData.IDUser)}>
-                                                Eliminar
+                                                Eliminar <Delete />
                                             </Button>
                                         </div>
                                         <Paper onClick={() => Toggle(userData.facial[0].Name)} key={userData.facial[0].Name}
@@ -670,7 +688,7 @@ export default function AdminUserSecurity(props) {
                                             />
                                             <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={() => handleClickOpenAdd("Facial")}>
                                                 <Add />
-                                                    Agregar foto
+                                                Agregar foto
                                             </Button>
                                         </div>
                                     </Paper>
@@ -687,9 +705,7 @@ export default function AdminUserSecurity(props) {
                                                 return (
                                                     <div key={data.IDBiometrics} className={classes.fingerDataContainer}>
                                                         <div className={classes.fingerContainer2}>
-                                                            <Avatar className={classes.fingerAvatar}>
-                                                                <Fingerprint style={{ width: "50%", height: "50%" }} />
-                                                            </Avatar>
+                                                            <Fingerprint className={classes.iconList} />
                                                             <div className={classes.fingerItem}>
                                                                 <div className={classes.fingerItemTitleContainer}>
                                                                     <Typography variant="h5" className={classes.fingerItemTitle}>
@@ -698,26 +714,26 @@ export default function AdminUserSecurity(props) {
                                                                 </div>
 
                                                                 <div className={classes.fingerItemButtonGroup}>
-                                                                    {/*<Button variant="contained" className={clsx([classes.button, classes.editButton])} style={{margin: "0.3em 0"}} onClick={() => handleClickOpenEdit(data)}>
-                                                                            Editar
-                                                                        </Button>*/}
                                                                     <Button variant="contained" className={clsx([classes.button, classes.deleteButton])} onClick={() => handleClickOpen(data.IDBiometrics, userData.IDUser)}>
-                                                                        Eliminar
-                                                                        </Button>
+                                                                        <Delete />
+                                                                    </Button>
                                                                 </div>
 
                                                             </div>
                                                         </div>
-                                                        <Divider orientation="horizontal" variant={"middle"} style={{ width: "80%" }} />
+                                                        {/* 
                                                         {(userData.huella.length === (index + 1)) ? (
-                                                            <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
-                                                                <Add />
-                                                                Agregar foto
-                                                            </Button>
-                                                        ) : null}
+
+                                                        ): null} */}
                                                     </div>
                                                 )
                                             })}
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                                <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
+                                                    <Add />
+                                                    Agregar huella
+                                                </Button>
+                                            </div>
                                         </div>
 
                                         <div style={{ width: "100%" }}>
@@ -750,7 +766,7 @@ export default function AdminUserSecurity(props) {
                                                 />
                                                 <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
                                                     <Add />
-                                                        Agregar foto
+                                                    Agregar foto
                                                 </Button>
                                             </div>
                                         </Paper>
@@ -761,7 +777,7 @@ export default function AdminUserSecurity(props) {
                     ) :
                         <Typography className={classes.noInfoText}>
                             Seleccione un usuario para visualizar su información
-                    </Typography>
+                        </Typography>
                     }
                 </div>
             </Paper>

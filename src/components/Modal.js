@@ -44,7 +44,6 @@ export default function ModalComponent(props) {
 
     const handleTakePhoto = () => {
         setOpen(false);
-        props.close(false)
         props.takePhotoFunction()
     };
 
@@ -56,7 +55,6 @@ export default function ModalComponent(props) {
 
     const handleTakePic = () => {
         setOpen(false);
-        props.close(false)
         props.handleTakePicFunction()
     }
 
@@ -131,7 +129,8 @@ export default function ModalComponent(props) {
                                     <Backup />  Cargar Foto
                                 </IconButton>
                                 {console.log(buttonsDisabled.picture, buttonsDisabled.fileOm)}
-                                <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : !buttonsDisabled.fileOm}>
+                                {console.log(buttonsDisabled.fileOm)}
+                                <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : buttonsDisabled.fileOm}>
                                     <AddAPhoto />  Tomar Foto
                                 </IconButton>
                             </div>
