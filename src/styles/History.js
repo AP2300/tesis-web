@@ -164,7 +164,7 @@ export default makeStyles((theme) => ({
     },
     BtnActive: {
         "& > *": {
-            background: "linear-gradient(348deg, rgba(207,14,31,1) 0%, rgba(243,177,59,1) 70%, rgba(249,206,64,1) 100%)",
+            background: "linear-gradient(344deg, rgba(88,126,140,0.9752275910364145) 54%, rgba(153,192,198,1) 100%);",
             "-webkit-background-clip": "text",
             "-webkit-text-fill-color": "transparent",
         }

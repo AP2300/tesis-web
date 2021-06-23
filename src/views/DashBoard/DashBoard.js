@@ -93,14 +93,13 @@ export default function DashBoard(props) {
 
   function getDataGraph() {
     return canvas => {
-      let num = Math.floor(Math.random() * (colors.length - 1)) + 1;
       return {
         labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
         datasets: [{
           label: "accesos",
           data: generateGraphData(Data.graph),
-          backgroundColor: setGradientColor(canvas, colors[num]),
-          borderColor: setGradientColor(canvas, colors[num])
+          backgroundColor: setGradientColor(canvas, colors[0]),
+          borderColor: setGradientColor(canvas, colors[0])
         }]
       };
     }

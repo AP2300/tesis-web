@@ -115,7 +115,7 @@ export default makeStyles((theme) => ({
   },
   selectedChart:{
     "& > * ":{
-      background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
+      background: "linear-gradient(344deg, rgba(88,126,140,0.9752275910364145) 54%, rgba(153,192,198,1) 100%);",
       "-webkit-background-clip": "text",
        "-webkit-text-fill-color": "transparent",
     }
