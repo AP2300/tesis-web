@@ -32,15 +32,16 @@ export default makeStyles((theme) => ({
         height: "100vh",
     },
     avatar: {
-        margin: "auto",
-        position: "absolute",
-        top: "1.55vh",
+        margin: "-80px",
+        //position: "absolute",
+        position: "relative",
+        /*top: "1.55vh",
         left: "50%",
-        marginLeft: "-6rem",
-        height: "12rem",
-        width: "12rem",
+        marginLeft: "-6rem",*/
+        height: "18rem",
+        width: "24rem",
         overflow: "visible",
-        boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
+        //boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
         [sizes.Wdown("lg")]: {
             width: "10rem",
             height: "10rem",
@@ -57,7 +58,7 @@ export default makeStyles((theme) => ({
         },
     },
     cardContent: {
-        marginTop: "8.8rem",
+        //marginTop: "8.8rem",
         [sizes.Wdown("lg")]: {
             marginTop: "7rem"
         },

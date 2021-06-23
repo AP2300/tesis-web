@@ -30,20 +30,20 @@ export default makeStyles((theme) => ({
     padding: "1.5% 1.5%",
     "& > *": {
       fontWeight: "600",
-      color: "#000000a6",
+      color: "#191818",
       fontSize: `calc(14px + (30 - 14) * ((40vw - 320px) / (1600 - 300)))`,
 
     }
   },
   BoxText: {
     textAlign: "center",
-    fontSize: "calc(14px + (30 - 14) * ((40vw - 320px) / (1600 - 300)))"
+    fontSize: "calc(14px + (30 - 14) * ((40vw - 320px) / (1600 - 300)))",
   },
   number: {
     fontSize: `calc(40px + (75 - 40) * ((40vw - 320px) / (1600 - 300)))`
   },
   date: {
-    fontSize: `calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))`
+    fontSize: `calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))`,
   },
   borderBoxR: {
 
@@ -57,7 +57,7 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     padding: "2%",
     "& > *":{
-      color: "#000000a6",
+      color: "#191818",
       fontWeight: "600"
     }
   },
@@ -75,7 +75,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     "&& > *": {
       fontSize: "3em",
-      color: "#000000a6"
+      color: "#191818"
     }
   },
   loading: {
@@ -108,7 +108,7 @@ export default makeStyles((theme) => ({
     },
     "& .title":{
       fontSize: "calc(15px + (40 - 15) * ((50vw - 320px) / (1600 - 300)))",
-      color: "#000000a6",
+      color: "#191818",
       fontWeight: "600",
       paddingBottom: "2%"
     }
@@ -118,6 +118,11 @@ export default makeStyles((theme) => ({
       background: "linear-gradient(348deg, rgba(41,86,181,0.8603816526610644) 0%, rgba(122,188,186,0.8743872549019608) 48%, rgba(134,237,105,0.8687850140056023) 100%);",
       "-webkit-background-clip": "text",
        "-webkit-text-fill-color": "transparent",
+    }
+  },
+  unselectedChart: {
+    "& > * ":{
+      color: "#191818"
     }
   }
 }));

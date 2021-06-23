@@ -9,6 +9,8 @@ import { PageSelector, otherPage, SelectPage } from "../helpers/Home";
 import { useHistory, useLocation } from 'react-router';
 import AdminDial from './AdminDial';
 import * as Cons from "./../api/constants"
+import { ReactComponent as LogoIcon } from '../styles/resources/iconoSVG.svg'
+import { ReactComponent as Logo } from '../styles/resources/DataSecSVG.svg'
 
 export default function Home() {
   const location = useLocation();
@@ -99,6 +101,7 @@ export default function Home() {
           >
             <Menu className={classes.userWelcome} />
           </IconButton >
+          <LogoIcon width="5vw" height="10vh"/>
           <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
             {activeWindow === "Panel Principal" ?
               (isPromiseReady ?
@@ -119,6 +122,7 @@ export default function Home() {
         }}
       >
         <div className={classes.drawerHeader}>
+          
           <Paper elevation={0} className={classes.userBadge} >
             <Avatar src={`${Cons.url}/${Data.Picture}`} className={classes.Avatar} />
             <Typography className={clsx(classes.typography, !isPromiseReady && classes.loading)}>{isPromiseReady ? Data.FullName : "f"}</Typography>
@@ -127,7 +131,7 @@ export default function Home() {
             <ChevronLeft className={classes.icon} />
           </IconButton>
         </div>
-        <Divider variant="middle" />
+        <Divider variant="middle" className={classes.divider}/>
         <List className={classes.List} >
           {items.map((text, index) => (
             <ListItem button className={clsx(classes.ListItem, activeWindow === text.text ? classes.active : text.text)} key={index} onClick={ChangePage} >
@@ -136,7 +140,8 @@ export default function Home() {
             </ListItem>
           ))}
         </List>
-        <Divider variant="middle" />
+        <Logo width="20rem" height="12rem"/>
+        <Divider variant="middle" className={classes.divider}/>
         <List className={classes.List1}>
           <ListItem button className={classes.LogOut} onClick={CloseSession} >
             <ListItemIcon fontSize="inherit" ><ExitToApp className={classes.LogOuIcon} /></ListItemIcon>

@@ -120,10 +120,10 @@ export default function DashBoard(props) {
           Tipo de gráfica
         </Typography>
         <div>
-          <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : "")}>
+          <Button name="bar" onClick={handleClick} className={clsx(typeChart === "bar" ? classes.selectedChart : classes.unselectedChart)}>
             <i className="fas fa-chart-bar"></i>
           </Button>
-          <Button name="line" onClick={handleClick} className={clsx(typeChart === "line" ? classes.selectedChart : "")}>
+          <Button name="line" onClick={handleClick} className={clsx(typeChart === "line" ? classes.selectedChart : classes.unselectedChart)}>
             <i className="fas fa-chart-area"></i>
           </Button>
         </div>

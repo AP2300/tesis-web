@@ -26,10 +26,10 @@ export default function AdminDial(props) {
       bottom: theme.spacing(2),
       right: theme.spacing(2),
       "& button.MuiFab-root.MuiSpeedDial-fab": {
-        backgroundColor: "#4c4c4c"
+        backgroundColor: "#0c3148"
       },
       "& button.MuiFab-root.MuiSpeedDial-fab:hover ~ div.MuiSpeedDial-actions": {
-        backgroundColor: open ? "#4c4c4cba" : "transparent",
+        backgroundColor: open ? "#0c3148ba" : "transparent",
         transition: "300ms ease-in",
         display: "flex",
         height: "48px",
@@ -49,17 +49,17 @@ export default function AdminDial(props) {
         borderRadius: "2em",
         transition: "300ms ease-out",
         "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab ": {
-          backgroundColor: "#4c4c4c",
+          backgroundColor: "#0c3148",
           color: "whitesmoke",
           boxShadow: "none",
         },
         "& button.MuiButtonBase-root.MuiFab-root.MuiSpeedDialAction-fab:hover ": {
-          color: "#4c4c4c",
+          color: "#0c3148",
           backgroundColor: "whitesmoke"
         }
       },
       "& div.MuiSpeedDial-actions:hover": {
-        backgroundColor: open ? "#4c4c4cba" : "transparent",
+        backgroundColor: open ? "#0c3148ba" : "transparent",
         display: "flex",
         height: "70px",
         alignItems: "center",

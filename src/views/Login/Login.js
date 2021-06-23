@@ -7,6 +7,7 @@ import { LogIn } from '../../api/session';
 import LoginLoading from './LoginLoading';
 import { GetFullUserData } from '../../api/user';
 import Notification from '../../components/Notifications';
+import { ReactComponent as LogoIcon } from '../../styles/resources/DataSecSVG.svg'
 
 function Login(props) {
     const classes = useStyles();
@@ -23,6 +24,8 @@ function Login(props) {
         borderRadius: "5px",
         marginTop: "0.5rem",
         padding: "0.55rem 1.5rem",
+        backgroundColor: "#1a7769",
+        color: "#0c3148"
     }
 
 
@@ -93,7 +96,7 @@ function Login(props) {
             <div className={classes.login}>
                 <Card className={classes.root}>
                     <LoginLoading isLoading={isLoading}>
-                        <Avatar className={classes.avatar} alt="" src="" />
+                        <LogoIcon className={classes.avatar}/>
                         <CardContent className={classes.cardContent}>
                             <Typography gutterBottom variant="h5" component="h2">
                                 Inicia Sesión

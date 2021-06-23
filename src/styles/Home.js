@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
     width: "100vw",
     height: "100vh",
     "& .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters": {
-      backgroundColor: "#0569b9"
+      backgroundColor: "#99C0C6"
     }
   },
   toolbar: {
@@ -40,10 +40,13 @@ export default makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    //marginRight: theme.spacing(2),
     "& > .MuiIconButton-label .MuiSvgIcon-root": {
       fontSize: "2em !important"
 
+    },
+    "& > .MuiIconButton-root": {
+      paddingRight: "5px"
     }
   },
   hide: {
@@ -89,13 +92,13 @@ export default makeStyles((theme) => ({
   },
   userWelcome: {
     fontSize: "4vmin",
-    color: "whitesmoke"
+    color: "#191818"
   },
   userBadge: {
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: "center",
-    color: "#000000a6",
+    color: "#191818",
     width: " 100%",
     minHeight: "10vh",
     backgroundColor: "whitesmoke",
@@ -128,12 +131,12 @@ export default makeStyles((theme) => ({
   ListItem: {
     width: "100%",
     padding: "5%",
-    color: "#000000a6",
+    color: "#191818",
     display: "flex",
     flexDirection: "row",
     fontSize: "2.2vmin",
     "&:hover": {
-      color: "#0569b9"
+      color: "#1a7769"
     }
   },
   LogOut: {
@@ -146,11 +149,12 @@ export default makeStyles((theme) => ({
     fontSize: "2.2vmin"
   },
   icon: {
-    fontSize: "5vh"
+    fontSize: "5vh",
+    color: "#191818"
   },
   ListIcons: {
     fontSize: `calc(19px + (30 - 19) * ((120vw - 320px) / (1600 - 300)))`,
-    color: "#0569b9"
+    color: "#1a7769"
   },
   LogOuIcon: {
     fontSize: `calc(18px + (30 - 18) * ((40vw - 320px) / (1600 - 300)))`,
@@ -175,8 +179,11 @@ export default makeStyles((theme) => ({
   },
   active: {
     paddingLeft: "15%",
-    color: "#0569b9",
+    color: "#1a7769",
     transform: "scale(1.1)",
     transition: "200ms ease-in"
   },
+  divider: {
+    color: "#1a7769ba"
+  }
 }));
