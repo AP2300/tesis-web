@@ -42,7 +42,7 @@ export default makeStyles((theme) => ({
         width: "24rem",
         overflow: "visible",
         //boxShadow: "2px 2px 3px rgba(0,0,0,0.45)",
-        [sizes.Wdown("lg")]: {
+        /*[sizes.Wdown("lg")]: {
             width: "10rem",
             height: "10rem",
             marginLeft: "-5rem",
@@ -55,7 +55,7 @@ export default makeStyles((theme) => ({
         },
         [sizes.Hdown("sm")]: {
             top: "1.55vh",
-        },
+        },*/
     },
     cardContent: {
         //marginTop: "8.8rem",
