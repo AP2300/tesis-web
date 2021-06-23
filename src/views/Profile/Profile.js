@@ -250,7 +250,7 @@ export default function Profile(props) {
                             <Typography variant="h3" className={clsx("name", !IsPromiseReady && classes.loading)}>
                                 {IsPromiseReady ? FullName : "||||||||||||||||||||||"}</Typography>
                             <Typography variant="subtitle1" className={clsx("secondary", !IsPromiseReady && classes.loading)}>
-                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - {IsAdmin ? "administrador" : "usuario"}</Typography>
+                                {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - {IsAdmin ? "Administrador" : "Usuario"}</Typography>
                         </div>
                         <div className={classes.modifyImg}>
                             <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>

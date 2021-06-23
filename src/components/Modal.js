@@ -5,11 +5,11 @@ import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton"
-import { Close, Done, Backup, AddAPhoto, Delete, Replay} from '@material-ui/icons/';
+import { Close, Done, Backup, AddAPhoto, Delete, Replay } from '@material-ui/icons/';
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false} = props
+    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false, noButtons=true} = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -44,7 +44,6 @@ export default function ModalComponent(props) {
 
     const handleTakePhoto = () => {
         setOpen(false);
-        props.close(false)
         props.takePhotoFunction()
     };
 
@@ -56,7 +55,6 @@ export default function ModalComponent(props) {
 
     const handleTakePic = () => {
         setOpen(false);
-        props.close(false)
         props.handleTakePicFunction()
     }
 
@@ -122,7 +120,7 @@ export default function ModalComponent(props) {
                                     <Done /> Confirmar
                                 </IconButton>
                             </div>
-                        ) : (
+                        ) : !noButtons ? (
                             <div className={classes.bottom}>
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar
@@ -131,11 +129,12 @@ export default function ModalComponent(props) {
                                     <Backup />  Cargar Foto
                                 </IconButton>
                                 {console.log(buttonsDisabled.picture, buttonsDisabled.fileOm)}
-                                <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : !buttonsDisabled.fileOm }>
+                                {console.log(buttonsDisabled.fileOm)}
+                                <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : buttonsDisabled.fileOm}>
                                     <AddAPhoto />  Tomar Foto
                                 </IconButton>
                             </div>
-                        )}
+                        ): ""}
                     </div>
                 </Fade>
             </Modal>
