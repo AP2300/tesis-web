@@ -3,7 +3,7 @@ import TitleContainer from "../../components/TitleContainer"
 import Modal from "../../components/Modal"
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
-import { Paper, Avatar, Divider, Typography, TextField, Button} from '@material-ui/core/';
+import { Paper, Avatar, Divider, Typography, TextField, Button } from '@material-ui/core/';
 import { Dialpad, Edit, Fingerprint, Mood, OpenInNew } from '@material-ui/icons/';
 import { GetFullUserData, UpdateBasicData, UpdateAuthMethods, UpdateUserPassword, UpdateProfPicture, DeletePicture } from "../../api/user"
 import useStyles from "../../styles/Profile"
@@ -242,7 +242,7 @@ export default function Profile(props) {
                 <div className={classes.upperContainer}>
                     <div className={classes.leftUpperContainer}>
                         <Avatar src={`${Cons.url}/${Picture}`} className={classes.img} />
-                        <Typography className={clsx("activeSince", IsPromiseReady ? "" : classes.loading)}>Activo desde:{IsPromiseReady ?
+                        <Typography className={clsx("activeSince", IsPromiseReady ? "" : classes.loading)}>Activo desde: {IsPromiseReady ?
                             `${moment(RegDate).date()} / ${moment(RegDate).month() + 1} / ${moment(RegDate).year()}` : ""}</Typography>
                     </div>
                     <div className={classes.rightUpperContainer}>
@@ -253,11 +253,11 @@ export default function Profile(props) {
                                 {IsPromiseReady ? Email : "|||||||||||||||||||||||||||||||||||||||||||||||||"} - {IsAdmin ? "Administrador" : "Usuario"}</Typography>
                         </div>
                         <div className={classes.modifyImg}>
-                            <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
+                            <Button onClick={handleEditPhoto} className={classes.ImgButton}>Modificar foto de perfil <OpenInNew /></Button>
                         </div>
                     </div>
                 </div>
-                <Divider />
+                <Divider variant="middle"/>
                 <div className={classes.bottomContainer}>
                     <div className={classes.LeftBox}>
                         <TitleContainer title="Metodos de autenticacion" >
@@ -298,19 +298,31 @@ export default function Profile(props) {
                             </div>
                             <div className={classes.textFieldContainer2}>
                                 <div className={classes.item}>
-                                    <TextField id="NameM" variant="outlined" label="Nombre nuevo" onChange={handleChange}
+                                    <TextField id="NameM" variant="outlined" label="Nombre nuevo" onChange={handleChange} InputLabelProps={{
+                                        classes: {
+                                            root: classes.cssLabel,
+                                        }
+                                    }}
                                         className={classes.textField} value={FormControl.Name} name="NameControl" />
                                     <Button className={classes.editButton} name="name" onClick={() => HandleClick("name")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange} type="email"
+                                    <TextField id="EmailM" variant="outlined" label="Email nuevo" onChange={handleChange} type="email" InputLabelProps={{
+                                        classes: {
+                                            root: classes.cssLabel,
+                                        }
+                                    }}
                                         className={classes.textField} value={FormControl.Email} name="EmailControl" helperText="modificar el correo cerrará la sesión" />
                                     <Button className={classes.editButton} onClick={() => HandleClick("email")}><Edit /></Button>
                                 </div>
 
                                 <div className={classes.item}>
-                                    <TextField id="PassM" label="Contraseña nueva" variant="outlined" name="PassControl"
+                                    <TextField id="PassM" label="Contraseña nueva" variant="outlined" name="PassControl" InputLabelProps={{
+                                        classes: {
+                                            root: classes.cssLabel,
+                                        }
+                                    }}
                                         className={classes.textField} type="password" value={FormControl.PassControl} onChange={handleChange} />
                                     <Button className={classes.editButton} id="password" onClick={() => HandleClick("pass")}><Edit /></Button>
                                 </div>

@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
     TextInput: {
         width: "100%",
         "& .MuiFormLabel-root.Mui-focused": {
-            color: "black"
+            color: "#1a7769"
         },
         "& .MuiFormLabel-root": {
             color: "#000000bd"
@@ -32,14 +32,15 @@ export default makeStyles((theme) => ({
         },
         "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent",
-            backgroundColor: "#bdbdbd6e",
+            backgroundColor: "#bdbdbd14",
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline ": {
-            borderColor: "black",
-            backgroundColor: "#bdbdbd6e",
+            borderColor: "#1a7769",
+            backgroundColor: "#bdbdbd14",
         },
     },
     margins: {
+        marginLeft: "-5px",
         "& > *": {
             margin: 0
         },
@@ -80,7 +81,7 @@ export default makeStyles((theme) => ({
         width: "100%"
     },
     column1: {
-        width: "80%",
+        width: "85%",
         height: "100%",
         transition: "250ms ease-in"
     },
@@ -96,12 +97,14 @@ export default makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transition: "250ms ease-in"
+        transition: "250ms ease-in",
+        color: "#1a7769"
     },
     dividerButton: {
         height: "100%",
-        width: "10%",
-        minWidth: 0
+        width: "5%",
+        minWidth: 0,
+        color: "#1a7769"
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,

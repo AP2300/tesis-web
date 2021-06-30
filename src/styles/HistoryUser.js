@@ -48,16 +48,17 @@ export default makeStyles((theme) => ({
         justifyContent: "center",
         fontSize: "calc(21px + (30 - 21) * ((50vw - 303px) / (1600 - 300)))",
         fontWeight: "800",
-        color: "#5f5f5f",
+        color: "whitesmoke",
         cursor: "pointer",
         transition: "200ms ease-in",
         fontFamily: "Century Gothic",
         letterSpacing: "1.3px",
         borderRadius: "2em",
         zIndex: 10,
+        backgroundColor: "#1a7769",
         "&:hover": {
-            color: "whitesmoke",
-            backgroundColor: "#565656"
+            color: "#1a7769",
+            backgroundColor: "whitesmoke"
         },
         "& > * ": {
             fontSize: "1.7em",
@@ -129,8 +130,13 @@ export default makeStyles((theme) => ({
     },
     minimizerButton: {
         width: "5%",
-        color: "inherit",
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
         padding: "0",
+        "&:hover":{
+            color: "#1a7769",
+            backgroundColor: "#e8e8e8eb"
+        },
         [sizes.Wdown("xs")]: {
             height: "5%",
             width: "100%",

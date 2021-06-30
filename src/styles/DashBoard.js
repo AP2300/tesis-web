@@ -30,7 +30,7 @@ export default makeStyles((theme) => ({
     padding: "1.5% 1.5%",
     "& > *": {
       fontWeight: "600",
-      color: "#191818",
+      color: "#191818db",
       fontSize: `calc(14px + (30 - 14) * ((40vw - 320px) / (1600 - 300)))`,
 
     }
@@ -57,7 +57,7 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     padding: "2%",
     "& > *":{
-      color: "#191818",
+      color: "#191818db",
       fontWeight: "600"
     }
   },
@@ -75,7 +75,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     "&& > *": {
       fontSize: "3em",
-      color: "#191818"
+      color: "#191818db"
     }
   },
   loading: {
@@ -108,7 +108,7 @@ export default makeStyles((theme) => ({
     },
     "& .title":{
       fontSize: "calc(15px + (40 - 15) * ((50vw - 320px) / (1600 - 300)))",
-      color: "#191818",
+      color: "#191818db",
       fontWeight: "600",
       paddingBottom: "2%"
     }
@@ -122,7 +122,7 @@ export default makeStyles((theme) => ({
   },
   unselectedChart: {
     "& > * ":{
-      color: "#191818"
+      color: "#191818db"
     }
   }
 }));

@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
         marginLeft: "2%",
         marginRight: "2%",
         "& > *": {
-            color: "#5f5f5f"
+            color: "#191818db"
         }
     },
     mainContainer: {
@@ -40,9 +40,7 @@ export default makeStyles((theme) => ({
         "& .activeSince": {
             display: "flex",
             alignSelf: "baseline",
-            "& > *": {
-                fontWeight: "600",
-            }
+            fontWeight: "600",
         }
     },
     rightUpperContainer: {
@@ -73,11 +71,11 @@ export default makeStyles((theme) => ({
         justifyContent: "center",
         "& .name": {
             textAlign: "center",
-            fontSize: "calc(25px + (100 - 25) * ((50vw - 303px) / (1600 - 300)))"
+            fontSize: "calc(40px + (100 - 25) * ((43vw - 303px) / (1600 - 300)))"
         },
         "& .secondary": {
             textAlign: "center",
-            fontSize: "calc(12px + (30 - 12) * ((60vw - 303px) / (1600 - 300)))"
+            fontSize: "calc(21px + (30 - 12) * ((50vw - 303px) / (1600 - 300)))"
         }
     },
     modifyImg: {
@@ -130,9 +128,14 @@ export default makeStyles((theme) => ({
             borderColor: "transparent"
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#3f51b5"
+            borderColor: "#1a7769"
         },
 
+    },
+    cssLabel: {
+        "&.Mui-focused": {
+            color: "#1a7769"
+        }
     },
     textFieldContainer1: {
         display: "flex",
@@ -143,7 +146,7 @@ export default makeStyles((theme) => ({
         "& > *": {
             fontSize: "calc(12px + (24 - 12) * ((70vw - 303px) / (1600 - 300)))",
             fontWeight: "600",
-            color: "#5f5f5f"
+            color: "#191818db"
         }
     },
     textFieldContainer2: {
@@ -159,9 +162,9 @@ export default makeStyles((theme) => ({
         minWidth: "40px",
         backgroundColor: "#e0e0e0",
         marginTop: "-14px",
-        color: "#5f5f5f",
+        color: "#191818db",
         "&:hover": {
-            backgroundColor: "#0c0c0cde",
+            backgroundColor: "#1a7769",
             color: "whitesmoke",
             transition: "400ms"
         }
@@ -191,7 +194,7 @@ export default makeStyles((theme) => ({
             transition: "350ms",
             "& > * ": {
                 fontWeight: 600,
-                color: "#5f5f5f"
+                color: "#191818db"
             }
         },
         "& > .AuthNameDis": {
@@ -297,5 +300,13 @@ export default makeStyles((theme) => ({
     },
     unSet: {
 
+    },
+    ImgButton: {
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        fontWeight: "600",
+        "&:hover":{
+            color: "#1a7769"
+        }
     }
 }));

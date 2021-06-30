@@ -41,6 +41,12 @@ export default makeStyles(() => ({
     },
     minimizerButton: {
         width: "5%",
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        "&:hover":{
+            color: "#1a7769",
+            backgroundColor: "#e8e8e8eb"
+        },
         [sizes.Wdown("md-sm")]: {
             width: "auto",
             "& .icon": {
@@ -53,9 +59,9 @@ export default makeStyles(() => ({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "0.1%",
-        minWidth: "30%",
+        width: "30%",
         height: "100%",
-        transition: "200ms ease-in",
+        transition: "250ms ease-in",
         "& .Title": {
             color: "#4c4c4c",
             fontSize: "2em"

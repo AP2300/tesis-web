@@ -2,15 +2,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     ParentContainer:{
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#99c0c62e",
         borderRadius: "0.5em",
         height: "100%",
         width: "100%",
     },
     TitleContainer:{
-        backgroundColor: "#F3F3F3",
+        backgroundColor: "#1a7769",
         borderRadius: "0.5em",
-        color: "#000000a6",
+        color: "whitesmoke",
         height: "50px",
         display: "flex",
         alignItems: "center",
