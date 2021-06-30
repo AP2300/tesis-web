@@ -117,7 +117,7 @@ export default makeStyles(() => ({
         },
         "& .addButton": {
             minWidth: 0,
-            color: "#2196f3",
+            color: "#1a7769",
             "& > .MuiButton-label .MuiSvgIcon-root ": {
                 fontSize: "3em"
             }
@@ -264,4 +264,16 @@ export default makeStyles(() => ({
             color: "whitesmoke",
         }
     },
+    Switch: {
+        "& .Mui-checked":{
+            color: "#1a7769 !important"
+        },
+        "& .MuiSwitch-track":{
+            backgroundColor: "#1a7769 !important"
+        },
+        // "& 	.MuiTouchRipple-ripple":{
+        //     color: "#1a7769 !important",
+        //     backgroundColor: "#1a7769 !important"
+        // }
+    }
 }));

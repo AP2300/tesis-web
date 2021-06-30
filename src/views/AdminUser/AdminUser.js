@@ -99,7 +99,7 @@ export default function AdminUser() {
 
     async function SelectUser(e) {
         setPromises({ ...promises, userDisplay: false })
-        if(users){
+        if (users) {
             users.usersList.map(async (el, i) => {
                 if (el.IDUser === Number(e.currentTarget.id)) {
                     const res = await GetSecurityUserData(e.currentTarget.id)
@@ -321,9 +321,11 @@ export default function AdminUser() {
                                                     <Typography>Inactivo</Typography>
                                                     <Switch
                                                         checked={Boolean(isActive)}
+                                                        className={classes.Switch}
                                                         onChange={handleSwitch}
                                                         name="IsActive"
-                                                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                                        color="primary"
+                                                        inputProps={{ 'aria-label': 'primary checkbox' }}
                                                     />
                                                     <Typography>Activo</Typography>
                                                 </div>}

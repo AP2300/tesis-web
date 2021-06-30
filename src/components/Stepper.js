@@ -17,13 +17,17 @@ const useStyles = makeStyles((theme) => ({
     button: {
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
-        backgroundColor: "#51baffb2",
-        color: "#4c4c4c",
+        backgroundColor: "#1a7769",
+        color: "whitesmoke",
         transition: "200ms",
+        fontWeight: "600",
         "&:hover": {
             transition: "200ms",
-            backgroundColor: "#51baff",
-            color: "whitesmoke"
+            backgroundColor: "whitesmoke",
+            color: "#1a7769"
+        },
+        "&:disabled": {
+            backgroundColor: "#1a7769bd"
         }
     },
     actionsContainer: {
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     Stepper: {
         padding: "1%",
         "& .MuiStepContent-root": {
-            backgroundImage: "linear-gradient( 53deg, #22f8ff 0%, #a07fff 9%, #c15fff 100%)",
+            backgroundImage: "linear-gradient( 53deg, #1a7769 0%, #99c0c6 19%, #99c0c6 100%)",
             paddingRight: "0",
             paddingLeft: "5px",
             maxWidth: "70vw",
@@ -69,13 +73,16 @@ const useStyles = makeStyles((theme) => ({
         },
         "& .MuiFormLabel-root": {
             marginTop: "-5px",
-            overflowWrap: "break-word"
+            overflowWrap: "break-word",
+        },
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#1a7769"
         },
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent"
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#3f51b5"
+            borderColor: "#1a7769"
         },
 
     },
@@ -103,12 +110,12 @@ const StepIconsStyles = makeStyles({
     },
     active: {
         backgroundImage:
-            'linear-gradient( 136deg, #22f8ff 0%, #a07fff 50%, #c15fff 100%)',
+            'linear-gradient( 136deg, #0c3148 0%, #1a7769 40%, #99c0c6 100%)',
         boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     },
     completed: {
         backgroundImage:
-            'linear-gradient( 136deg, #22f8ff 0%, #a07fff 50%, #c15fff 100%)',
+            'linear-gradient( 136deg, #0c3148 0%, #1a7769 40%, #99c0c6 100%)',
     },
 });
 
@@ -161,9 +168,6 @@ export default function StepperComponent(props) {
                         }
                         register(params)
                         return prevActiveStep + 1
-                    } else if (activeStep === 2) {
-                        history.push(`/admin/security/${formControl.registeredID}`)
-                        setFormControl({ ...formControl, registeredID: "" })
                     } else {
                         setNoti({ ...noti, severity: "warning", open: true, description: "Ingrese un correo electronico valido" })
                         return prevActiveStep - 2
@@ -172,7 +176,10 @@ export default function StepperComponent(props) {
                     setNoti({ ...noti, severity: "warning", open: true, description: "Debe llenar todos los campos para continuar" })
                     return prevActiveStep
                 }
-                return prevActiveStep
+
+            } else if (activeStep === 2) {
+                history.push(`/admin/security/${formControl.registeredID}`)
+                setFormControl({ ...formControl, registeredID: "" })
             } else {
                 return prevActiveStep + 1
             }
@@ -181,6 +188,10 @@ export default function StepperComponent(props) {
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => {
+            if(activeStep === 2){
+                setFormControl({...formControl, name: "", email: "", pass: "", type: 0, registeredID: ""})
+                return prevActiveStep - 2
+            }
             setLoading(false)
             return prevActiveStep - 1
         });
@@ -271,6 +282,7 @@ export default function StepperComponent(props) {
                                         disabled={activeStep === 0}
                                         onClick={handleBack}
                                         className={classes.button}
+                                    // classes={{ disabled: classes.disabledButton }}
                                     >
                                         Atras
                                     </Button>
