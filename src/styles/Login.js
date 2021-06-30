@@ -3,14 +3,17 @@ import sizes from "./sizes";
 import img from "./resources/1398650.jpg"
 
 export default makeStyles((theme) => ({
-    main:{  
+    main: {
         backgroundImage: `url(${img})`,
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
     },
     root: {
-        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "cener",
         width: "40vw",
         height: "81.5vh",
         borderRadius: "10px",
@@ -58,38 +61,42 @@ export default makeStyles((theme) => ({
         },*/
     },
     cardContent: {
-        //marginTop: "8.8rem",
-        [sizes.Wdown("lg")]: {
-            marginTop: "7rem"
-        },
+        height: "100%",
+        width: "88%",
+        textAlign: "center"
     },
     divider: {
         width: "83%",
         margin: "auto",
         marginBottom: "1rem"
     },
+    cssLabel: {
+        "&.Mui-focused": {
+            color: "#1a7769"
+        }
+    },
     textField: {
         width: "80%",
         "& .MuiOutlinedInput-root": {
             borderRadius: "2rem",
-            backgroundColor:"#bdbdbd6e",
-        },        
+            backgroundColor: "#bdbdbd6e",
+        },
 
         marginBottom: "1em",
-        ["& input"]:{
+        ["& input"]: {
             height: "1em",
         },
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent"
-          },
+        },
         "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderColor: "black"
-          },
-          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#3f51b5"
-          },
+            borderColor: "#1a7769"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#1a7769"
+        },
 
-    },  
+    },
     inputText: {
         marginBottom: "1rem",
     },
@@ -100,12 +107,12 @@ export default makeStyles((theme) => ({
             paddingBottom: "0.25rem",
             paddingTop: "0.2rem",
         },
-    btn: {
-        textTransform: "none",
-        borderRadius: "40px",
-        marginTop: "80rem",
-        padding: "0.55rem 1.5rem",
-    }
+        btn: {
+            textTransform: "none",
+            borderRadius: "40px",
+            marginTop: "80rem",
+            padding: "0.55rem 1.5rem",
+        }
     },
     background: {
         backgroundImage: "url('./1398625.jpg')"

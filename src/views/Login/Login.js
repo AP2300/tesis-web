@@ -25,7 +25,8 @@ function Login(props) {
         marginTop: "0.5rem",
         padding: "0.55rem 1.5rem",
         backgroundColor: "#1a7769",
-        color: "#0c3148"
+        color: "whitesmoke",
+        marginTop: "10%"
     }
 
 
@@ -107,13 +108,14 @@ function Login(props) {
                                 className={classes.textFields}
                                 onError={errors => console.log(errors)}
                                 instantValidate={true}
+                                
                             >
                                 <Typography gutterBottom variant="body1" component="h2">
-                                    E-mail
+                                    Correo electrónico
                                 </Typography>
                                 <TextValidator
                                     id="outlined-email"
-                                    label="E-mail"
+                                    label="Correo electrónico"
                                     onChange={(e) => { setEmail(e.target.value) }}
                                     name="email"
                                     value={email}
@@ -121,6 +123,11 @@ function Login(props) {
                                     className={classes.textField}
                                     validators={['required', 'isEmail']}
                                     errorMessages={['El campo no puede estar vacío', 'Correo inválido']}
+                                    InputLabelProps={{
+                                        classes: {
+                                          root: classes.cssLabel,
+                                        }
+                                      }}
                                 />
                                 <Typography gutterBottom variant="body1" component="h2">
                                     Contraseña
@@ -136,6 +143,11 @@ function Login(props) {
                                     className={classes.textField}
                                     validators={['required']}
                                     errorMessages={['El campo no puede estar vacío']}
+                                    InputLabelProps={{
+                                        classes: {
+                                          root: classes.cssLabel,
+                                        }
+                                      }}
                                 />
                                 <Button type="submit" variant="contained" style={btn}>
                                     Iniciar Sesión
