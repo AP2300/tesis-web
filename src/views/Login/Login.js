@@ -31,23 +31,28 @@ function Login(props) {
 
 
     useEffect(() => {
-        if(!(location.state === undefined)) {
-            if(location.state.expired) {
-                setMsg("La sesión ha expirado");
-                setOpen(true);
-                history.replace({state: { expired: false }})
+
+            // const Session = await location.state
+            // console.log(location.state === undefined);
+            if (!(location.state === undefined)) {
+                console.log("dasdadsa " + location.state.expired);
+                if (location.state.expired) {
+                    setMsg("La sesión ha expirado");
+                    setOpen(true);
+                    history.replace({ state: { expired: false } })
+                }
             }
-        }
+
+
         async function getData() {
             let bool = await GetFullUserData();
-            console.log(bool);
-            if(bool) {
+            if (bool) {
                 setisLoading(true);
                 setTimeout(() => { history.push('/home'); }, 3000);
             }
         }
         getData()
-    }, [])
+    }, [location.state])
 
     async function handleLogin(e) {
         if (!email) {
@@ -73,15 +78,15 @@ function Login(props) {
         if (response.data.success && response.data.isActive) {
             history.push("/home");
         } else {
-            if(!response.data.isActive && response.data.success){
+            if (!response.data.isActive && response.data.success) {
                 setisLoading(false);
                 setMsg("El usuario no esta activo, contacte a un administrador");
                 setOpen(true);
-            }else if(response.data.session && !response.data.success){
+            } else if (response.data.session && !response.data.success) {
                 setisLoading(false);
                 setMsg("El usuario ya tiene una sesion activa");
                 setOpen(true);
-            } else{
+            } else {
                 setisLoading(false);
                 setMsg("Los datos ingresados son inválidos, intente nuevamente");
                 setOpen(true);
@@ -92,12 +97,12 @@ function Login(props) {
     return (
         <div className={classes.main}>
             {open && (
-                <Notification close={() => setOpen(false)} data={{severity: "error", open: open,  description: msg}}/>
-                )}
+                <Notification close={() => setOpen(false)} data={{ severity: "error", open: open, description: msg }} />
+            )}
             <div className={classes.login}>
                 <Card className={classes.root}>
                     <LoginLoading isLoading={isLoading}>
-                        <LogoIcon className={classes.avatar}/>
+                        <LogoIcon className={classes.avatar} />
                         <CardContent className={classes.cardContent}>
                             <Typography gutterBottom variant="h5" component="h2">
                                 Inicia Sesión
@@ -108,7 +113,7 @@ function Login(props) {
                                 className={classes.textFields}
                                 onError={errors => console.log(errors)}
                                 instantValidate={true}
-                                
+
                             >
                                 <Typography gutterBottom variant="body1" component="h2">
                                     Correo electrónico
@@ -125,9 +130,9 @@ function Login(props) {
                                     errorMessages={['El campo no puede estar vacío', 'Correo inválido']}
                                     InputLabelProps={{
                                         classes: {
-                                          root: classes.cssLabel,
+                                            root: classes.cssLabel,
                                         }
-                                      }}
+                                    }}
                                 />
                                 <Typography gutterBottom variant="body1" component="h2">
                                     Contraseña
@@ -145,9 +150,9 @@ function Login(props) {
                                     errorMessages={['El campo no puede estar vacío']}
                                     InputLabelProps={{
                                         classes: {
-                                          root: classes.cssLabel,
+                                            root: classes.cssLabel,
                                         }
-                                      }}
+                                    }}
                                 />
                                 <Button type="submit" variant="contained" style={btn}>
                                     Iniciar Sesión

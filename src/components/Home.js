@@ -25,8 +25,8 @@ export default function Home() {
     const interval = setInterval(async () => {
       const res = await CheckSession()
       if(res.data.session === "vencida") {
-        history.replace({state: { expired: true }})
         history.push("/")
+        history.replace({state:{ expired: true }})
       }
     }, 10000);
     return () => clearInterval(interval);
