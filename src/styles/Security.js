@@ -175,4 +175,12 @@ export default makeStyles((theme) => ({
         animationIterationCount: 'infinite',
         color: "transparent",
       },
+      Switch: {
+        "& .Mui-checked":{
+            color: "#1a7769 !important"
+        },
+        "& .MuiSwitch-track":{
+            backgroundColor: "#1a7769 !important"
+        },
+    }
 }));

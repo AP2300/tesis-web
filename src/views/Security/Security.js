@@ -189,6 +189,8 @@ export default function Security(props) {
                                                                 edge="end"
                                                                 onChange={handleToggle(`${el.fingerName}`)}
                                                                 checked={state.checked.indexOf(`${el.fingerName}`) !== -1}
+                                                                className={classes.Switch}
+                                                                color="primary"
                                                                 inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
                                                             />
                                                         </ListItemSecondaryAction>

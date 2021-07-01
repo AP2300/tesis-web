@@ -238,13 +238,15 @@ export default makeStyles(() => ({
             marginTop: "-5px",
             overflowWrap: "break-word"
         },
+        "& .Mui-focused": {
+            color: "#1a7769"
+        },
         "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent"
         },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#3f51b5"
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline ": {
+            borderColor: "#1a7769",
         },
-
     },
     closeButton: {
         display: "flex",

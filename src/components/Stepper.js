@@ -92,7 +92,15 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         display: "flex",
         width: "100%",
-        justifyContent: "center"
+        justifyContent: "center",
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#1a7769"
+        },
+        "& .MuiFilledInput-underline": {
+            "&::after": {
+                borderColor: "#1a7769"
+            }
+        },
     }
 }));
 
