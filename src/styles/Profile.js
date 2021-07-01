@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
         marginTop: "-10px",
         width: "100vw",
         height: "82.5vh",
-        overflowY: "scroll"
+        overflowY: "auto"
     },
     upperContainer: {
         width: "100%",
@@ -142,6 +142,7 @@ export default makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "space-around",
         flexDirection: "column",
+        textAlign: "center",
         width: "27%",
         "& > *": {
             fontSize: "calc(12px + (24 - 12) * ((70vw - 303px) / (1600 - 300)))",

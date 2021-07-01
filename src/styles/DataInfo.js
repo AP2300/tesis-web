@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import sizes from "./sizes";
 
-export default  makeStyles((theme) => ({
-    Card:{
+export default makeStyles((theme) => ({
+    Card: {
         width: "50%",
         height: "100%",
         marginRight: "2%",
@@ -14,37 +14,39 @@ export default  makeStyles((theme) => ({
     Cardgrid: {
         padding: "2%",
         width: "100%",
-        height:"100%",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         flexWrap: "wrap"
     },
     header: {
         height: "25%",
+        backgroundColor:" #1a7769",
+        boxShadow: "2px 4px 5px",
+        color: "whitesmoke",
     },
-    content: {
-        height: "75%",
+content: {
+    height: "75%",
     },
-    List: {
-        backgroundColor: theme.palette.background.paper,
+List: {
         position: 'relative',
-        overflowY: 'scroll',
-        height: "100%"
-    },
-    Divider: {
-        marginTop: "1%",
+            overflowY: 'auto',
+                height: "100%"
+},
+Divider: {
+    marginTop: "1%",
         marginBottom: "1%",
     },
-    message: {
-        display: "flex",
+message: {
+    display: "flex",
         height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        "&& > *": {
-            fontSize: "2em",
+            justifyContent: "center",
+                alignItems: "center",
+                    "&& > *": {
+        fontSize: "2em",
             [sizes.Wdown("xs")]: {
-                margin: "12%"
-            }
-        },
+            margin: "12%"
+        }
     },
+},
 }));

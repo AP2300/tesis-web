@@ -522,7 +522,7 @@ export default function AdminUserSecurity(props) {
                 }
                 
                 {openAdd.name == "Facial" ? (
-                    <Modal defaultButtons={false} noButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} title={"Agregar imagen facial"}>
+                    <Modal defaultButtons={false} noButtons={false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUpload} takePhotoFunction={() => handleAddTakePhoto("face")} buttonsDisabled={formCompleted} facial = {formCompleted.fileOm} title={"Agregar imagen facial"}>
                         <div>
                             <Typography align="center">Ingrese la nueva foto facial</Typography>
                             <DropzoneArea filesLimit={1} dropzoneText="Arrastra un archivo o haz click para seleccionar un archivo" showAlerts={false} acceptedFiles={['image/*']} onAdd={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })} onDrop={(fileObjs) => setFileInfo({ fileObjs, isAdded: true })}

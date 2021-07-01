@@ -50,7 +50,7 @@ export default makeStyles((theme) => ({
         height: "70vh",
         marginTop: "1%",
         boxShadow: "3px 2px 5px #00000038",
-        overflowY: "scroll",
+        overflowY: "auto",
         "& > .MuiAccordion-root.Mui-expanded": {
             margin: 0
         },
@@ -59,7 +59,9 @@ export default makeStyles((theme) => ({
         width: "100%",
         height: "50vh",
         padding: "1.3%",
-        transition: "200ms ease-in"
+        transition: "200ms ease-in",
+        backgroundColor: "#99c0c838"
+
     },
     HideGraph: {
         width: "100%",
@@ -78,7 +80,8 @@ export default makeStyles((theme) => ({
     details: {
         alignItems: 'center',
         height: "38vh",
-        width: "100%"
+        width: "100%",
+        backgroundColor: "#99c0c838"
     },
     column1: {
         width: "86%",
@@ -86,8 +89,8 @@ export default makeStyles((theme) => ({
         transition: "250ms ease-in"
     },
     column: {
-        overflowX: "scroll",
-        width: '80%',
+        overflowX: "auto",
+        width: '86%',
         height: "100%",
         transition: "250ms ease-in"
     },
@@ -164,7 +167,7 @@ export default makeStyles((theme) => ({
         flexWrap: "wrap",
         height: "100%",
         width: "100%",
-        overflowY: "scroll",
+        overflowY: "auto",
         justifyContent: "center"
     },
     formControl: {
@@ -178,10 +181,14 @@ export default makeStyles((theme) => ({
         }
     },
     AcordionResult: {
+        "& > .MuiButtonBase-root.MuiAccordionSummary-root":{
+            backgroundColor: "#99c0c8"
+        },
         "& > .MuiButtonBase-root.MuiAccordionSummary-root .MuiAccordionSummary-content": {
             flexWrap: "wrap",
             justifyContent: "space-between",
-            color: "#000000bd",
+            color: "black",
+            
             "&  .UserInfo": {
                 display: "flex",
                 width: "30%",

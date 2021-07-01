@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
         padding: "3%",
         display: "flex",
         justifyContent: "space-evenly",
-        overflowY: "scroll",
+        overflowY: "auto",
         height: "calc(100% - 50px)"
     }
 }))

@@ -21,7 +21,7 @@ export default makeStyles((theme) => ({
         height: "82.5vh",
         display: "flex",
         flexWrap: "wrap",
-        overflowY: "scroll",
+        overflowY: "auto",
         justifyContent: "flex-end",
         overflowX: "hidden"
     },

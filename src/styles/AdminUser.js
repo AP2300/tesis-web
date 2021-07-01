@@ -50,7 +50,7 @@ export default makeStyles(() => ({
         display: "flex",
         [sizes.Wdown("md-sm")]: {
             flexDirection: "column",
-            overflowY: "scroll"
+            overflowY: "auto"
         },
     },
     minimizerButton: {
@@ -93,7 +93,7 @@ export default makeStyles(() => ({
             height: "100%",
             "& > .lists": {
                 height: "calc(100% - 57px)",
-                overflowY: "scroll",
+                overflowY: "auto",
                 overflowX: "hidden"
             },
         },
@@ -174,6 +174,8 @@ export default makeStyles(() => ({
         display: "flex",
         flexWrap: "wrap",
         width: "95%",
+        height: "100%",
+        overflowY: "auto",
         minWidth: "300px",
         minHeight: "95%",
         [sizes.Wdown("sm")]: {
@@ -267,7 +269,7 @@ export default makeStyles(() => ({
         "& > .Stepper": {
             height: "90%",
             width: "100%",
-            overflowY: "scroll"
+            overflowY: "auto"
         }
     },
     chip: {

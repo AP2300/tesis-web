@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useStyles from '../../styles/Security';
-import { Paper, Avatar, Divider, Typography, List, ListItem, Chip, ListItemIcon, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core/';
+import { Paper, Avatar, Divider, Typography, List, ListItem, Chip, ListItemIcon, ListItemSecondaryAction, ListItemText, Tooltip, Switch } from '@material-ui/core/';
 import { Fingerprint, Mood, ReportProblemRounded } from '@material-ui/icons/';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab/';
 import TitleContainer from '../../components/TitleContainer';
+import Notification from '../../components/Notifications';
 import { GetFullUserData, UpdateAuthMethods } from "../../api/user"
 import { useHistory } from 'react-router';
 import * as Cons from "../../api/constants";
@@ -13,21 +14,22 @@ export default function Security(props) {
     const classes = useStyles();
     const history = useHistory()
     const [formats, setFormats] = useState(() => []);
-    const [isPromiseReady, setIsPromiseReady] = useState({ ReqPromise: false, PropsPromise: false })
+    const [isPromiseReady, setIsPromiseReady] = useState({ ReqPromise: false, PropsPromise: false})
     const [PropsPromise, setPropsPromise] = useState(false)
-    const [state, setState] = useState({ Security: "", checked: [], BasicData: "", Code: 0 })
+    const [state, setState] = useState({ Security: "", BasicData: "", Code: 0, checked: [], methods: [] })
+    const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
 
-    const handleToggle = (value) => () => {
-        const currentIndex = state.checked.indexOf(value);
-        const newChecked = [...state.checked];
+    // const handleToggle = (value) => () => {
+    //     const currentIndex = state.checked.indexOf(value);
+    //     const newChecked = [...state.checked];
 
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-        setState({ ...state, checked: newChecked });
-    }
+    //     if (currentIndex === -1) {
+    //         newChecked.push(value);
+    //     } else {
+    //         newChecked.splice(currentIndex, 1);
+    //     }
+    //     setState({ ...state, checked: newChecked });
+    // }
 
     function getFingerStatus() {
         let newArr = []
@@ -50,9 +52,8 @@ export default function Security(props) {
     useEffect(() => {
         if (state.Security !== "") {
             console.log("segundo UE");
-            SetSideButton()
             getFingerStatus()
-            state.Security.forEach(e => { if (e.Name === "Codigo") setState({ ...state, Code: e.data }) })
+            SetSideButton()
             console.log(state)
         }
     }, [state.Security])
@@ -62,7 +63,6 @@ export default function Security(props) {
     }, [props])
 
     const GetBasicData = async () => {
-        console.log("das");
         const Data = await props.Data
         console.log(Data, props.Data);
         if (Data) {
@@ -73,6 +73,10 @@ export default function Security(props) {
         }
     }
 
+
+    function getNoti() {
+        if (noti.open) return < Notification close={setNoti} data={noti} />
+    }
 
     const GetUserSecurityData = async () => {
         const res = await GetFullUserData()
@@ -89,12 +93,19 @@ export default function Security(props) {
 
     async function SetSideButton() {
         let Arr = []
+        let RefArr = []
+
         state.Security.forEach((el, i) => {
             if (el.Name !== "Codigo" && el.IsActive) {
                 Arr.push(el.Name)
             }
+            if (el.Name !== "Codigo") RefArr.push(el.Name)
         });
         let UniqueArr = [...new Set(Arr)]
+        if (!RefArr.includes("Facial")) UniqueArr.push("FacialDis")
+        if (!RefArr.includes("Huella")) UniqueArr.push("HuellaDis")
+        console.log(RefArr);
+        state.Security.forEach(e => { if (e.Name === "Codigo") setState({ ...state, Code: e.data ,  methods: RefArr }) })
         setFormats(UniqueArr)
     }
 
@@ -105,32 +116,51 @@ export default function Security(props) {
                 id: 2,
                 active: !formats.includes("Huella") ? 1 : 0
             }
-            const res = await UpdateAuthMethods(params)
-            if (!res) {
-                history.push({
-                    pathname: '/',
-                    state: { expired: true }
-                });
+            if (formats.includes("Facial")) {
+                const res = await UpdateAuthMethods(params)
+                if (!res) {
+                    history.push({
+                        pathname: '/',
+                        state: { expired: true }
+                    });
+                }
+                else {
+                    setFormats(newFormats)
+                    GetUserSecurityData()
+                }
+            } else {
+                setNoti({ ...noti, severity: "error", description: "No puedes desactivar tu ultimo método activo", open: true })
             }
-            else {
-                setFormats(newFormats)
-                GetUserSecurityData()
-            }
+
         } else if (event.currentTarget.name === "Facial") {
             const params = {
                 id: 3,
                 active: !formats.includes("Facial") ? 1 : 0
             }
-            const res = await UpdateAuthMethods(params)
-            if (!res) {
-                history.push({
-                    pathname: '/',
-                    state: { expired: true }
-                });
+            if (formats.includes("Huella")) {
+                const res = await UpdateAuthMethods(params)
+                if (!res) {
+                    history.push({
+                        pathname: '/',
+                        state: { expired: true }
+                    });
+                }
+                else setFormats(newFormats);
+            } else {
+                setNoti({ ...noti, severity: "error", description: "No puedes desactivar tu ultimo método activo", open: true })
+
             }
-            else setFormats(newFormats);
+
         }
     };
+
+    function getFacialAuthPhoto() {
+        const filter = state.Security.filter((el) => el.Name === "Facial")
+        if (filter.length) {
+            return filter[0].data
+        }
+        return ""
+    }
 
     return (
         <div className={classes.root}>
@@ -151,11 +181,11 @@ export default function Security(props) {
                             label="El reconocimiento facial esta desactivado"
                         />}
                         {formats.includes("Facial") ?
-                            <Avatar src={`${Cons.url}${state.Security ? state.Security.filter((el) => el.Name == "Facial")[0].data : ""}`} className={classes.img} />
-                            : 
+                            <Avatar src={`${Cons.url}${state.Security ? getFacialAuthPhoto() : ""}`} className={classes.img} />
+                            :
                             <Avatar className={classes.img} />
                         }
-                        
+
                     </div>
                 </Paper>
                 <div className={classes.rightContainer}>
@@ -185,14 +215,14 @@ export default function Security(props) {
                                                         </ListItemIcon>
                                                         <ListItemText id="switch-list-label-wifi" primary={`${el.fingerName}`} />
                                                         <ListItemSecondaryAction>
-                                                            <Switch
+                                                            {/* <Switch
                                                                 edge="end"
                                                                 onChange={handleToggle(`${el.fingerName}`)}
                                                                 checked={state.checked.indexOf(`${el.fingerName}`) !== -1}
                                                                 className={classes.Switch}
                                                                 color="primary"
                                                                 inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
-                                                            />
+                                                            /> */}
                                                         </ListItemSecondaryAction>
                                                     </ListItem>
                                                 )
@@ -205,18 +235,36 @@ export default function Security(props) {
                         <div className={classes.Buttons}>
                             <ToggleButtonGroup value={formats} onChange={handleFormat}
                                 aria-label="text formatting" orientation="vertical" className={isPromiseReady ? classes.sideButton : classes.sideButtonUnloaded}>
-                                <ToggleButton value="Huella" aria-label="bold" name="Huella">
-                                    <Fingerprint />
-                                </ToggleButton>
-                                <ToggleButton value="Facial" aria-label="italic" name="Facial">
-                                    <Mood />
-                                </ToggleButton>
+                                    
+                                {state.methods.includes("Huella") ?
+                                    <ToggleButton value="Huella" aria-label="bold" name="Huella">
+                                        <Fingerprint />
+                                    </ToggleButton>
+                                    : formats.includes("HuellaDis") ?
+                                        <Tooltip title="Este método no se encuentra registrado" style={{ cursor: "default", backgroundColor: "#8080801c", color: "gray" }}>
+                                            <ToggleButton value="" aria-label="bold" name="HuellaDis">
+                                                <Fingerprint />
+                                            </ToggleButton>
+                                        </Tooltip>
+                                        : "" }
+                                {state.methods.includes("Facial") ?
+                                    <ToggleButton value="Facial" aria-label="italic" name="Facial" >
+                                        <Mood />
+                                    </ToggleButton>
+                                    : formats.includes("FacialDis") ?
+                                        <Tooltip title="Este método no se encuentra registrado" >
+                                            <ToggleButton value="" aria-label="italic" name="FacialDis" style={{ cursor: "default", backgroundColor: "#8080801c", color: "gray" }}>
+                                                <Mood />
+                                            </ToggleButton>
+                                        </Tooltip>
+                                        : ""}
                             </ToggleButtonGroup>
                         </div>
                     </div>
 
                 </div>
             </Paper>
+            {getNoti()}
         </div>
     )
 }

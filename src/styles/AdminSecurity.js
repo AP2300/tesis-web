@@ -119,7 +119,7 @@ export default makeStyles((theme) => ({
         display: "flex",
         [sizes.Wdown("md-sm")]: {
             flexDirection: "column",
-            overflowY: "scroll"
+            overflowY: "auto"
         },
     },
     minimizerButton: {
@@ -162,7 +162,7 @@ export default makeStyles((theme) => ({
             height: "100%",
             "& > .lists": {
                 height: "calc(100% - 57px)",
-                overflowY: "scroll",
+                overflowY: "auto",
                 overflowX: "hidden"
             },
         },
@@ -195,12 +195,12 @@ export default makeStyles((theme) => ({
         justifyContent: "center",
         height: "100%",
         flexGrow: 1,
-        overflowY: "scroll",
+        overflowY: "auto",
         [sizes.Wdown("md-sm")]: {
             minHeight: "500px"
         },
         [sizes.Wdown("lg")]: {
-            overflowY: "scroll"
+            overflowY: "auto"
         },
     },
     chip: {
@@ -429,7 +429,7 @@ export default makeStyles((theme) => ({
         margin: "0.3em 0"
     },
     fingerInfoContainer: {
-        overflowY: "scroll",
+        overflowY: "auto",
         width: "100%"
     },
     fingerDataContainer: {

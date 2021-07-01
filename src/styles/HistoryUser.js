@@ -99,7 +99,7 @@ export default makeStyles((theme) => ({
         height: "64vh",
         padding: "2%",
         display: "flex",
-        overflowY: "scroll",
+        overflowY: "auto",
         justifyContent: "space-between",
         [sizes.Wdown("xs")]: {
             flexDirection: "column",
@@ -116,7 +116,7 @@ export default makeStyles((theme) => ({
         }
     },
     overflowContainer: {
-        overflowX: "scroll"
+        overflowX: "auto"
     },
     minimizedContainer: {
         width: "8%",
@@ -149,6 +149,7 @@ export default makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center", 
+        overflow: "auto"
     },
     iconContainer: {
         display: "flex",
