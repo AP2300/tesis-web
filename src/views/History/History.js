@@ -265,6 +265,7 @@ export default function History() {
                                             displayEmpty
                                             onChange={handleChange}
                                             name="timestamp"
+                                            className={classes.underline}
                                         >
                                             <MenuItem value="D">Diario</MenuItem>
                                             <MenuItem value="S">Semanal</MenuItem>
@@ -284,6 +285,7 @@ export default function History() {
                                             displayEmpty
                                             onChange={handleChange}
                                             name="typeUser"
+                                            className={classes.underline}
                                         >
                                             <MenuItem value="T">Todos</MenuItem>
                                             <MenuItem value="U"><em>Usuario</em></MenuItem>
@@ -301,6 +303,7 @@ export default function History() {
                                             name="day"
                                             onChange={handleChange}
                                             disabled={States.TimeStamp === "A" || States.TimeStamp === "M" || States.TimeStamp === "S" ? true : false}
+                                            className={classes.underline}
                                         >
                                             {DaysInMonth(Dates.month, Dates.year).map((w, i) => <MenuItem key={i} value={w}>{w}</MenuItem>)}
                                         </Select>
@@ -316,6 +319,7 @@ export default function History() {
                                             name="week"
                                             onChange={handleChange}
                                             disabled={States.TimeStamp === "A" || States.TimeStamp === "M" || States.TimeStamp === "D" ? true : false}
+                                            className={classes.underline}
                                         >
                                             {GraphLabels("M").map((w, i) => {
                                                 if (calcNumWeek(Dates.year, Dates.month).length === 6) {
@@ -337,6 +341,7 @@ export default function History() {
                                             name="month"
                                             onChange={handleChange}
                                             disabled={States.TimeStamp === "A" ? true : false}
+                                            className={classes.underline}
                                         >
                                             {GraphLabels("A").map((e, i) => <MenuItem key={i} value={i}>{String(e)}</MenuItem>)}
                                         </Select>
@@ -351,6 +356,7 @@ export default function History() {
                                             value={Dates.year}
                                             name="year"
                                             onChange={handleChange}
+                                            className={classes.underline}
                                         >
                                             {getYearRange().map((e, i) => <MenuItem key={i} value={e}>{String(e)}</MenuItem>)}
                                             <MenuItem value={2022}>2022</MenuItem>

@@ -7,7 +7,21 @@ export default makeStyles(() => ({
         "50%": { backgroundPosition: "100% 50%" },
         "100%": { backgroundPosition: "0% 50%" }
     },
-
+    editButton: {
+        "&:hover": {
+            backgroundColor: "#1a7769",
+            color: "whitesmoke",
+            transition: "400ms"
+        }
+    },
+    ImgButton: {
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        fontWeight: "600",
+        "&:hover":{
+            color: "#1a7769"
+        }
+    },
     loading: {
         animationName: '$loading',
         background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)",
@@ -43,11 +57,13 @@ export default makeStyles(() => ({
         width: "5%",
         color: "whitesmoke",
         backgroundColor: "#1a7769",
+        margin: "0 15px",
         "&:hover":{
             color: "#1a7769",
             backgroundColor: "#e8e8e8eb"
         },
         [sizes.Wdown("md-sm")]: {
+            margin: "15px 0",
             width: "auto",
             "& .icon": {
                 transform: "rotate(90deg)"

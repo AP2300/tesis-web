@@ -463,6 +463,7 @@ export default function AdminUserSecurity(props) {
                                             value={handData}
                                             onChange={handleFinger}
                                             name="hand"
+                                            className={classes.underline}
                                             inputProps={{
                                                 id: 'hand-native-required',
                                             }}
@@ -481,6 +482,7 @@ export default function AdminUserSecurity(props) {
                                             value={fingerData.value}
                                             onChange={handleFinger}
                                             name="finger"
+                                            className={classes.underline}
                                             inputProps={{
                                                 id: 'finger-native-required',
                                             }}

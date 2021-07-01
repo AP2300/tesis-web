@@ -21,6 +21,8 @@ export default makeStyles((theme) => ({
     content: {
         padding: "3%",
         display: "flex",
-        justifyContent: "space-evenly"
+        justifyContent: "space-evenly",
+        overflowY: "scroll",
+        height: "calc(100% - 50px)"
     }
 }))

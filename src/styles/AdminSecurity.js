@@ -124,8 +124,16 @@ export default makeStyles((theme) => ({
     },
     minimizerButton: {
         width: "5%",
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        margin: "0 15px",
+        "&:hover":{
+            color: "#1a7769",
+            backgroundColor: "#e8e8e8eb"
+        },
         [sizes.Wdown("md-sm")]: {
             width: "auto",
+            margin: "15px 0",
             "& .icon": {
                 transform: "rotate(90deg)"
             }
@@ -331,8 +339,11 @@ export default makeStyles((theme) => ({
         color: "inherit"
     },
     editButton: {
-        backgroundColor: "#2196f312",
-        color: "#2196f3"
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        "&:hover": {
+            color: "#1a7769"
+        }
     },
     deleteButton: {
         backgroundColor: "#f4433612",
@@ -474,5 +485,14 @@ export default makeStyles((theme) => ({
         width: "50%",
         margin: theme.spacing(1),
         minWidth: 120,
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#1a7769"
+        }
+    },
+    underline: {
+        "&&::after": {
+            borderBottom: "2px solid #1a7769"
+           // borderColor: "#1a7769"
+        }
     }
 }));

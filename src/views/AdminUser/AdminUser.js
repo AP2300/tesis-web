@@ -305,7 +305,7 @@ export default function AdminUser() {
                                             <Avatar alt="" src={`${Cons.url}/${users.userDisplay.Picture}`} className="avatar" />
                                             <Divider variant="middle" flexItem style={{ height: "1px" }} />
                                             <br />
-                                            <Button onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
+                                            <Button className={classes.ImgButton} onClick={handleEditPhoto}>Modificar foto de perfil<OpenInNew /></Button>
                                             <br />
                                             <Typography>
                                                 Estado del usuario

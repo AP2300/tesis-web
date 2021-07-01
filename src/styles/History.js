@@ -81,7 +81,7 @@ export default makeStyles((theme) => ({
         width: "100%"
     },
     column1: {
-        width: "85%",
+        width: "86%",
         height: "100%",
         transition: "250ms ease-in"
     },
@@ -102,9 +102,14 @@ export default makeStyles((theme) => ({
     },
     dividerButton: {
         height: "100%",
-        width: "5%",
+        width: "4%",
         minWidth: 0,
-        color: "#1a7769"
+        color: "whitesmoke",
+        backgroundColor: "#1a7769",
+        "&:hover":{
+            color: "#1a7769",
+            backgroundColor: "#e8e8e8eb"
+        },
     },
     helper: {
         borderLeft: `2px solid ${theme.palette.divider}`,
@@ -188,5 +193,11 @@ export default makeStyles((theme) => ({
                 minWidth: "36.5px"
             }
         },
+    },
+    underline: {
+        "&&::after": {
+            borderBottom: "2px solid #1a7769"
+           // borderColor: "#1a7769"
+        }
     }
 }));

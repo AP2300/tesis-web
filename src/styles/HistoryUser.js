@@ -169,6 +169,14 @@ export default makeStyles((theme) => ({
         "& > .MuiFormControl-root.timestamp": {
             width: "15vw"
         },
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#1a7769"
+        },
+        "& .MuiInput-underline": {
+            "&::after": {
+                borderColor: "#1a7769"
+            }
+        },
         [sizes.Wdown("md")]: {
             flexDirection: "column",
             "& > .MuiFormControl-root": {
