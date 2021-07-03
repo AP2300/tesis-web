@@ -231,6 +231,28 @@ export async function setFingerBlob(data) {
   }
 }
 
+export async function assingFinger(data){
+
+  try{
+    const res = await axios.post(Cons.setFinger, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    })
+    if ((await res).status === 200) {
+      console.log("/////////////////////////////////////////////////////////////////")
+      console.log(res);
+      console.log("/////////////////////////////////////////////////////////////////")
+      return res
+    } else {
+      return false
+    }
+  }catch(e){
+    console.error(e)
+  }
+}
+
 export async function setFace(data) {
   const form = new FormData();
   form.append("face", data.face)

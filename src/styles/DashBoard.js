@@ -28,6 +28,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: "1.5% 1.5%",
+    backgroundColor: "#99c0c838",
     "& > *": {
       fontWeight: "600",
       color: "#191818db",
@@ -46,6 +47,7 @@ export default makeStyles((theme) => ({
     fontSize: `calc(17px + (30 - 17) * ((90vw - 320px) / (1600 - 300)))`,
   },
   borderBoxR: {
+    backgroundColor: "#99c0c838",
 
   },
   centerBox:{
@@ -56,6 +58,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: "2%",
+    backgroundColor: "#99c0c838",
     "& > *":{
       color: "#191818db",
       fontWeight: "600"
@@ -66,6 +69,7 @@ export default makeStyles((theme) => ({
     width: "100%",
     height: "50vh",
     padding: "2em",
+    backgroundColor: "#99c0c838",
     textAlign: "center",
   },
   message: {

@@ -129,7 +129,7 @@ export default function Security(props) {
                     GetUserSecurityData()
                 }
             } else {
-                setNoti({ ...noti, severity: "error", description: "No puedes desactivar tu ultimo método activo", open: true })
+                setNoti({ ...noti, severity: "warning", description: "No puedes desactivar tu ultimo método activo", open: true })
             }
 
         } else if (event.currentTarget.name === "Facial") {

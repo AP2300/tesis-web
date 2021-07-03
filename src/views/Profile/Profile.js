@@ -268,13 +268,13 @@ export default function Profile(props) {
                                             return (
                                                 <Paper onClick={() => Toggle(index)} key={index}
                                                     className={clsx(classes.AuthItem, d.IsActive && classes.disabled, d.IsActive ? classes.green : classes.red)} elevation={1}>
-                                                    <Paper className="AuthName" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
+                                                    <Paper className="AuthName" elevation={0} >{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
                                                     <Typography className="IsActive">{d.IsActive ? "Activo" : "Inactivo"}</Typography>
                                                 </Paper>)
                                         } else {
                                             return (
                                                 <Paper
-                                                    className={clsx(classes.AuthItem, d.IsActive && classes.disabled, classes.gray)} elevation={1}>
+                                                    className={clsx(classes.AuthItem, d.IsActive && classes.disabled, classes.gray)} elevation={1} key={index}>
                                                     <Paper className="AuthNameDis" elevation={0}>{getIcon(d.Name)} <Typography>{d.Name}</Typography></Paper>
                                                     <Typography className="IsDis">{"No registrado"}</Typography>
                                                 </Paper>)

@@ -23,8 +23,10 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(async () => {
+      console.log("checkSess");
       const res = await CheckSession()
       if(res.data.session === "vencida") {
+        console.log("deleteSess")
         history.push("/")
         history.replace({state:{ expired: true }})
       }

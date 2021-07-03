@@ -86,7 +86,9 @@ export default makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         opacity: 1,
+        backgroundColor: "#99c0c838",
         zIndex: 1,
+        backdropFilter: "blur(6px)",
         [sizes.Wdown("md")]: {
             height: "330px",
             width: "232px",
@@ -133,7 +135,7 @@ export default makeStyles((theme) => ({
         color: "whitesmoke",
         backgroundColor: "#1a7769",
         padding: "0",
-        "&:hover":{
+        "&:hover": {
             color: "#1a7769",
             backgroundColor: "#e8e8e8eb"
         },
@@ -148,8 +150,11 @@ export default makeStyles((theme) => ({
     dataContainer: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center", 
-        overflow: "auto"
+        alignItems: "center",
+        overflow: "auto",
+        backgroundColor: "#99c0c838",
+        color: "#1a7769"
+
     },
     iconContainer: {
         display: "flex",

@@ -9,7 +9,7 @@ import { Close, Done, Backup, AddAPhoto, Delete, Replay } from '@material-ui/ico
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false, noButtons=true, facial = false} = props
+    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false, noButtons = true, facial = false, noLoad = true } = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -125,16 +125,17 @@ export default function ModalComponent(props) {
                                 <IconButton className={classes.close} onClick={handleClose}>
                                     <Close /> Cancelar
                                 </IconButton>
-                                <IconButton className={classes.continue} onClick={handleUploadPhoto} disabled={!buttonsDisabled.file}>
+                                {noLoad && <IconButton className={classes.continue} onClick={handleUploadPhoto} disabled={!buttonsDisabled.file}>
                                     <Backup />  Cargar Foto
-                                </IconButton>
+                                </IconButton>}
+
                                 {console.log(buttonsDisabled.picture, buttonsDisabled.fileOm)}
                                 {console.log(buttonsDisabled.fileOm)}
                                 <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : buttonsDisabled.fileOm && facial ? false : true}>
                                     <AddAPhoto />  Tomar Foto
                                 </IconButton>
                             </div>
-                        ): ""}
+                        ) : ""}
                     </div>
                 </Fade>
             </Modal>

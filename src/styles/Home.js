@@ -7,13 +7,26 @@ export default makeStyles((theme) => ({
     "50%": { backgroundPosition: "100% 50%" },
     "100%": { backgroundPosition: "0% 50%" }
   },
+  // "&::-webkit-scrollbar-track": {
+  //   backgroundColor: "red",
+  //   borderRadius: "10px"
+  // },
+  // "&::-webkit-scrollbar":{
+  //   width: "10px",
+  //   backgroundColor: "red",
+  // },
+  // "&::-webkit-scrollbar-thumb":{
+  //   borderRadius: "10px",
+  //   backgroundImage: "-webkit-gradient(linear, left bottom, left top, color-stop(0.44, rgb(122,153,217)), color-stop(0.72, rgb(73,125,189)), color-stop(0.86, rgb(28,58,148)))"
+  // },
   root: {
     display: 'flex',
     width: "100vw",
     height: "100vh",
     "& .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters": {
       backgroundColor: "#99C0C6"
-    }
+    },
+
   },
   toolbar: {
     width: "100%",

@@ -86,13 +86,15 @@ export default makeStyles((theme) => ({
     column1: {
         width: "86%",
         height: "100%",
-        transition: "250ms ease-in"
+        transition: "250ms ease-in",
+        padding: "1%"
     },
     column: {
         overflowX: "auto",
         width: '86%',
         height: "100%",
-        transition: "250ms ease-in"
+        transition: "250ms ease-in",
+        marginLeft: "10px"
     },
     columnDisabled: {
         width: "10%",
