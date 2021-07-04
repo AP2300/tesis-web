@@ -110,6 +110,7 @@ export default makeStyles((theme) => ({
     maximizedContainer: {
         width: "85%",
         height: "100%",
+        padding: "1.5%",
         transition: "250ms ease-in",
         color: "inherit",
         [sizes.Wdown("xs")]: {

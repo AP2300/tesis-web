@@ -331,7 +331,6 @@ export default function AdminUser() {
                                                 </div>}
 
                                         </div>
-                                        <Divider orientation="vertical" variant="middle" className="dividerV" />
                                         <div className="inputCont">
                                             <Typography align="center" variant="h6">Modificar Datos</Typography>
                                             <Divider variant="middle" flexItem style={{ height: "1px", marginBottom: "20px" }} />

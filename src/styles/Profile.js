@@ -306,6 +306,7 @@ export default makeStyles((theme) => ({
         color: "whitesmoke",
         backgroundColor: "#1a7769",
         fontWeight: "600",
+        fontSize: "1rem",
         "&:hover":{
             color: "#1a7769"
         }

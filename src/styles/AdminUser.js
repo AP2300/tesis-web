@@ -11,7 +11,8 @@ export default makeStyles(() => ({
         "&:hover": {
             backgroundColor: "#1a7769",
             color: "whitesmoke",
-            transition: "400ms"
+            transition: "400ms",
+            margin: "0 10px 0 10px"
         }
     },
     ImgButton: {
@@ -149,10 +150,10 @@ export default makeStyles(() => ({
         flexDirection: "column",
         height: "25%",
         "& .name": {
-            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontSize: "calc(25px + (28 - 25) * ((80vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
         }, "& .code": {
-            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontSize: "calc(25px + (28 - 25) * ((80vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
         }, "& .EmailType": {
             fontSize: "calc(12px + (24 - 10) * ((70vw - 303px) / (1600 - 300)))",
