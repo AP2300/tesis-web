@@ -9,7 +9,7 @@ import { Close, Done, Backup, AddAPhoto, Delete, Replay } from '@material-ui/ico
 import useStyles from "../styles/Modal";
 
 export default function ModalComponent(props) {
-    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false, noButtons = true, facial = false, noLoad = true } = props
+    const { defaultButtons = true, buttonsDisabled = false, takePhoto = false, confirmPhoto = false, noButtons = true, facial = false, noLoad = true, finger= false  } = props
     const classes = useStyles();
     const [open, setOpen] = useState(props.IsOpen);
 
@@ -105,7 +105,7 @@ export default function ModalComponent(props) {
                                     <Close /> Cancelar
                                 </IconButton>
                                 <IconButton className={classes.continue} onClick={handleTakePic} >
-                                    <AddAPhoto />  Tomar Foto
+                                    <AddAPhoto /> {finger ? "Tomar Huella" : "Tomar Foto"} 
                                 </IconButton>
                             </div>
                         ) : confirmPhoto ? (
@@ -126,13 +126,13 @@ export default function ModalComponent(props) {
                                     <Close /> Cancelar
                                 </IconButton>
                                 {noLoad && <IconButton className={classes.continue} onClick={handleUploadPhoto} disabled={!buttonsDisabled.file}>
-                                    <Backup />  Cargar Foto
+                                    <Backup />  {finger ? "Cargar Huella" : "Cargar Foto"}
                                 </IconButton>}
 
                                 {console.log(buttonsDisabled.picture, buttonsDisabled.fileOm)}
                                 {console.log(buttonsDisabled.fileOm)}
                                 <IconButton className={classes.continue} onClick={handleTakePhoto} disabled={buttonsDisabled.picture ? !buttonsDisabled.picture : buttonsDisabled.fileOm && facial ? false : true}>
-                                    <AddAPhoto />  Tomar Foto
+                                    <AddAPhoto />  {finger ? "Tomar Huella" : "Tomar Foto"}
                                 </IconButton>
                             </div>
                         ) : ""}

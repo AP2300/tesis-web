@@ -18,11 +18,11 @@ import { set } from 'lodash';
 export default function AdminUserSecurity(props) {
     const history = useHistory();
     const [activeUser, setActiveUser] = useState("");
-    const [userData, setUserData] = useState([{ isActive: true, name: "Facial" }, { isActive: true, name: "Huella" }])
-    const [userList, setUserList] = useState([])
+    const [userData, setUserData] = useState([{ isActive: true, name: "Facial" }, { isActive: true, name: "Huella" }]);
+    const [userList, setUserList] = useState([]);
     const [isPromiseReady, setIsPromiseReady] = useState(false);
     const [isSecDataReady, setIsSecDataReady] = useState(false);
-    const [noti, setNoti] = useState({ severity: "", open: false, description: "" })
+    const [noti, setNoti] = useState({ severity: "", open: false, description: "" });
     const [open, setOpen] = useState({ open: false });
     const [openAdd, setOpenAdd] = useState({ open: false, name: "" });
     const [openEdit, setOpenEdit] = useState({ open: false, data: "" });
@@ -33,7 +33,7 @@ export default function AdminUserSecurity(props) {
     const [face, setFace] = useState({ success: false, });
     const [finger, setFinger] = useState({ success: false, });
     const [fingerData, setFingerData] = useState({ value: "", array: [], fingers: ["Pulgar", "Indice", "Medio", "Anular", "Meñique"] });
-    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm: true })
+    const [formCompleted, setFormCompleted] = useState({ file: false, picture: false, fileOm: true });
     const classes = useStyles();
 
     useEffect(() => {
@@ -453,7 +453,7 @@ export default function AdminUserSecurity(props) {
                 </Modal>
                 {openAdd.name == "" ? ""
                     : (
-                        <Modal defaultButtons={false} noLoad={false} noButtons={openAdd.name == "fingerAdd" ? true : false} buttonsDisabled={openAdd.name == "Huella" ? formCompleted : false} takePhoto={openAdd.name == "fingerInstructions" ? true : false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={openAdd.name == "Huella" ? "Agregar Dedo" : openAdd.name == "fingerInstructions" ? "Tomar imagen del dedo" : openAdd.name == "fingerAdd" ? "Confirmar imagen del dedo" : ""}>
+                        <Modal defaultButtons={false} noLoad={false} noButtons={openAdd.name == "fingerAdd" ? true : false} finger={true} buttonsDisabled={openAdd.name == "Huella" ? formCompleted : false} takePhoto={openAdd.name == "fingerInstructions" ? true : false} IsOpen={openAdd.open} close={handleCloseAdd} uploadPhotoFunction={handleAddUploadFinger} takePhotoFunction={() => handleAddTakePhoto("finger")} handleTakePicFunction={() => handleAddTakePic("fingerConfirm")} handleRetakePicFunction={retakeFace} okFunction={handleConfirmPhoto} title={openAdd.name == "Huella" ? "Agregar Dedo" : openAdd.name == "fingerInstructions" ? "Tomar imagen del dedo" : openAdd.name == "fingerAdd" ? "Confirmar imagen del dedo" : ""}>
                             {openAdd.name == "Huella" ? (
                                 <div >
                                     <div style={{ display: "flex" }}>
@@ -772,7 +772,7 @@ export default function AdminUserSecurity(props) {
                                                 />
                                                 <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
                                                     <Add />
-                                                    Agregar foto
+                                                    Agregar huella
                                                 </Button>
                                             </div>
                                         </Paper>
