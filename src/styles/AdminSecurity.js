@@ -221,10 +221,10 @@ export default makeStyles((theme) => ({
         flexDirection: "column",
         height: "25%",
         "& .name": {
-            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontSize: "calc(25px + (28 - 25) * ((80vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
         }, "& .code": {
-            fontSize: "calc(12px + (38 - 12) * ((90vw - 303px) / (1600 - 300)))",
+            fontSize: "calc(25px + (28 - 25) * ((80vw - 303px) / (1600 - 300)))",
             fontWeight: "600"
         }, "& .EmailType": {
             fontSize: "calc(12px + (24 - 10) * ((70vw - 303px) / (1600 - 300)))",
@@ -469,7 +469,7 @@ export default makeStyles((theme) => ({
         height: "10vh",
     },
     fingerItemTitle: {
-        fontSize: "calc(0.6em + 0.6vw)",
+        fontSize: "calc(17px + (23 - 17) * ((40vw - 303px) / (1600 - 300)))",
         marginTop: "0.3em",
         fontWeight: "bold",
         color: "#4f4f4f !important",

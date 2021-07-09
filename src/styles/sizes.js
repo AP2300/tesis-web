@@ -2,6 +2,7 @@ export default {
     up() {},
     Wdown(size) {
       const sizes = {
+        xxs: "425.98px",
         xs: "575.98px",
         sm: "767.98px",
         "md-sm": "820px",

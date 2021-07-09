@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import sizes from "./sizes";
 const drawerWidth = '340px';
 
 export default makeStyles((theme) => ({
@@ -55,8 +56,10 @@ export default makeStyles((theme) => ({
   menuButton: {
     //marginRight: theme.spacing(2),
     "& > .MuiIconButton-label .MuiSvgIcon-root": {
-      fontSize: "2em !important"
-
+      fontSize: "2em !important",
+      [sizes.Wdown("md-sm")]: {
+        fontSize: "2rem !important",
+      },
     },
     "& > .MuiIconButton-root": {
       paddingRight: "5px"
@@ -96,6 +99,13 @@ export default makeStyles((theme) => ({
     overflowY: "auto",
     backgroundColor: "#f7f7f7"
   },
+  LogoIcon: {
+    width: "5vw",
+    height: "10vh",
+    [sizes.Wdown("md-sm")]: {
+      display: "none"
+    },
+  },
   contentShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -105,7 +115,10 @@ export default makeStyles((theme) => ({
   },
   userWelcome: {
     fontSize: "4vmin",
-    color: "#191818"
+    color: "#191818",
+    [sizes.Wdown("xxs")]: {
+      fontSize: "16.5px",
+    },
   },
   userBadge: {
     display: 'flex',

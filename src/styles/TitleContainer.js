@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "calc(13px + (40 - 13) * ((45vw - 303px) / (1600 - 300)))",
+        fontSize: "calc(15px + (20 - 15) * ((45vw - 303px) / (1600 - 300)))",
         fontWeight: "600",
     },
     content: {

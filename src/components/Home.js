@@ -103,7 +103,7 @@ export default function Home() {
           >
             <Menu className={classes.userWelcome} />
           </IconButton >
-          <LogoIcon width="5vw" height="10vh"/>
+          <LogoIcon className={classes.LogoIcon}  />
           <Typography noWrap className={clsx(classes.userWelcome, !isPromiseReady && classes.loading)}>
             {activeWindow === "Panel Principal" ?
               (isPromiseReady ?
