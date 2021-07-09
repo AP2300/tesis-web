@@ -731,7 +731,7 @@ export default function AdminUserSecurity(props) {
                                                 )
                                             })}
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                {fingerData.array ? fingerData.array.length < 10 ?
+                                                {userData.huella ? userData.huella.length < 10 ?
                                                     <Button variant="contained" className={clsx([classes.button, classes.editButton])} onClick={handleClickOpenAdd} style={{ margin: "1em 0" }} onClick={() => handleClickOpenAdd("Huella")}>
                                                         <Add />
                                                         Agregar huella
