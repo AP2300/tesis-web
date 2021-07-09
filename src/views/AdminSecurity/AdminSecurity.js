@@ -268,7 +268,7 @@ export default function AdminUserSecurity(props) {
                         fingerName: `${fingerData.value} ${handData}`
                     }
 
-                    const res2 = assingFinger(params)
+                    const res2 = await assingFinger(params)
                     if (res2) {
                         setFinger({ ...finger, success: false })
                         setOpenAdd({ open: false, name: "" });
