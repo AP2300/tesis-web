@@ -93,14 +93,19 @@ export default function Profile(props) {
         if (arg === "name" || arg === "email") {
             if (FormControl.NameControl !== "" || FormControl.EmailControl !== "") {
                 let reg = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-                if (reg.test(FormControl.EmailControl)) {
-                    if (FormControl.EmailControl !== Email) {
+                if (reg.test(params.email)) {
+                    if (FormControl.Email !== Email) {
                         UpdateBasicData(params);
                         const res = await EndSession()
                         if (res) {
+                            setNoti({
+                                ...noti, severity: "success",
+                                description: "Se han actualizado los datos, se cerrará la sesión",
+                                open: true
+                            })
                             setTimeout(() => {
                                 history.push("/")
-                            }, 400)
+                            }, 1500)
                         }
                     } else {
                         setNoti({
@@ -143,12 +148,29 @@ export default function Profile(props) {
                 OldPass: FormControl.PassControlConfirm,
                 Password: FormControl.PassControl
             }
-            UpdateUserPassword(params)
-
-            const res = await EndSession()
-            if (res) {
+            const res2 = await UpdateUserPassword(params)
+            console.log(res2)
+            if (res2.data.success) {
+                const res = await EndSession()
+                if (res) {
+                    setModal(false)
+                    setNoti({
+                        ...noti, severity: "success",
+                        description: "Se ha actualizado la contraseña, se cerrará la sesión",
+                        open: true
+                    })
+                    setTimeout(() => {
+                        history.push("/")
+                    }, 1500)
+                }
+            } else {
+                setFormControl({...FormControl, PassControlConfirm: ""})
                 setModal(false)
-                history.push("/")
+                setNoti({
+                    ...noti, severity: "error",
+                    description: res2.data.msg,
+                    open: true
+                })
             }
         } else {
             setNoti({
@@ -257,10 +279,10 @@ export default function Profile(props) {
                         </div>
                     </div>
                 </div>
-                <Divider variant="middle"/>
+                <Divider variant="middle" />
                 <div className={classes.bottomContainer}>
                     <div className={classes.LeftBox}>
-                        <TitleContainer title="Metodos de autenticacion" >
+                        <TitleContainer title="Métodos de autenticación" >
                             <div className={classes.AuthContent}>
                                 {IsPromiseReady ? UserData.map((d, index) => {
                                     if (d.Name !== "Codigo") {
@@ -293,7 +315,7 @@ export default function Profile(props) {
                         <TitleContainer title="Modificar perfil">
                             <div className={classes.textFieldContainer1}>
                                 <span>Nombre</span>
-                                <span>Correo Electronico</span>
+                                <span>Correo Electrónico</span>
                                 <span>Contraseña</span>
                             </div>
                             <div className={classes.textFieldContainer2}>

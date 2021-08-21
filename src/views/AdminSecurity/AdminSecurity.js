@@ -3,7 +3,7 @@ import useStyles from '../../styles/AdminSecurity';
 import { Paper, Avatar, Divider, Typography, List, ListItem, ListItemText, ListItemIcon, Button, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, FormHelperText, FormControl, Select, MenuItem } from '@material-ui/core/';
 import Alert from '@material-ui/lab/Alert';
 import { ChevronLeft, ChevronRight, People, Mood, ExpandMore, Fingerprint, VerifiedUser, ReportProblemRounded, Add, CheckCircle, Delete } from '@material-ui/icons/';
-import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger, assingFinger } from '../../api/user';
+import { GetHistoryData, GetSecurityUserData, UpdateAuthMethods, DeleteMethod, setFaceBlob, getFace, setFingerBlob, getFinger, assingFinger, setFaceAdd } from '../../api/user';
 import Notification from '../../components/Notifications';
 import Modal from '../../components/Modal';
 import { useHistory } from 'react-router';
@@ -185,7 +185,7 @@ export default function AdminUserSecurity(props) {
             id: userData.IDUser
         }
         console.log(params);
-        const res = await setFace(params)
+        const res = await setFaceAdd(params)
         console.log(res);
         if (res) {
             if (res.data.success) {

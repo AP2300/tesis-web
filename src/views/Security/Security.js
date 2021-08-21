@@ -129,7 +129,7 @@ export default function Security(props) {
                     GetUserSecurityData()
                 }
             } else {
-                setNoti({ ...noti, severity: "warning", description: "No puedes desactivar tu ultimo método activo", open: true })
+                setNoti({ ...noti, severity: "error", description: "No puedes desactivar tu ultimo método activo", open: true })
             }
 
         } else if (event.currentTarget.name === "Facial") {
@@ -167,7 +167,7 @@ export default function Security(props) {
             <Paper className={classes.mainContainer}>
                 <Paper elevation={2} className={classes.leftContainer}>
                     <div className={classes.Code}>
-                        <Typography className="Text">Tu codigo de acceso es: </Typography>
+                        <Typography className="Text">Tu código de acceso es: </Typography>
                         <Typography className={clsx(classes.CodeNumber, state.Code === 0 ? classes.loading : "")}>
                             {state.Code === 0 ? "|||||||||||||" : state.Code}
                         </Typography>
@@ -191,7 +191,7 @@ export default function Security(props) {
                 <div className={classes.rightContainer}>
                     <Typography variant={"h4"} align="center" className={clsx(!PropsPromise && classes.loading, classes.Title)}>{
                         PropsPromise ?
-                            `${props.Data.FullName}, estos son tus metodos de autenticacion` :
+                            `${props.Data.FullName}, estos son tus métodos de autenticación` :
                             "|||||||||||||||||||||||||||||||||||||||||||||||||||"}
                         <Divider orientation="horizontal" variant={"middle"} flexItem />
                     </Typography>

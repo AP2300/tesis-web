@@ -147,7 +147,7 @@ export default function Home() {
         <List className={classes.List1}>
           <ListItem button className={classes.LogOut} onClick={CloseSession} >
             <ListItemIcon fontSize="inherit" ><ExitToApp className={classes.LogOuIcon} /></ListItemIcon>
-            <ListItemText primary={"Cerrar Sesion"} classes={{ primary: classes.listItemText }} />
+            <ListItemText primary={"Cerrar Sesión"} classes={{ primary: classes.listItemText }} />
           </ListItem>
         </List>
       </Drawer>

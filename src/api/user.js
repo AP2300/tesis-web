@@ -253,7 +253,7 @@ export async function assingFinger(data){
   }
 }
 
-export async function setFace(data) {
+export async function setFaceAdd(data) {
   const form = new FormData();
   form.append("face", data.face)
   form.append("id", data.id)
