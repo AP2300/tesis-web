@@ -1,4 +1,4 @@
-export const url = "https://tesis-backend-dcsecurity.herokuapp.com/";
+export const url = "https://tesis-backend-dcsecurity.herokuapp.com";
 export const url_RBPI = " http://172.28.237.72:5000";
 
 // Rutas
