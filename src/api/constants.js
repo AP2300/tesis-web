@@ -1,4 +1,4 @@
-export const url = "https://tesis-backend-dcsecurity.herokuapp.com";
+export const url = "https://620322985de6a635120a7721--zealous-pare-41c704.netlify.app";
 export const url_RBPI = " http://172.28.237.72:5000";
 
 // Rutas
