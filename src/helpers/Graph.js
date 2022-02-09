@@ -115,13 +115,15 @@ export const GraphLabels = (TimeStamp) => {
     }
 }
 
+
 export function getYearRange() {
-    let val = 2021;
     let year = new Date()
-    val = val - year.getFullYear() + 1;
-    let newArr = new Array(val);
+    let val = 2021
+    let arrLength = (year.getFullYear() + 1)-val;
+    let newArr = new Array(arrLength);
+
     for (let i = 0; i < newArr.length; i++) {
-        newArr[i] = 2021 + i;
+        newArr[i] = val + i;
     }
     return newArr
 }
